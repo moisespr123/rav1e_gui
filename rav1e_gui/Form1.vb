@@ -183,16 +183,19 @@
             GetOpusencVersion()
         Else
             MessageBox.Show("opusenc.exe was not found. Exiting...")
+            Process.Start("https://moisescardona.me/opusenc_compiles")
             Me.Close()
         End If
         If rav1eExists() Then
             GetRav1eVersion()
         Else
             MessageBox.Show("rav1e.exe was not found. Exiting...")
+            Process.Start("https://moisescardona.me/rav1e_compiles")
             Me.Close()
         End If
         If Not ffmpegExists() Then
             MessageBox.Show("ffmpeg.exe was not found. Exiting...")
+            Process.Start("https://moisescardona.me/downloading_ffmpeg_rav1e_gui")
             Me.Close()
         End If
         GUILoaded = True
