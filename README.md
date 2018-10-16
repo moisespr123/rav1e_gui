@@ -7,8 +7,8 @@ I wrote this software to test the rav1e software. Unfortunately, at the current 
 
 ## Dependencies:
 * You need my build of `opusenc.exe`. You can get it here: https://moisescardona.me/opusenc-libopus%201.3-rc2-2-ga8e2a2b1-dirty-resample-10
-* You need ffmpeg as found here: https://ffmpeg.zeranoe.com/builds/. Use the nightly builds.
-* You also need rav1e
+* You need ffmpeg as found here: https://ffmpeg.zeranoe.com/builds/. Use the nightly builds. [Instructions here.](https://moisescardona.me/downloading_ffmpeg_rav1e_gui)
+* You also need rav1e. [Builds here.](https://moisescardona.me/rav1e_compiles)
 
 Written in Visual Basic .NET using Visual Studio 2017.
 
