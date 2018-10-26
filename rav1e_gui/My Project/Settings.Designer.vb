@@ -101,6 +101,30 @@ Namespace My
                 Me("bitrate") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property lowlat() As Boolean
+            Get
+                Return CType(Me("lowlat"),Boolean)
+            End Get
+            Set
+                Me("lowlat") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("30")>  _
+        Public Property keyint() As Integer
+            Get
+                Return CType(Me("keyint"),Integer)
+            End Get
+            Set
+                Me("keyint") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

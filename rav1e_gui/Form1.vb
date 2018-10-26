@@ -33,6 +33,8 @@
         audioBitrate.Enabled = False
         quantizer.Enabled = False
         speed.Enabled = False
+        KeyFrameInterval.Enabled = False
+        LowLatencyCheckbox.Enabled = False
         tempLocationPath.Enabled = False
         BrowseTempLocation.Enabled = False
         If Not IO.Path.GetExtension(OutputTxt.Text) = ".webm" Then
@@ -58,7 +60,7 @@
                 Dim tasks = New List(Of Action)
                 Dim streamWriter As New IO.StreamWriter(tempLocationPath.Text + "\rav1e-concatenate-list.txt")
                 For Counter As Integer = 0 To ItemsToProcess.Count - 1
-                    Dim args As Array = {ItemsToProcess(Counter), tempLocationPath.Text + "\" + IO.Path.GetFileNameWithoutExtension(ItemsToProcess(Counter)) + ".ivf", My.Settings.quantizer, My.Settings.speed}
+                    Dim args As Array = {ItemsToProcess(Counter), tempLocationPath.Text + "\" + IO.Path.GetFileNameWithoutExtension(ItemsToProcess(Counter)) + ".ivf", My.Settings.quantizer, My.Settings.speed, My.Settings.keyint, My.Settings.lowlat}
                     streamWriter.WriteLine("file '" + tempLocationPath.Text.Replace("\", "/") + "/" + IO.Path.GetFileNameWithoutExtension(ItemsToProcess(Counter)) + ".ivf" + "'")
                     tasks.Add(Function() Run_rav1e(args))
                 Next
@@ -74,6 +76,8 @@
                                          audioBitrate.Enabled = True
                                          quantizer.Enabled = True
                                          speed.Enabled = True
+                                         KeyFrameInterval.Enabled = True
+                                         LowLatencyCheckbox.Enabled = True
                                          tempLocationPath.Enabled = True
                                          BrowseTempLocation.Enabled = True
                                          OutputTxt.Enabled = True
@@ -100,12 +104,17 @@
     Private Function Run_rav1e(args As Array)
         Dim Input_File As String = args(0)
         Dim Output_File As String = args(1)
-        Dim Quantizer As String = args(2)
-        Dim Speed As String = args(3)
+        Dim Quantizer As Integer = args(2)
+        Dim Speed As Integer = args(3)
+        Dim KeyInt As Integer = args(4)
+        Dim LowLat As Boolean = args(5)
         Dim rav1eProcessInfo As New ProcessStartInfo
         Dim rav1eProcess As Process
         rav1eProcessInfo.FileName = "rav1e.exe"
-        rav1eProcessInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """ --quantizer " + Quantizer + " -s " + Speed
+        rav1eProcessInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """ --quantizer " + Quantizer.ToString() + " -s " + Speed.ToString() + " -I " + KeyInt.ToString()
+        If Not LowLat Then
+            rav1eProcessInfo.Arguments += " --low_latency false"
+        End If
         rav1eProcessInfo.CreateNoWindow = True
         rav1eProcessInfo.RedirectStandardOutput = False
         rav1eProcessInfo.UseShellExecute = False
@@ -178,6 +187,8 @@
         quantizer.Value = My.Settings.quantizer
         speed.Value = My.Settings.speed
         audioBitrate.Value = My.Settings.bitrate
+        KeyFrameInterval.Value = My.Settings.keyint
+        LowLatencyCheckbox.Checked = My.Settings.lowlat
         tempLocationPath.Text = My.Settings.tempFolder
         If OpusEncExists() Then
             GetOpusencVersion()
@@ -193,11 +204,11 @@
             Process.Start("https://moisescardona.me/rav1e_compiles")
             Me.Close()
         End If
-        If Not ffmpegExists() Then
-            MessageBox.Show("ffmpeg.exe was not found. Exiting...")
-            Process.Start("https://moisescardona.me/downloading_ffmpeg_rav1e_gui")
-            Me.Close()
-        End If
+        'If Not ffmpegExists() Then
+        '    MessageBox.Show("ffmpeg.exe was not found. Exiting...")
+        '    Process.Start("https://moisescardona.me/downloading_ffmpeg_rav1e_gui")
+        '    Me.Close()
+        'End If
         GUILoaded = True
     End Sub
 
@@ -283,6 +294,20 @@
         Dim OkAction As MsgBoxResult = TempFolderBrowser.ShowDialog
         If OkAction = MsgBoxResult.Ok Then
             tempLocationPath.Text = TempFolderBrowser.SelectedPath
+        End If
+    End Sub
+
+    Private Sub KeyFrameInterval_ValueChanged(sender As Object, e As EventArgs) Handles KeyFrameInterval.ValueChanged
+        If GUILoaded Then
+            My.Settings.keyint = KeyFrameInterval.Value
+            My.Settings.Save()
+        End If
+    End Sub
+
+    Private Sub LowLatencyCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles LowLatencyCheckbox.CheckedChanged
+        If GUILoaded Then
+            My.Settings.lowlat = LowLatencyCheckbox.Checked
+            My.Settings.Save()
         End If
     End Sub
 End Class
