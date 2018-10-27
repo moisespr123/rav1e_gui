@@ -70,7 +70,7 @@
                 Run_opus(My.Settings.bitrate, tempLocationPath.Text)
                 concatenate_video_files(tempLocationPath.Text + "\rav1e-concatenate-list.txt", tempLocationPath.Text)
                 merge_audio_video(OutputTxt.Text, tempLocationPath.Text)
-                clean_temp_folder(tempLocationPath.Text)
+                if RemoveTempFiles.Checked Then clean_temp_folder(tempLocationPath.Text)
                 StartBtn.BeginInvoke(Sub()
                                          StartBtn.Enabled = True
                                          audioBitrate.Enabled = True
@@ -182,7 +182,6 @@
         ffmpegProcess.WaitForExit()
         Return True
     End Function
-
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         quantizer.Value = My.Settings.quantizer
         speed.Value = My.Settings.speed
@@ -190,6 +189,7 @@
         KeyFrameInterval.Value = My.Settings.keyint
         LowLatencyCheckbox.Checked = My.Settings.lowlat
         tempLocationPath.Text = My.Settings.tempFolder
+        RemoveTempFiles.Checked = My.Settings.removeTempFiles 
         If OpusEncExists() Then
             GetOpusencVersion()
         Else
@@ -204,11 +204,11 @@
             Process.Start("https://moisescardona.me/rav1e_compiles")
             Me.Close()
         End If
-        'If Not ffmpegExists() Then
-        '    MessageBox.Show("ffmpeg.exe was not found. Exiting...")
-        '    Process.Start("https://moisescardona.me/downloading_ffmpeg_rav1e_gui")
-        '    Me.Close()
-        'End If
+        If Not ffmpegExists() Then
+            MessageBox.Show("ffmpeg.exe was not found. Exiting...")
+            Process.Start("https://moisescardona.me/downloading_ffmpeg_rav1e_gui")
+            Me.Close()
+        End If
         GUILoaded = True
     End Sub
 
@@ -307,6 +307,13 @@
     Private Sub LowLatencyCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles LowLatencyCheckbox.CheckedChanged
         If GUILoaded Then
             My.Settings.lowlat = LowLatencyCheckbox.Checked
+            My.Settings.Save()
+        End If
+    End Sub
+
+    Private Sub RemoveTempFiles_CheckedChanged(sender As Object, e As EventArgs) Handles RemoveTempFiles.CheckedChanged
+        If GUILoaded Then
+            My.Settings.removeTempFiles = RemoveTempFiles.Checked
             My.Settings.Save()
         End If
     End Sub
