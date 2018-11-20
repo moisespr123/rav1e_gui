@@ -44,7 +44,7 @@
         StartTasks.Start()
     End Sub
     Private Sub StartThreads()
-        If split_video_file(InputTxt.Text, tempLocationPath.Text, My.Settings.pieceSenconds) Then
+        If split_video_file(InputTxt.Text, tempLocationPath.Text, My.Settings.pieceSeconds) Then
             If extract_audio(InputTxt.Text, tempLocationPath.Text) Then
                 Dim ItemsToProcess As List(Of String) = New List(Of String)
                 For Each File As String In IO.Directory.GetFiles(tempLocationPath.Text)
@@ -187,7 +187,7 @@
         speed.Value = My.Settings.speed
         audioBitrate.Value = My.Settings.bitrate
         KeyFrameInterval.Value = My.Settings.keyint
-        pieceSenconds.Value = My.Settings.pieceSenconds
+        pieceSenconds.Value = My.Settings.pieceSeconds
         LowLatencyCheckbox.Checked = My.Settings.lowlat
         tempLocationPath.Text = My.Settings.tempFolder
         RemoveTempFiles.Checked = My.Settings.removeTempFiles 
@@ -321,7 +321,7 @@
 
     Private Sub pieceSenconds_ValueChanged(sender As Object, e As EventArgs) Handles pieceSenconds.ValueChanged
          If GUILoaded Then
-            My.Settings.pieceSenconds = pieceSenconds.Value
+            My.Settings.pieceSeconds = pieceSenconds.Value
             My.Settings.Save()
         End If
     End Sub

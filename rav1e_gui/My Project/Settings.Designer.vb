@@ -141,12 +141,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
-        Public Property pieceSenconds() As Integer
+        Public Property pieceSeconds() As Integer
             Get
-                Return CType(Me("pieceSenconds"),Integer)
+                Return CType(Me("pieceSeconds"),Integer)
             End Get
             Set
-                Me("pieceSenconds") = value
+                Me("pieceSeconds") = value
             End Set
         End Property
     End Class
