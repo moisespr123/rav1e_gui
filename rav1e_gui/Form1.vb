@@ -44,7 +44,7 @@
         StartTasks.Start()
     End Sub
     Private Sub StartThreads()
-        If split_video_file(InputTxt.Text, tempLocationPath.Text) Then
+        If split_video_file(InputTxt.Text, tempLocationPath.Text, My.Settings.pieceSenconds) Then
             If extract_audio(InputTxt.Text, tempLocationPath.Text) Then
                 Dim ItemsToProcess As List(Of String) = New List(Of String)
                 For Each File As String In IO.Directory.GetFiles(tempLocationPath.Text)
@@ -124,11 +124,11 @@
         Return True
     End Function
 
-    Private Function split_video_file(input As String, tempFolder As String)
+    Private Function split_video_file(input As String, tempFolder As String, pieceSenconds As Integer)
         Dim ffmpegProcessInfo As New ProcessStartInfo
         Dim ffmpegProcess As Process
         ffmpegProcessInfo.FileName = "ffmpeg.exe"
-        ffmpegProcessInfo.Arguments = "-i """ + input + """ -f segment -segment_time 1 """ + tempFolder + "/y4m-part-%6d.y4m"""
+        ffmpegProcessInfo.Arguments = "-i """ + input + """ -f segment -segment_time " + pieceSenconds.ToString() + " """ + tempFolder + "/y4m-part-%6d.y4m"""
         ffmpegProcessInfo.CreateNoWindow = True
         ffmpegProcessInfo.RedirectStandardOutput = False
         ffmpegProcessInfo.UseShellExecute = False
@@ -187,6 +187,7 @@
         speed.Value = My.Settings.speed
         audioBitrate.Value = My.Settings.bitrate
         KeyFrameInterval.Value = My.Settings.keyint
+        pieceSenconds.Value = My.Settings.pieceSenconds
         LowLatencyCheckbox.Checked = My.Settings.lowlat
         tempLocationPath.Text = My.Settings.tempFolder
         RemoveTempFiles.Checked = My.Settings.removeTempFiles 
@@ -314,6 +315,13 @@
     Private Sub RemoveTempFiles_CheckedChanged(sender As Object, e As EventArgs) Handles RemoveTempFiles.CheckedChanged
         If GUILoaded Then
             My.Settings.removeTempFiles = RemoveTempFiles.Checked
+            My.Settings.Save()
+        End If
+    End Sub
+
+    Private Sub pieceSenconds_ValueChanged(sender As Object, e As EventArgs) Handles pieceSenconds.ValueChanged
+         If GUILoaded Then
+            My.Settings.pieceSenconds = pieceSenconds.Value
             My.Settings.Save()
         End If
     End Sub

@@ -35,6 +35,7 @@ Partial Class Form1
         Me.Label6 = New System.Windows.Forms.Label()
         Me.OpusVersionLabel = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.RemoveTempFiles = New System.Windows.Forms.CheckBox()
         Me.LowLatencyCheckbox = New System.Windows.Forms.CheckBox()
         Me.KeyFrameInterval = New System.Windows.Forms.NumericUpDown()
         Me.Label10 = New System.Windows.Forms.Label()
@@ -48,12 +49,14 @@ Partial Class Form1
         Me.quantizer = New System.Windows.Forms.NumericUpDown()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.rav1eVersionLabel = New System.Windows.Forms.Label()
-        Me.RemoveTempFiles = New System.Windows.Forms.CheckBox()
+        Me.pieceSenconds = New System.Windows.Forms.NumericUpDown()
+        Me.Label11 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout
         CType(Me.KeyFrameInterval,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.audioBitrate,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.speed,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.quantizer,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pieceSenconds,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'Label1
@@ -119,7 +122,7 @@ Partial Class Form1
         Me.StartBtn.Location = New System.Drawing.Point(15, 277)
         Me.StartBtn.Name = "StartBtn"
         Me.StartBtn.Size = New System.Drawing.Size(440, 37)
-        Me.StartBtn.TabIndex = 12
+        Me.StartBtn.TabIndex = 14
         Me.StartBtn.Text = "Start"
         Me.StartBtn.UseVisualStyleBackColor = true
         '
@@ -161,7 +164,7 @@ Partial Class Form1
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(28, 13)
         Me.Label6.TabIndex = 12
-        Me.Label6.Text = "v1.1"
+        Me.Label6.Text = "v1.2"
         '
         'OpusVersionLabel
         '
@@ -178,6 +181,8 @@ Partial Class Form1
         Me.GroupBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
             Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.pieceSenconds)
+        Me.GroupBox1.Controls.Add(Me.Label11)
         Me.GroupBox1.Controls.Add(Me.RemoveTempFiles)
         Me.GroupBox1.Controls.Add(Me.LowLatencyCheckbox)
         Me.GroupBox1.Controls.Add(Me.KeyFrameInterval)
@@ -198,6 +203,19 @@ Partial Class Form1
         Me.GroupBox1.TabStop = false
         Me.GroupBox1.Text = "Encoder Options"
         '
+        'RemoveTempFiles
+        '
+        Me.RemoveTempFiles.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.RemoveTempFiles.AutoSize = true
+        Me.RemoveTempFiles.Checked = true
+        Me.RemoveTempFiles.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.RemoveTempFiles.Location = New System.Drawing.Point(12, 138)
+        Me.RemoveTempFiles.Name = "RemoveTempFiles"
+        Me.RemoveTempFiles.Size = New System.Drawing.Size(143, 17)
+        Me.RemoveTempFiles.TabIndex = 13
+        Me.RemoveTempFiles.Text = "Remove Temporary Files"
+        Me.RemoveTempFiles.UseVisualStyleBackColor = true
+        '
         'LowLatencyCheckbox
         '
         Me.LowLatencyCheckbox.AutoSize = true
@@ -206,7 +224,7 @@ Partial Class Form1
         Me.LowLatencyCheckbox.Location = New System.Drawing.Point(12, 67)
         Me.LowLatencyCheckbox.Name = "LowLatencyCheckbox"
         Me.LowLatencyCheckbox.Size = New System.Drawing.Size(87, 17)
-        Me.LowLatencyCheckbox.TabIndex = 9
+        Me.LowLatencyCheckbox.TabIndex = 10
         Me.LowLatencyCheckbox.Text = "Low Latency"
         Me.LowLatencyCheckbox.UseVisualStyleBackColor = true
         '
@@ -254,7 +272,7 @@ Partial Class Form1
         Me.BrowseTempLocation.Location = New System.Drawing.Point(356, 109)
         Me.BrowseTempLocation.Name = "BrowseTempLocation"
         Me.BrowseTempLocation.Size = New System.Drawing.Size(75, 23)
-        Me.BrowseTempLocation.TabIndex = 11
+        Me.BrowseTempLocation.TabIndex = 12
         Me.BrowseTempLocation.Text = "Browse"
         Me.BrowseTempLocation.UseVisualStyleBackColor = true
         '
@@ -275,7 +293,7 @@ Partial Class Form1
         Me.tempLocationPath.Location = New System.Drawing.Point(12, 111)
         Me.tempLocationPath.Name = "tempLocationPath"
         Me.tempLocationPath.Size = New System.Drawing.Size(338, 20)
-        Me.tempLocationPath.TabIndex = 10
+        Me.tempLocationPath.TabIndex = 11
         '
         'speed
         '
@@ -324,18 +342,24 @@ Partial Class Form1
         Me.rav1eVersionLabel.TabIndex = 16
         Me.rav1eVersionLabel.Text = "rav1e version:"
         '
-        'RemoveTempFiles
+        'pieceSenconds
         '
-        Me.RemoveTempFiles.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.RemoveTempFiles.AutoSize = true
-        Me.RemoveTempFiles.Checked = true
-        Me.RemoveTempFiles.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.RemoveTempFiles.Location = New System.Drawing.Point(12, 138)
-        Me.RemoveTempFiles.Name = "RemoveTempFiles"
-        Me.RemoveTempFiles.Size = New System.Drawing.Size(143, 17)
-        Me.RemoveTempFiles.TabIndex = 21
-        Me.RemoveTempFiles.Text = "Remove Temporary Files"
-        Me.RemoveTempFiles.UseVisualStyleBackColor = true
+        Me.pieceSenconds.Location = New System.Drawing.Point(291, 37)
+        Me.pieceSenconds.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
+        Me.pieceSenconds.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.pieceSenconds.Name = "pieceSenconds"
+        Me.pieceSenconds.Size = New System.Drawing.Size(76, 20)
+        Me.pieceSenconds.TabIndex = 9
+        Me.pieceSenconds.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = true
+        Me.Label11.Location = New System.Drawing.Point(288, 21)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(79, 13)
+        Me.Label11.TabIndex = 23
+        Me.Label11.Text = "piece seconds:"
         '
         'Form1
         '
@@ -365,6 +389,7 @@ Partial Class Form1
         CType(Me.audioBitrate,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.speed,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.quantizer,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pieceSenconds,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -397,4 +422,6 @@ End Sub
     Friend WithEvents Label10 As Label
     Friend WithEvents LowLatencyCheckbox As CheckBox
     Friend WithEvents RemoveTempFiles As CheckBox
+    Friend WithEvents pieceSenconds As NumericUpDown
+    Friend WithEvents Label11 As Label
 End Class
