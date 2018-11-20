@@ -49,14 +49,14 @@ Partial Class Form1
         Me.quantizer = New System.Windows.Forms.NumericUpDown()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.rav1eVersionLabel = New System.Windows.Forms.Label()
-        Me.pieceSenconds = New System.Windows.Forms.NumericUpDown()
+        Me.pieceSeconds = New System.Windows.Forms.NumericUpDown()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout
         CType(Me.KeyFrameInterval,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.audioBitrate,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.speed,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.quantizer,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pieceSenconds,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pieceSeconds,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'Label1
@@ -181,7 +181,7 @@ Partial Class Form1
         Me.GroupBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
             Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.GroupBox1.Controls.Add(Me.pieceSenconds)
+        Me.GroupBox1.Controls.Add(Me.pieceSeconds)
         Me.GroupBox1.Controls.Add(Me.Label11)
         Me.GroupBox1.Controls.Add(Me.RemoveTempFiles)
         Me.GroupBox1.Controls.Add(Me.LowLatencyCheckbox)
@@ -342,15 +342,15 @@ Partial Class Form1
         Me.rav1eVersionLabel.TabIndex = 16
         Me.rav1eVersionLabel.Text = "rav1e version:"
         '
-        'pieceSenconds
+        'pieceSeconds
         '
-        Me.pieceSenconds.Location = New System.Drawing.Point(291, 37)
-        Me.pieceSenconds.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
-        Me.pieceSenconds.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.pieceSenconds.Name = "pieceSenconds"
-        Me.pieceSenconds.Size = New System.Drawing.Size(76, 20)
-        Me.pieceSenconds.TabIndex = 9
-        Me.pieceSenconds.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.pieceSeconds.Location = New System.Drawing.Point(291, 37)
+        Me.pieceSeconds.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
+        Me.pieceSeconds.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.pieceSeconds.Name = "pieceSeconds"
+        Me.pieceSeconds.Size = New System.Drawing.Size(76, 20)
+        Me.pieceSeconds.TabIndex = 9
+        Me.pieceSeconds.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'Label11
         '
@@ -389,7 +389,7 @@ Partial Class Form1
         CType(Me.audioBitrate,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.speed,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.quantizer,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pieceSenconds,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pieceSeconds,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -422,6 +422,6 @@ End Sub
     Friend WithEvents Label10 As Label
     Friend WithEvents LowLatencyCheckbox As CheckBox
     Friend WithEvents RemoveTempFiles As CheckBox
-    Friend WithEvents pieceSenconds As NumericUpDown
+    Friend WithEvents pieceSeconds As NumericUpDown
     Friend WithEvents Label11 As Label
 End Class

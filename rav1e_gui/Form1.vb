@@ -187,7 +187,7 @@
         speed.Value = My.Settings.speed
         audioBitrate.Value = My.Settings.bitrate
         KeyFrameInterval.Value = My.Settings.keyint
-        pieceSenconds.Value = My.Settings.pieceSeconds
+        pieceSeconds.Value = My.Settings.pieceSeconds
         LowLatencyCheckbox.Checked = My.Settings.lowlat
         tempLocationPath.Text = My.Settings.tempFolder
         RemoveTempFiles.Checked = My.Settings.removeTempFiles 
@@ -319,9 +319,9 @@
         End If
     End Sub
 
-    Private Sub pieceSenconds_ValueChanged(sender As Object, e As EventArgs) Handles pieceSenconds.ValueChanged
+    Private Sub pieceSenconds_ValueChanged(sender As Object, e As EventArgs) Handles pieceSeconds.ValueChanged
          If GUILoaded Then
-            My.Settings.pieceSeconds = pieceSenconds.Value
+            My.Settings.pieceSeconds = pieceSeconds.Value
             My.Settings.Save()
         End If
     End Sub
