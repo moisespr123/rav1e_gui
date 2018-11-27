@@ -33,6 +33,7 @@
             OutputTxt.Enabled = False
             InputBrowseBtn.Enabled = False
             OutputBrowseBtn.Enabled = False
+            pieceSeconds.Enabled = False
             audioBitrate.Enabled = False
             quantizer.Enabled = False
             speed.Enabled = False
@@ -90,6 +91,7 @@
                                          InputTxt.Enabled = True
                                          InputBrowseBtn.Enabled = True
                                          OutputBrowseBtn.Enabled = True
+                                         pieceSeconds.Enabled = True
                                      End Sub)
                 MsgBox("Finished")
             End If
