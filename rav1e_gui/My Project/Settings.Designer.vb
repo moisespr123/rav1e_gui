@@ -15,7 +15,7 @@ Option Explicit On
 Namespace My
     
     <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.8.0.0"),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0"),  _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
     Partial Friend NotInheritable Class MySettings
         Inherits Global.System.Configuration.ApplicationSettingsBase
@@ -116,13 +116,13 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("30")>  _
-        Public Property keyint() As Integer
+         Global.System.Configuration.DefaultSettingValueAttribute("12")>  _
+        Public Property minKeyInt() As Integer
             Get
-                Return CType(Me("keyint"),Integer)
+                Return CType(Me("minKeyInt"),Integer)
             End Get
             Set
-                Me("keyint") = value
+                Me("minKeyInt") = value
             End Set
         End Property
         
@@ -147,6 +147,18 @@ Namespace My
             End Get
             Set
                 Me("pieceSeconds") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("240")>  _
+        Public Property maxKeyInt() As String
+            Get
+                Return CType(Me("maxKeyInt"),String)
+            End Get
+            Set
+                Me("maxKeyInt") = value
             End Set
         End Property
     End Class

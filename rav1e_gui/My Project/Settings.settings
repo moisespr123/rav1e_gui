@@ -17,14 +17,17 @@
     <Setting Name="lowlat" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="keyint" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">30</Value>
+    <Setting Name="minKeyInt" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">12</Value>
     </Setting>
     <Setting Name="removeTempFiles" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="pieceSeconds" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="maxKeyInt" Type="System.String" Scope="User">
+      <Value Profile="(Default)">240</Value>
     </Setting>
   </Settings>
 </SettingsFile>

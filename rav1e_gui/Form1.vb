@@ -16,7 +16,7 @@
         Dim OutputBrowser As New SaveFileDialog With {
             .Title = "Save Video File",
             .FileName = "",
-            .Filter = "WebM|*.webm"
+            .Filter = "WebM|*.webm|Matroska|*.mkv"
         }
         Dim OkAction As MsgBoxResult = OutputBrowser.ShowDialog
         If OkAction = MsgBoxResult.Ok Then
@@ -25,23 +25,28 @@
     End Sub
 
     Private Sub StartBtn_Click(sender As Object, e As EventArgs) Handles StartBtn.Click
-        StartBtn.Enabled = False
-        InputTxt.Enabled = False
-        OutputTxt.Enabled = False
-        InputBrowseBtn.Enabled = False
-        OutputBrowseBtn.Enabled = False
-        audioBitrate.Enabled = False
-        quantizer.Enabled = False
-        speed.Enabled = False
-        KeyFrameInterval.Enabled = False
-        LowLatencyCheckbox.Enabled = False
-        tempLocationPath.Enabled = False
-        BrowseTempLocation.Enabled = False
-        If Not IO.Path.GetExtension(OutputTxt.Text) = ".webm" Then
-            OutputTxt.Text = My.Computer.FileSystem.GetParentPath(OutputTxt.Text) + "\" + IO.Path.GetFileNameWithoutExtension(OutputTxt.Text) + ".webm"
+        If MinKeyFrameInterval.Value > MaxKeyFrameInterval.Value Then
+            MsgBox("Minimum Keyframe Interval must be smaller than or equal to the Maximum Keyframe Interval")
+        Else
+            StartBtn.Enabled = False
+            InputTxt.Enabled = False
+            OutputTxt.Enabled = False
+            InputBrowseBtn.Enabled = False
+            OutputBrowseBtn.Enabled = False
+            audioBitrate.Enabled = False
+            quantizer.Enabled = False
+            speed.Enabled = False
+            MinKeyFrameInterval.Enabled = False
+            MaxKeyFrameInterval.Enabled = False
+            LowLatencyCheckbox.Enabled = False
+            tempLocationPath.Enabled = False
+            BrowseTempLocation.Enabled = False
+            If Not IO.Path.GetExtension(OutputTxt.Text) = ".webm" And Not IO.Path.GetExtension(OutputTxt.Text) = ".mkv" Then
+                OutputTxt.Text = My.Computer.FileSystem.GetParentPath(OutputTxt.Text) + "\" + IO.Path.GetFileNameWithoutExtension(OutputTxt.Text) + ".webm"
+            End If
+            Dim StartTasks As New Threading.Thread(Sub() StartThreads())
+            StartTasks.Start()
         End If
-        Dim StartTasks As New Threading.Thread(Sub() StartThreads())
-        StartTasks.Start()
     End Sub
     Private Sub StartThreads()
         If split_video_file(InputTxt.Text, tempLocationPath.Text, My.Settings.pieceSeconds) Then
@@ -60,7 +65,7 @@
                 Dim tasks = New List(Of Action)
                 Dim streamWriter As New IO.StreamWriter(tempLocationPath.Text + "\rav1e-concatenate-list.txt")
                 For Counter As Integer = 0 To ItemsToProcess.Count - 1
-                    Dim args As Array = {ItemsToProcess(Counter), tempLocationPath.Text + "\" + IO.Path.GetFileNameWithoutExtension(ItemsToProcess(Counter)) + ".ivf", My.Settings.quantizer, My.Settings.speed, My.Settings.keyint, My.Settings.lowlat}
+                    Dim args As Array = {ItemsToProcess(Counter), tempLocationPath.Text + "\" + IO.Path.GetFileNameWithoutExtension(ItemsToProcess(Counter)) + ".ivf", My.Settings.quantizer, My.Settings.speed, My.Settings.minKeyInt, My.Settings.maxKeyInt, My.Settings.lowlat}
                     streamWriter.WriteLine("file '" + tempLocationPath.Text.Replace("\", "/") + "/" + IO.Path.GetFileNameWithoutExtension(ItemsToProcess(Counter)) + ".ivf" + "'")
                     tasks.Add(Function() Run_rav1e(args))
                 Next
@@ -70,13 +75,14 @@
                 Run_opus(My.Settings.bitrate, tempLocationPath.Text)
                 concatenate_video_files(tempLocationPath.Text + "\rav1e-concatenate-list.txt", tempLocationPath.Text)
                 merge_audio_video(OutputTxt.Text, tempLocationPath.Text)
-                if RemoveTempFiles.Checked Then clean_temp_folder(tempLocationPath.Text)
+                If RemoveTempFiles.Checked Then clean_temp_folder(tempLocationPath.Text)
                 StartBtn.BeginInvoke(Sub()
                                          StartBtn.Enabled = True
                                          audioBitrate.Enabled = True
                                          quantizer.Enabled = True
                                          speed.Enabled = True
-                                         KeyFrameInterval.Enabled = True
+                                         MinKeyFrameInterval.Enabled = True
+                                         MaxKeyFrameInterval.Enabled = True
                                          LowLatencyCheckbox.Enabled = True
                                          tempLocationPath.Enabled = True
                                          BrowseTempLocation.Enabled = True
@@ -106,12 +112,13 @@
         Dim Output_File As String = args(1)
         Dim Quantizer As Integer = args(2)
         Dim Speed As Integer = args(3)
-        Dim KeyInt As Integer = args(4)
-        Dim LowLat As Boolean = args(5)
+        Dim MinKeyInt As Integer = args(4)
+        Dim MaxKeyInt As Integer = args(5)
+        Dim LowLat As Boolean = args(6)
         Dim rav1eProcessInfo As New ProcessStartInfo
         Dim rav1eProcess As Process
         rav1eProcessInfo.FileName = "rav1e.exe"
-        rav1eProcessInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """ --quantizer " + Quantizer.ToString() + " -s " + Speed.ToString() + " -I " + KeyInt.ToString()
+        rav1eProcessInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """ --quantizer " + Quantizer.ToString() + " -s " + Speed.ToString() + " -i " + MinKeyInt.ToString() + " -I " + MaxKeyInt.ToString()
         If Not LowLat Then
             rav1eProcessInfo.Arguments += " --low_latency false"
         End If
@@ -186,11 +193,12 @@
         quantizer.Value = My.Settings.quantizer
         speed.Value = My.Settings.speed
         audioBitrate.Value = My.Settings.bitrate
-        KeyFrameInterval.Value = My.Settings.keyint
+        MinKeyFrameInterval.Value = My.Settings.minKeyInt
+         MaxKeyFrameInterval.Value = My.Settings.maxKeyInt
         pieceSeconds.Value = My.Settings.pieceSeconds
         LowLatencyCheckbox.Checked = My.Settings.lowlat
         tempLocationPath.Text = My.Settings.tempFolder
-        RemoveTempFiles.Checked = My.Settings.removeTempFiles 
+        RemoveTempFiles.Checked = My.Settings.removeTempFiles
         If OpusEncExists() Then
             GetOpusencVersion()
         Else
@@ -298,9 +306,15 @@
         End If
     End Sub
 
-    Private Sub KeyFrameInterval_ValueChanged(sender As Object, e As EventArgs) Handles KeyFrameInterval.ValueChanged
+    Private Sub MinKeyFrameInterval_ValueChanged(sender As Object, e As EventArgs) Handles MinKeyFrameInterval.ValueChanged
         If GUILoaded Then
-            My.Settings.keyint = KeyFrameInterval.Value
+            My.Settings.minKeyInt = MinKeyFrameInterval.Value
+            My.Settings.Save()
+        End If
+    End Sub
+    Private Sub MaxKeyFrameInterval_ValueChanged(sender As Object, e As EventArgs) Handles MaxKeyFrameInterval.ValueChanged
+        If GUILoaded Then
+            My.Settings.maxKeyInt = MaxKeyFrameInterval.Value
             My.Settings.Save()
         End If
     End Sub
@@ -320,7 +334,7 @@
     End Sub
 
     Private Sub pieceSenconds_ValueChanged(sender As Object, e As EventArgs) Handles pieceSeconds.ValueChanged
-         If GUILoaded Then
+        If GUILoaded Then
             My.Settings.pieceSeconds = pieceSeconds.Value
             My.Settings.Save()
         End If

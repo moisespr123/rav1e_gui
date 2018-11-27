@@ -35,10 +35,15 @@ Partial Class Form1
         Me.Label6 = New System.Windows.Forms.Label()
         Me.OpusVersionLabel = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.MaxKeyFrameInterval = New System.Windows.Forms.NumericUpDown()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.MinKeyFrameInterval = New System.Windows.Forms.NumericUpDown()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.pieceSeconds = New System.Windows.Forms.NumericUpDown()
+        Me.Label11 = New System.Windows.Forms.Label()
         Me.RemoveTempFiles = New System.Windows.Forms.CheckBox()
         Me.LowLatencyCheckbox = New System.Windows.Forms.CheckBox()
-        Me.KeyFrameInterval = New System.Windows.Forms.NumericUpDown()
-        Me.Label10 = New System.Windows.Forms.Label()
         Me.audioBitrate = New System.Windows.Forms.NumericUpDown()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.BrowseTempLocation = New System.Windows.Forms.Button()
@@ -49,14 +54,13 @@ Partial Class Form1
         Me.quantizer = New System.Windows.Forms.NumericUpDown()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.rav1eVersionLabel = New System.Windows.Forms.Label()
-        Me.pieceSeconds = New System.Windows.Forms.NumericUpDown()
-        Me.Label11 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout
-        CType(Me.KeyFrameInterval,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.MaxKeyFrameInterval,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.MinKeyFrameInterval,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pieceSeconds,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.audioBitrate,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.speed,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.quantizer,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pieceSeconds,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'Label1
@@ -164,7 +168,7 @@ Partial Class Form1
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(28, 13)
         Me.Label6.TabIndex = 12
-        Me.Label6.Text = "v1.2"
+        Me.Label6.Text = "v1.3"
         '
         'OpusVersionLabel
         '
@@ -181,12 +185,15 @@ Partial Class Form1
         Me.GroupBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
             Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.Label13)
+        Me.GroupBox1.Controls.Add(Me.MaxKeyFrameInterval)
+        Me.GroupBox1.Controls.Add(Me.Label12)
+        Me.GroupBox1.Controls.Add(Me.MinKeyFrameInterval)
+        Me.GroupBox1.Controls.Add(Me.Label10)
         Me.GroupBox1.Controls.Add(Me.pieceSeconds)
         Me.GroupBox1.Controls.Add(Me.Label11)
         Me.GroupBox1.Controls.Add(Me.RemoveTempFiles)
         Me.GroupBox1.Controls.Add(Me.LowLatencyCheckbox)
-        Me.GroupBox1.Controls.Add(Me.KeyFrameInterval)
-        Me.GroupBox1.Controls.Add(Me.Label10)
         Me.GroupBox1.Controls.Add(Me.audioBitrate)
         Me.GroupBox1.Controls.Add(Me.Label9)
         Me.GroupBox1.Controls.Add(Me.BrowseTempLocation)
@@ -202,6 +209,72 @@ Partial Class Form1
         Me.GroupBox1.TabIndex = 15
         Me.GroupBox1.TabStop = false
         Me.GroupBox1.Text = "Encoder Options"
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = true
+        Me.Label13.Location = New System.Drawing.Point(338, 21)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(95, 13)
+        Me.Label13.TabIndex = 30
+        Me.Label13.Text = "keyframe intervals:"
+        '
+        'MaxKeyFrameInterval
+        '
+        Me.MaxKeyFrameInterval.Location = New System.Drawing.Point(341, 67)
+        Me.MaxKeyFrameInterval.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
+        Me.MaxKeyFrameInterval.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.MaxKeyFrameInterval.Name = "MaxKeyFrameInterval"
+        Me.MaxKeyFrameInterval.Size = New System.Drawing.Size(87, 20)
+        Me.MaxKeyFrameInterval.TabIndex = 28
+        Me.MaxKeyFrameInterval.Value = New Decimal(New Integer() {240, 0, 0, 0})
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = true
+        Me.Label12.Location = New System.Drawing.Point(312, 74)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(29, 13)
+        Me.Label12.TabIndex = 29
+        Me.Label12.Text = "max:"
+        '
+        'MinKeyFrameInterval
+        '
+        Me.MinKeyFrameInterval.Location = New System.Drawing.Point(341, 37)
+        Me.MinKeyFrameInterval.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
+        Me.MinKeyFrameInterval.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.MinKeyFrameInterval.Name = "MinKeyFrameInterval"
+        Me.MinKeyFrameInterval.Size = New System.Drawing.Size(87, 20)
+        Me.MinKeyFrameInterval.TabIndex = 26
+        Me.MinKeyFrameInterval.Value = New Decimal(New Integer() {12, 0, 0, 0})
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = true
+        Me.Label10.Location = New System.Drawing.Point(312, 44)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(26, 13)
+        Me.Label10.TabIndex = 27
+        Me.Label10.Text = "min:"
+        '
+        'pieceSeconds
+        '
+        Me.pieceSeconds.Location = New System.Drawing.Point(195, 37)
+        Me.pieceSeconds.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
+        Me.pieceSeconds.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.pieceSeconds.Name = "pieceSeconds"
+        Me.pieceSeconds.Size = New System.Drawing.Size(76, 20)
+        Me.pieceSeconds.TabIndex = 9
+        Me.pieceSeconds.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = true
+        Me.Label11.Location = New System.Drawing.Point(192, 21)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(71, 13)
+        Me.Label11.TabIndex = 23
+        Me.Label11.Text = "part seconds:"
         '
         'RemoveTempFiles
         '
@@ -227,25 +300,6 @@ Partial Class Form1
         Me.LowLatencyCheckbox.TabIndex = 10
         Me.LowLatencyCheckbox.Text = "Low Latency"
         Me.LowLatencyCheckbox.UseVisualStyleBackColor = true
-        '
-        'KeyFrameInterval
-        '
-        Me.KeyFrameInterval.Location = New System.Drawing.Point(195, 37)
-        Me.KeyFrameInterval.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
-        Me.KeyFrameInterval.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.KeyFrameInterval.Name = "KeyFrameInterval"
-        Me.KeyFrameInterval.Size = New System.Drawing.Size(87, 20)
-        Me.KeyFrameInterval.TabIndex = 8
-        Me.KeyFrameInterval.Value = New Decimal(New Integer() {30, 0, 0, 0})
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = true
-        Me.Label10.Location = New System.Drawing.Point(192, 21)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(90, 13)
-        Me.Label10.TabIndex = 20
-        Me.Label10.Text = "keyframe interval:"
         '
         'audioBitrate
         '
@@ -342,25 +396,6 @@ Partial Class Form1
         Me.rav1eVersionLabel.TabIndex = 16
         Me.rav1eVersionLabel.Text = "rav1e version:"
         '
-        'pieceSeconds
-        '
-        Me.pieceSeconds.Location = New System.Drawing.Point(291, 37)
-        Me.pieceSeconds.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
-        Me.pieceSeconds.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.pieceSeconds.Name = "pieceSeconds"
-        Me.pieceSeconds.Size = New System.Drawing.Size(76, 20)
-        Me.pieceSeconds.TabIndex = 9
-        Me.pieceSeconds.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'Label11
-        '
-        Me.Label11.AutoSize = true
-        Me.Label11.Location = New System.Drawing.Point(288, 21)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(79, 13)
-        Me.Label11.TabIndex = 23
-        Me.Label11.Text = "piece seconds:"
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -385,11 +420,12 @@ Partial Class Form1
         Me.Text = "rav1e GUI"
         Me.GroupBox1.ResumeLayout(false)
         Me.GroupBox1.PerformLayout
-        CType(Me.KeyFrameInterval,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.MaxKeyFrameInterval,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.MinKeyFrameInterval,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pieceSeconds,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.audioBitrate,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.speed,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.quantizer,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pieceSeconds,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -418,10 +454,13 @@ End Sub
     Friend WithEvents rav1eVersionLabel As Label
     Friend WithEvents audioBitrate As NumericUpDown
     Friend WithEvents Label9 As Label
-    Friend WithEvents KeyFrameInterval As NumericUpDown
-    Friend WithEvents Label10 As Label
     Friend WithEvents LowLatencyCheckbox As CheckBox
     Friend WithEvents RemoveTempFiles As CheckBox
     Friend WithEvents pieceSeconds As NumericUpDown
     Friend WithEvents Label11 As Label
+    Friend WithEvents Label13 As Label
+    Friend WithEvents MaxKeyFrameInterval As NumericUpDown
+    Friend WithEvents Label12 As Label
+    Friend WithEvents MinKeyFrameInterval As NumericUpDown
+    Friend WithEvents Label10 As Label
 End Class
