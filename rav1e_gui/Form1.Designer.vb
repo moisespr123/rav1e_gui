@@ -126,7 +126,7 @@ Partial Class Form1
         Me.StartBtn.Location = New System.Drawing.Point(15, 277)
         Me.StartBtn.Name = "StartBtn"
         Me.StartBtn.Size = New System.Drawing.Size(440, 37)
-        Me.StartBtn.TabIndex = 14
+        Me.StartBtn.TabIndex = 15
         Me.StartBtn.Text = "Start"
         Me.StartBtn.UseVisualStyleBackColor = true
         '
@@ -212,6 +212,7 @@ Partial Class Form1
         '
         'Label13
         '
+        Me.Label13.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.Label13.AutoSize = true
         Me.Label13.Location = New System.Drawing.Point(338, 21)
         Me.Label13.Name = "Label13"
@@ -221,16 +222,18 @@ Partial Class Form1
         '
         'MaxKeyFrameInterval
         '
+        Me.MaxKeyFrameInterval.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.MaxKeyFrameInterval.Location = New System.Drawing.Point(341, 67)
         Me.MaxKeyFrameInterval.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
         Me.MaxKeyFrameInterval.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.MaxKeyFrameInterval.Name = "MaxKeyFrameInterval"
         Me.MaxKeyFrameInterval.Size = New System.Drawing.Size(87, 20)
-        Me.MaxKeyFrameInterval.TabIndex = 28
+        Me.MaxKeyFrameInterval.TabIndex = 11
         Me.MaxKeyFrameInterval.Value = New Decimal(New Integer() {240, 0, 0, 0})
         '
         'Label12
         '
+        Me.Label12.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.Label12.AutoSize = true
         Me.Label12.Location = New System.Drawing.Point(312, 74)
         Me.Label12.Name = "Label12"
@@ -240,16 +243,18 @@ Partial Class Form1
         '
         'MinKeyFrameInterval
         '
+        Me.MinKeyFrameInterval.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.MinKeyFrameInterval.Location = New System.Drawing.Point(341, 37)
         Me.MinKeyFrameInterval.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
         Me.MinKeyFrameInterval.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.MinKeyFrameInterval.Name = "MinKeyFrameInterval"
         Me.MinKeyFrameInterval.Size = New System.Drawing.Size(87, 20)
-        Me.MinKeyFrameInterval.TabIndex = 26
+        Me.MinKeyFrameInterval.TabIndex = 10
         Me.MinKeyFrameInterval.Value = New Decimal(New Integer() {12, 0, 0, 0})
         '
         'Label10
         '
+        Me.Label10.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.Label10.AutoSize = true
         Me.Label10.Location = New System.Drawing.Point(312, 44)
         Me.Label10.Name = "Label10"
@@ -264,7 +269,7 @@ Partial Class Form1
         Me.pieceSeconds.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.pieceSeconds.Name = "pieceSeconds"
         Me.pieceSeconds.Size = New System.Drawing.Size(76, 20)
-        Me.pieceSeconds.TabIndex = 9
+        Me.pieceSeconds.TabIndex = 8
         Me.pieceSeconds.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'Label11
@@ -285,7 +290,7 @@ Partial Class Form1
         Me.RemoveTempFiles.Location = New System.Drawing.Point(12, 138)
         Me.RemoveTempFiles.Name = "RemoveTempFiles"
         Me.RemoveTempFiles.Size = New System.Drawing.Size(143, 17)
-        Me.RemoveTempFiles.TabIndex = 13
+        Me.RemoveTempFiles.TabIndex = 14
         Me.RemoveTempFiles.Text = "Remove Temporary Files"
         Me.RemoveTempFiles.UseVisualStyleBackColor = true
         '
@@ -297,7 +302,7 @@ Partial Class Form1
         Me.LowLatencyCheckbox.Location = New System.Drawing.Point(12, 67)
         Me.LowLatencyCheckbox.Name = "LowLatencyCheckbox"
         Me.LowLatencyCheckbox.Size = New System.Drawing.Size(87, 17)
-        Me.LowLatencyCheckbox.TabIndex = 10
+        Me.LowLatencyCheckbox.TabIndex = 9
         Me.LowLatencyCheckbox.Text = "Low Latency"
         Me.LowLatencyCheckbox.UseVisualStyleBackColor = true
         '
@@ -326,7 +331,7 @@ Partial Class Form1
         Me.BrowseTempLocation.Location = New System.Drawing.Point(356, 109)
         Me.BrowseTempLocation.Name = "BrowseTempLocation"
         Me.BrowseTempLocation.Size = New System.Drawing.Size(75, 23)
-        Me.BrowseTempLocation.TabIndex = 12
+        Me.BrowseTempLocation.TabIndex = 13
         Me.BrowseTempLocation.Text = "Browse"
         Me.BrowseTempLocation.UseVisualStyleBackColor = true
         '
@@ -347,7 +352,7 @@ Partial Class Form1
         Me.tempLocationPath.Location = New System.Drawing.Point(12, 111)
         Me.tempLocationPath.Name = "tempLocationPath"
         Me.tempLocationPath.Size = New System.Drawing.Size(338, 20)
-        Me.tempLocationPath.TabIndex = 11
+        Me.tempLocationPath.TabIndex = 12
         '
         'speed
         '
