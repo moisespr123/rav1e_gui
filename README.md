@@ -13,4 +13,8 @@ I wrote this software to test the rav1e software. Unfortunately, at the current 
 
 Written in Visual Basic .NET using Visual Studio 2017.
 
+# Updated components builds:
+
+Ocasionally, rav1e and opusenc gets updated. You can download the latest version of rav1e_gui with these updated tools included here: [https://moisescardona.me/rav1e_gui](https://moisescardona.me/rav1e_gui)
+
 Enjoy!
