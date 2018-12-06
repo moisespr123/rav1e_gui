@@ -137,7 +137,7 @@
         Dim ffmpegProcessInfo As New ProcessStartInfo
         Dim ffmpegProcess As Process
         ffmpegProcessInfo.FileName = "ffmpeg.exe"
-        ffmpegProcessInfo.Arguments = "-i """ + input + """ -f segment -segment_time " + pieceSenconds.ToString() + " """ + tempFolder + "/y4m-part-%6d.y4m"""
+        ffmpegProcessInfo.Arguments = "-i """ + input + """ -f segment -segment_time " + pieceSenconds.ToString() + " """ + tempFolder + "/y4m-part-%6d.y4m"" -y"
         ffmpegProcessInfo.CreateNoWindow = True
         ffmpegProcessInfo.RedirectStandardOutput = False
         ffmpegProcessInfo.UseShellExecute = False
@@ -150,7 +150,7 @@
         Dim ffmpegProcessInfo As New ProcessStartInfo
         Dim ffmpegProcess As Process
         ffmpegProcessInfo.FileName = "ffmpeg.exe"
-        ffmpegProcessInfo.Arguments = "-f concat -safe 0 -i """ + input + """ -c copy """ + tempFolder + "\rav1e-concatenated-file.ivf"""
+        ffmpegProcessInfo.Arguments = "-f concat -safe 0 -i """ + input + """ -c copy """ + tempFolder + "\rav1e-concatenated-file.ivf"" -y"
         ffmpegProcessInfo.CreateNoWindow = True
         ffmpegProcessInfo.RedirectStandardOutput = False
         ffmpegProcessInfo.UseShellExecute = False
@@ -170,7 +170,7 @@
         Dim ffmpegProcessInfo As New ProcessStartInfo
         Dim ffmpegProcess As Process
         ffmpegProcessInfo.FileName = "ffmpeg.exe"
-        ffmpegProcessInfo.Arguments = "-i """ + tempFolder + "\rav1e-concatenated-file.ivf"" -i """ + tempFolder + "\rav1e-audio.opus"" -c:v copy -c:a copy """ + output + """"
+        ffmpegProcessInfo.Arguments = "-i """ + tempFolder + "\rav1e-concatenated-file.ivf"" -i """ + tempFolder + "\rav1e-audio.opus"" -c:v copy -c:a copy """ + output + """ -y"
         ffmpegProcessInfo.CreateNoWindow = True
         ffmpegProcessInfo.RedirectStandardOutput = False
         ffmpegProcessInfo.UseShellExecute = False
@@ -183,7 +183,7 @@
         Dim ffmpegProcessInfo As New ProcessStartInfo
         Dim ffmpegProcess As Process
         ffmpegProcessInfo.FileName = "ffmpeg.exe"
-        ffmpegProcessInfo.Arguments = "-i """ + input + """ -vn """ + tempFolder + "\rav1e-audio.wav"""
+        ffmpegProcessInfo.Arguments = "-i """ + input + """ -vn """ + tempFolder + "\rav1e-audio.wav"" -y"
         ffmpegProcessInfo.CreateNoWindow = True
         ffmpegProcessInfo.RedirectStandardOutput = False
         ffmpegProcessInfo.UseShellExecute = False
