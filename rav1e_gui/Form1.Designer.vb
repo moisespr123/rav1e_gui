@@ -247,7 +247,6 @@ Partial Class Form1
         '
         'ShowPSNRMetrics
         '
-        Me.ShowPSNRMetrics.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.ShowPSNRMetrics.AutoSize = True
         Me.ShowPSNRMetrics.Checked = True
         Me.ShowPSNRMetrics.CheckState = System.Windows.Forms.CheckState.Checked
