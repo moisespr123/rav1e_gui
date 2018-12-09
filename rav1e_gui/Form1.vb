@@ -391,10 +391,21 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        For Each rav1e_proc In Process.GetProcessesByName("rav1e")
-            rav1e_proc.Kill()
+        While True
+            Try
+                For Each rav1e_proc In Process.GetProcessesByName("rav1e")
+                    rav1e_proc.Kill()
+                Next
+            Catch
+            End Try
+            Dim Processes As Array = Process.GetProcessesByName("rav1e")
+            If Processes.Length = 0 Then
+                Exit While
+            End If
+        End While
+        For Each rav1e_proc In Process.GetProcessesByName("rav1e_gui")
+            If rav1e_proc.Id = Process.GetCurrentProcess().Id Then rav1e_proc.Kill()
         Next
-        Close()
     End Sub
 
     Private Sub AdvancedEncoderOptionsButton_Click(sender As Object, e As EventArgs) Handles AdvancedEncoderOptionsButton.Click
