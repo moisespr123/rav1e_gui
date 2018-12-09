@@ -474,8 +474,10 @@ Partial Class Form1
         Me.ProgressLog.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ProgressLog.BackColor = System.Drawing.SystemColors.Window
         Me.ProgressLog.Location = New System.Drawing.Point(6, 26)
         Me.ProgressLog.Name = "ProgressLog"
+        Me.ProgressLog.ReadOnly = True
         Me.ProgressLog.Size = New System.Drawing.Size(609, 363)
         Me.ProgressLog.TabIndex = 18
         Me.ProgressLog.Text = ""
@@ -516,7 +518,7 @@ Partial Class Form1
         '
         'SaveLogBtn
         '
-        Me.SaveLogBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SaveLogBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SaveLogBtn.Location = New System.Drawing.Point(413, 395)
         Me.SaveLogBtn.Name = "SaveLogBtn"
         Me.SaveLogBtn.Size = New System.Drawing.Size(202, 23)
@@ -526,6 +528,7 @@ Partial Class Form1
         '
         'ClearLogBtn
         '
+        Me.ClearLogBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.ClearLogBtn.Location = New System.Drawing.Point(6, 395)
         Me.ClearLogBtn.Name = "ClearLogBtn"
         Me.ClearLogBtn.Size = New System.Drawing.Size(202, 23)

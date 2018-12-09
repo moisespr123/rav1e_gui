@@ -47,6 +47,8 @@ Public Class Form1
             AdvancedEncoderOptionsButton.Enabled = False
             ShowPSNRMetrics.Enabled = False
             CPUThreads.Enabled = False
+            SaveLogBtn.Enabled = False
+            ClearLogBtn.Enabled = False
             If Not IO.Path.GetExtension(OutputTxt.Text) = ".webm" And Not IO.Path.GetExtension(OutputTxt.Text) = ".mkv" Then
                 OutputTxt.Text = My.Computer.FileSystem.GetParentPath(OutputTxt.Text) + "\" + IO.Path.GetFileNameWithoutExtension(OutputTxt.Text) + ".webm"
             End If
@@ -102,6 +104,8 @@ Public Class Form1
                                          AdvancedEncoderOptionsButton.Enabled = True
                                          ShowPSNRMetrics.Enabled = True
                                          CPUThreads.Enabled = True
+                                         SaveLogBtn.Enabled = True
+                                         ClearLogBtn.Enabled = True
                                      End Sub)
                 MsgBox("Finished")
             End If
