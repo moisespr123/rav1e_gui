@@ -26,8 +26,23 @@
     <Setting Name="pieceSeconds" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="maxKeyInt" Type="System.String" Scope="User">
+    <Setting Name="maxKeyInt" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">240</Value>
+    </Setting>
+    <Setting Name="Tune" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Psnr</Value>
+    </Setting>
+    <Setting Name="ColorPrimaries" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Unspecified</Value>
+    </Setting>
+    <Setting Name="MatrixCoefficients" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Unspecified</Value>
+    </Setting>
+    <Setting Name="TransferCharacteristics" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Unspecified</Value>
+    </Setting>
+    <Setting Name="ShowPSNRMetrics" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

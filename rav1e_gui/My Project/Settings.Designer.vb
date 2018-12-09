@@ -153,12 +153,72 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("240")>  _
-        Public Property maxKeyInt() As String
+        Public Property maxKeyInt() As Integer
             Get
-                Return CType(Me("maxKeyInt"),String)
+                Return CType(Me("maxKeyInt"),Integer)
             End Get
             Set
                 Me("maxKeyInt") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Psnr")>  _
+        Public Property Tune() As String
+            Get
+                Return CType(Me("Tune"),String)
+            End Get
+            Set
+                Me("Tune") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Unspecified")>  _
+        Public Property ColorPrimaries() As String
+            Get
+                Return CType(Me("ColorPrimaries"),String)
+            End Get
+            Set
+                Me("ColorPrimaries") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Unspecified")>  _
+        Public Property MatrixCoefficients() As String
+            Get
+                Return CType(Me("MatrixCoefficients"),String)
+            End Get
+            Set
+                Me("MatrixCoefficients") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Unspecified")>  _
+        Public Property TransferCharacteristics() As String
+            Get
+                Return CType(Me("TransferCharacteristics"),String)
+            End Get
+            Set
+                Me("TransferCharacteristics") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property ShowPSNRMetrics() As Boolean
+            Get
+                Return CType(Me("ShowPSNRMetrics"),Boolean)
+            End Get
+            Set
+                Me("ShowPSNRMetrics") = value
             End Set
         End Property
     End Class

@@ -35,6 +35,7 @@ Partial Class Form1
         Me.Label6 = New System.Windows.Forms.Label()
         Me.OpusVersionLabel = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.AdvancedEncoderOptionsButton = New System.Windows.Forms.Button()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.MaxKeyFrameInterval = New System.Windows.Forms.NumericUpDown()
         Me.Label12 = New System.Windows.Forms.Label()
@@ -54,19 +55,27 @@ Partial Class Form1
         Me.quantizer = New System.Windows.Forms.NumericUpDown()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.rav1eVersionLabel = New System.Windows.Forms.Label()
-        Me.GroupBox1.SuspendLayout
-        CType(Me.MaxKeyFrameInterval,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.MinKeyFrameInterval,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pieceSeconds,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.audioBitrate,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.speed,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.quantizer,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.SuspendLayout
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.ProgressLog = New System.Windows.Forms.RichTextBox()
+        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.ShowPSNRMetrics = New System.Windows.Forms.CheckBox()
+        Me.GroupBox1.SuspendLayout()
+        CType(Me.MaxKeyFrameInterval, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MinKeyFrameInterval, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pieceSeconds, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.audioBitrate, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.speed, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.quantizer, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SplitContainer1.Panel1.SuspendLayout()
+        Me.SplitContainer1.Panel2.SuspendLayout()
+        Me.SplitContainer1.SuspendLayout()
+        Me.SuspendLayout()
         '
         'Label1
         '
-        Me.Label1.AutoSize = true
-        Me.Label1.Location = New System.Drawing.Point(12, 9)
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(3, 9)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(151, 13)
         Me.Label1.TabIndex = 0
@@ -74,8 +83,8 @@ Partial Class Form1
         '
         'Label2
         '
-        Me.Label2.AutoSize = true
-        Me.Label2.Location = New System.Drawing.Point(12, 52)
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(3, 52)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(182, 13)
         Me.Label2.TabIndex = 1
@@ -83,58 +92,58 @@ Partial Class Form1
         '
         'InputTxt
         '
-        Me.InputTxt.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.InputTxt.Location = New System.Drawing.Point(15, 26)
+        Me.InputTxt.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.InputTxt.Location = New System.Drawing.Point(6, 26)
         Me.InputTxt.Name = "InputTxt"
-        Me.InputTxt.Size = New System.Drawing.Size(356, 20)
+        Me.InputTxt.Size = New System.Drawing.Size(366, 20)
         Me.InputTxt.TabIndex = 1
         '
         'OutputTxt
         '
-        Me.OutputTxt.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.OutputTxt.Location = New System.Drawing.Point(15, 68)
+        Me.OutputTxt.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.OutputTxt.Location = New System.Drawing.Point(6, 68)
         Me.OutputTxt.Name = "OutputTxt"
-        Me.OutputTxt.Size = New System.Drawing.Size(356, 20)
+        Me.OutputTxt.Size = New System.Drawing.Size(366, 20)
         Me.OutputTxt.TabIndex = 3
         '
         'InputBrowseBtn
         '
-        Me.InputBrowseBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.InputBrowseBtn.Location = New System.Drawing.Point(377, 24)
+        Me.InputBrowseBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.InputBrowseBtn.Location = New System.Drawing.Point(378, 23)
         Me.InputBrowseBtn.Name = "InputBrowseBtn"
         Me.InputBrowseBtn.Size = New System.Drawing.Size(75, 23)
         Me.InputBrowseBtn.TabIndex = 2
         Me.InputBrowseBtn.Text = "Browse"
-        Me.InputBrowseBtn.UseVisualStyleBackColor = true
+        Me.InputBrowseBtn.UseVisualStyleBackColor = True
         '
         'OutputBrowseBtn
         '
-        Me.OutputBrowseBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.OutputBrowseBtn.Location = New System.Drawing.Point(377, 68)
+        Me.OutputBrowseBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.OutputBrowseBtn.Location = New System.Drawing.Point(378, 67)
         Me.OutputBrowseBtn.Name = "OutputBrowseBtn"
         Me.OutputBrowseBtn.Size = New System.Drawing.Size(75, 23)
         Me.OutputBrowseBtn.TabIndex = 4
         Me.OutputBrowseBtn.Text = "Browse"
-        Me.OutputBrowseBtn.UseVisualStyleBackColor = true
+        Me.OutputBrowseBtn.UseVisualStyleBackColor = True
         '
         'StartBtn
         '
-        Me.StartBtn.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.StartBtn.Location = New System.Drawing.Point(15, 277)
+        Me.StartBtn.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.StartBtn.Location = New System.Drawing.Point(6, 273)
         Me.StartBtn.Name = "StartBtn"
-        Me.StartBtn.Size = New System.Drawing.Size(440, 37)
+        Me.StartBtn.Size = New System.Drawing.Size(453, 37)
         Me.StartBtn.TabIndex = 15
         Me.StartBtn.Text = "Start"
-        Me.StartBtn.UseVisualStyleBackColor = true
+        Me.StartBtn.UseVisualStyleBackColor = True
         '
         'Label4
         '
-        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.Label4.AutoSize = true
-        Me.Label4.Location = New System.Drawing.Point(15, 324)
+        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(6, 320)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(51, 13)
         Me.Label4.TabIndex = 9
@@ -142,19 +151,19 @@ Partial Class Form1
         '
         'ProgressBar1
         '
-        Me.ProgressBar1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.ProgressBar1.Location = New System.Drawing.Point(18, 341)
+        Me.ProgressBar1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ProgressBar1.Location = New System.Drawing.Point(9, 337)
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(437, 23)
+        Me.ProgressBar1.Size = New System.Drawing.Size(450, 23)
         Me.ProgressBar1.Step = 1
         Me.ProgressBar1.TabIndex = 10
         '
         'Label5
         '
-        Me.Label5.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.Label5.AutoSize = true
-        Me.Label5.Location = New System.Drawing.Point(15, 412)
+        Me.Label5.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(6, 408)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(119, 13)
         Me.Label5.TabIndex = 11
@@ -162,19 +171,19 @@ Partial Class Form1
         '
         'Label6
         '
-        Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label6.AutoSize = true
-        Me.Label6.Location = New System.Drawing.Point(427, 422)
+        Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(431, 408)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(28, 13)
         Me.Label6.TabIndex = 12
-        Me.Label6.Text = "v1.3"
+        Me.Label6.Text = "v1.4"
         '
         'OpusVersionLabel
         '
-        Me.OpusVersionLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.OpusVersionLabel.AutoSize = true
-        Me.OpusVersionLabel.Location = New System.Drawing.Point(15, 390)
+        Me.OpusVersionLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.OpusVersionLabel.AutoSize = True
+        Me.OpusVersionLabel.Location = New System.Drawing.Point(6, 386)
         Me.OpusVersionLabel.Name = "OpusVersionLabel"
         Me.OpusVersionLabel.Size = New System.Drawing.Size(88, 13)
         Me.OpusVersionLabel.TabIndex = 14
@@ -182,9 +191,11 @@ Partial Class Form1
         '
         'GroupBox1
         '
-        Me.GroupBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.ShowPSNRMetrics)
+        Me.GroupBox1.Controls.Add(Me.AdvancedEncoderOptionsButton)
         Me.GroupBox1.Controls.Add(Me.Label13)
         Me.GroupBox1.Controls.Add(Me.MaxKeyFrameInterval)
         Me.GroupBox1.Controls.Add(Me.Label12)
@@ -203,18 +214,28 @@ Partial Class Form1
         Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.quantizer)
         Me.GroupBox1.Controls.Add(Me.Label3)
-        Me.GroupBox1.Location = New System.Drawing.Point(15, 94)
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 94)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(437, 162)
+        Me.GroupBox1.Size = New System.Drawing.Size(453, 173)
         Me.GroupBox1.TabIndex = 15
-        Me.GroupBox1.TabStop = false
+        Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Encoder Options"
+        '
+        'AdvancedEncoderOptionsButton
+        '
+        Me.AdvancedEncoderOptionsButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.AdvancedEncoderOptionsButton.Location = New System.Drawing.Point(295, 144)
+        Me.AdvancedEncoderOptionsButton.Name = "AdvancedEncoderOptionsButton"
+        Me.AdvancedEncoderOptionsButton.Size = New System.Drawing.Size(152, 23)
+        Me.AdvancedEncoderOptionsButton.TabIndex = 31
+        Me.AdvancedEncoderOptionsButton.Text = "Advanced Encoder Options"
+        Me.AdvancedEncoderOptionsButton.UseVisualStyleBackColor = True
         '
         'Label13
         '
-        Me.Label13.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label13.AutoSize = true
-        Me.Label13.Location = New System.Drawing.Point(338, 21)
+        Me.Label13.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(354, 21)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(95, 13)
         Me.Label13.TabIndex = 30
@@ -222,8 +243,8 @@ Partial Class Form1
         '
         'MaxKeyFrameInterval
         '
-        Me.MaxKeyFrameInterval.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.MaxKeyFrameInterval.Location = New System.Drawing.Point(341, 67)
+        Me.MaxKeyFrameInterval.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.MaxKeyFrameInterval.Location = New System.Drawing.Point(357, 67)
         Me.MaxKeyFrameInterval.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
         Me.MaxKeyFrameInterval.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.MaxKeyFrameInterval.Name = "MaxKeyFrameInterval"
@@ -233,9 +254,9 @@ Partial Class Form1
         '
         'Label12
         '
-        Me.Label12.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label12.AutoSize = true
-        Me.Label12.Location = New System.Drawing.Point(312, 74)
+        Me.Label12.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(328, 74)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(29, 13)
         Me.Label12.TabIndex = 29
@@ -243,8 +264,8 @@ Partial Class Form1
         '
         'MinKeyFrameInterval
         '
-        Me.MinKeyFrameInterval.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.MinKeyFrameInterval.Location = New System.Drawing.Point(341, 37)
+        Me.MinKeyFrameInterval.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.MinKeyFrameInterval.Location = New System.Drawing.Point(357, 37)
         Me.MinKeyFrameInterval.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
         Me.MinKeyFrameInterval.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.MinKeyFrameInterval.Name = "MinKeyFrameInterval"
@@ -254,9 +275,9 @@ Partial Class Form1
         '
         'Label10
         '
-        Me.Label10.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label10.AutoSize = true
-        Me.Label10.Location = New System.Drawing.Point(312, 44)
+        Me.Label10.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(328, 44)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(26, 13)
         Me.Label10.TabIndex = 27
@@ -274,7 +295,7 @@ Partial Class Form1
         '
         'Label11
         '
-        Me.Label11.AutoSize = true
+        Me.Label11.AutoSize = True
         Me.Label11.Location = New System.Drawing.Point(192, 21)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(71, 13)
@@ -283,28 +304,28 @@ Partial Class Form1
         '
         'RemoveTempFiles
         '
-        Me.RemoveTempFiles.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.RemoveTempFiles.AutoSize = true
-        Me.RemoveTempFiles.Checked = true
+        Me.RemoveTempFiles.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.RemoveTempFiles.AutoSize = True
+        Me.RemoveTempFiles.Checked = True
         Me.RemoveTempFiles.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.RemoveTempFiles.Location = New System.Drawing.Point(12, 138)
+        Me.RemoveTempFiles.Location = New System.Drawing.Point(12, 141)
         Me.RemoveTempFiles.Name = "RemoveTempFiles"
         Me.RemoveTempFiles.Size = New System.Drawing.Size(143, 17)
         Me.RemoveTempFiles.TabIndex = 14
         Me.RemoveTempFiles.Text = "Remove Temporary Files"
-        Me.RemoveTempFiles.UseVisualStyleBackColor = true
+        Me.RemoveTempFiles.UseVisualStyleBackColor = True
         '
         'LowLatencyCheckbox
         '
-        Me.LowLatencyCheckbox.AutoSize = true
-        Me.LowLatencyCheckbox.Checked = true
+        Me.LowLatencyCheckbox.AutoSize = True
+        Me.LowLatencyCheckbox.Checked = True
         Me.LowLatencyCheckbox.CheckState = System.Windows.Forms.CheckState.Checked
         Me.LowLatencyCheckbox.Location = New System.Drawing.Point(12, 67)
         Me.LowLatencyCheckbox.Name = "LowLatencyCheckbox"
         Me.LowLatencyCheckbox.Size = New System.Drawing.Size(87, 17)
         Me.LowLatencyCheckbox.TabIndex = 9
         Me.LowLatencyCheckbox.Text = "Low Latency"
-        Me.LowLatencyCheckbox.UseVisualStyleBackColor = true
+        Me.LowLatencyCheckbox.UseVisualStyleBackColor = True
         '
         'audioBitrate
         '
@@ -318,7 +339,7 @@ Partial Class Form1
         '
         'Label9
         '
-        Me.Label9.AutoSize = true
+        Me.Label9.AutoSize = True
         Me.Label9.Location = New System.Drawing.Point(121, 21)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(68, 13)
@@ -327,19 +348,19 @@ Partial Class Form1
         '
         'BrowseTempLocation
         '
-        Me.BrowseTempLocation.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.BrowseTempLocation.Location = New System.Drawing.Point(356, 109)
+        Me.BrowseTempLocation.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BrowseTempLocation.Location = New System.Drawing.Point(372, 112)
         Me.BrowseTempLocation.Name = "BrowseTempLocation"
         Me.BrowseTempLocation.Size = New System.Drawing.Size(75, 23)
         Me.BrowseTempLocation.TabIndex = 13
         Me.BrowseTempLocation.Text = "Browse"
-        Me.BrowseTempLocation.UseVisualStyleBackColor = true
+        Me.BrowseTempLocation.UseVisualStyleBackColor = True
         '
         'Label8
         '
-        Me.Label8.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.Label8.AutoSize = true
-        Me.Label8.Location = New System.Drawing.Point(9, 95)
+        Me.Label8.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(9, 98)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(123, 13)
         Me.Label8.TabIndex = 4
@@ -347,11 +368,11 @@ Partial Class Form1
         '
         'tempLocationPath
         '
-        Me.tempLocationPath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.tempLocationPath.Location = New System.Drawing.Point(12, 111)
+        Me.tempLocationPath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tempLocationPath.Location = New System.Drawing.Point(12, 114)
         Me.tempLocationPath.Name = "tempLocationPath"
-        Me.tempLocationPath.Size = New System.Drawing.Size(338, 20)
+        Me.tempLocationPath.Size = New System.Drawing.Size(354, 20)
         Me.tempLocationPath.TabIndex = 12
         '
         'speed
@@ -365,7 +386,7 @@ Partial Class Form1
         '
         'Label7
         '
-        Me.Label7.AutoSize = true
+        Me.Label7.AutoSize = True
         Me.Label7.Location = New System.Drawing.Point(65, 21)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(39, 13)
@@ -384,7 +405,7 @@ Partial Class Form1
         '
         'Label3
         '
-        Me.Label3.AutoSize = true
+        Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(9, 21)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(53, 13)
@@ -393,48 +414,104 @@ Partial Class Form1
         '
         'rav1eVersionLabel
         '
-        Me.rav1eVersionLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.rav1eVersionLabel.AutoSize = true
-        Me.rav1eVersionLabel.Location = New System.Drawing.Point(15, 377)
+        Me.rav1eVersionLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.rav1eVersionLabel.AutoSize = True
+        Me.rav1eVersionLabel.Location = New System.Drawing.Point(6, 373)
         Me.rav1eVersionLabel.Name = "rav1eVersionLabel"
         Me.rav1eVersionLabel.Size = New System.Drawing.Size(74, 13)
         Me.rav1eVersionLabel.TabIndex = 16
         Me.rav1eVersionLabel.Text = "rav1e version:"
         '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(3, 9)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(28, 13)
+        Me.Label14.TabIndex = 17
+        Me.Label14.Text = "Log:"
+        '
+        'ProgressLog
+        '
+        Me.ProgressLog.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ProgressLog.Location = New System.Drawing.Point(6, 26)
+        Me.ProgressLog.Name = "ProgressLog"
+        Me.ProgressLog.Size = New System.Drawing.Size(609, 392)
+        Me.ProgressLog.TabIndex = 18
+        Me.ProgressLog.Text = ""
+        '
+        'SplitContainer1
+        '
+        Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer1.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.SplitContainer1.Location = New System.Drawing.Point(0, 0)
+        Me.SplitContainer1.Name = "SplitContainer1"
+        '
+        'SplitContainer1.Panel1
+        '
+        Me.SplitContainer1.Panel1.Controls.Add(Me.rav1eVersionLabel)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.Label1)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.GroupBox1)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.Label2)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.OpusVersionLabel)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.InputTxt)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.Label6)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.OutputTxt)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.Label5)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.InputBrowseBtn)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.ProgressBar1)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.OutputBrowseBtn)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.Label4)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.StartBtn)
+        '
+        'SplitContainer1.Panel2
+        '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.ProgressLog)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.Label14)
+        Me.SplitContainer1.Size = New System.Drawing.Size(1102, 430)
+        Me.SplitContainer1.SplitterDistance = 471
+        Me.SplitContainer1.TabIndex = 19
+        '
+        'ShowPSNRMetrics
+        '
+        Me.ShowPSNRMetrics.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.ShowPSNRMetrics.AutoSize = True
+        Me.ShowPSNRMetrics.Checked = True
+        Me.ShowPSNRMetrics.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.ShowPSNRMetrics.Location = New System.Drawing.Point(105, 67)
+        Me.ShowPSNRMetrics.Name = "ShowPSNRMetrics"
+        Me.ShowPSNRMetrics.Size = New System.Drawing.Size(150, 17)
+        Me.ShowPSNRMetrics.TabIndex = 32
+        Me.ShowPSNRMetrics.Text = "Show PSNR metrics in log"
+        Me.ShowPSNRMetrics.UseVisualStyleBackColor = True
+        '
         'Form1
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(464, 440)
-        Me.Controls.Add(Me.rav1eVersionLabel)
-        Me.Controls.Add(Me.GroupBox1)
-        Me.Controls.Add(Me.OpusVersionLabel)
-        Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.ProgressBar1)
-        Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.StartBtn)
-        Me.Controls.Add(Me.OutputBrowseBtn)
-        Me.Controls.Add(Me.InputBrowseBtn)
-        Me.Controls.Add(Me.OutputTxt)
-        Me.Controls.Add(Me.InputTxt)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
-        Me.MaximizeBox = false
+        Me.ClientSize = New System.Drawing.Size(1102, 430)
+        Me.Controls.Add(Me.SplitContainer1)
         Me.Name = "Form1"
         Me.Text = "rav1e GUI"
-        Me.GroupBox1.ResumeLayout(false)
-        Me.GroupBox1.PerformLayout
-        CType(Me.MaxKeyFrameInterval,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.MinKeyFrameInterval,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pieceSeconds,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.audioBitrate,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.speed,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.quantizer,System.ComponentModel.ISupportInitialize).EndInit
-        Me.ResumeLayout(false)
-        Me.PerformLayout
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        CType(Me.MaxKeyFrameInterval, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MinKeyFrameInterval, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pieceSeconds, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.audioBitrate, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.speed, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.quantizer, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.SplitContainer1.Panel1.ResumeLayout(False)
+        Me.SplitContainer1.Panel1.PerformLayout()
+        Me.SplitContainer1.Panel2.ResumeLayout(False)
+        Me.SplitContainer1.Panel2.PerformLayout()
+        CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.SplitContainer1.ResumeLayout(False)
+        Me.ResumeLayout(False)
 
-End Sub
+    End Sub
 
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
@@ -468,4 +545,9 @@ End Sub
     Friend WithEvents Label12 As Label
     Friend WithEvents MinKeyFrameInterval As NumericUpDown
     Friend WithEvents Label10 As Label
+    Friend WithEvents Label14 As Label
+    Friend WithEvents ProgressLog As RichTextBox
+    Friend WithEvents SplitContainer1 As SplitContainer
+    Friend WithEvents AdvancedEncoderOptionsButton As Button
+    Friend WithEvents ShowPSNRMetrics As CheckBox
 End Class

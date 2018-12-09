@@ -1,4 +1,6 @@
-﻿Public Class Form1
+﻿Imports System.Threading
+
+Public Class Form1
     Private GUILoaded As Boolean = False
     Private Sub InputBrowseBtn_Click(sender As Object, e As EventArgs) Handles InputBrowseBtn.Click
         Dim InputBrowser As New OpenFileDialog With {
@@ -42,6 +44,8 @@
             LowLatencyCheckbox.Enabled = False
             tempLocationPath.Enabled = False
             BrowseTempLocation.Enabled = False
+            AdvancedEncoderOptionsButton.Enabled = False
+            ShowPSNRMetrics.Enabled = False
             If Not IO.Path.GetExtension(OutputTxt.Text) = ".webm" And Not IO.Path.GetExtension(OutputTxt.Text) = ".mkv" Then
                 OutputTxt.Text = My.Computer.FileSystem.GetParentPath(OutputTxt.Text) + "\" + IO.Path.GetFileNameWithoutExtension(OutputTxt.Text) + ".webm"
             End If
@@ -66,13 +70,15 @@
                 Dim tasks = New List(Of Action)
                 Dim streamWriter As New IO.StreamWriter(tempLocationPath.Text + "\rav1e-concatenate-list.txt")
                 For Counter As Integer = 0 To ItemsToProcess.Count - 1
-                    Dim args As Array = {ItemsToProcess(Counter), tempLocationPath.Text + "\" + IO.Path.GetFileNameWithoutExtension(ItemsToProcess(Counter)) + ".ivf", My.Settings.quantizer, My.Settings.speed, My.Settings.minKeyInt, My.Settings.maxKeyInt, My.Settings.lowlat}
                     streamWriter.WriteLine("file '" + tempLocationPath.Text.Replace("\", "/") + "/" + IO.Path.GetFileNameWithoutExtension(ItemsToProcess(Counter)) + ".ivf" + "'")
-                    tasks.Add(Function() Run_rav1e(args))
+                    Dim video_item As String = ItemsToProcess(Counter)
+                    tasks.Add(Function() Run_rav1e(video_item, tempLocationPath.Text + "\" + IO.Path.GetFileNameWithoutExtension(video_item) + ".ivf"))
                 Next
                 streamWriter.Close()
+                UpdateLog("Encoding Video Segments")
                 Dim options As New ParallelOptions With {.MaxDegreeOfParallelism = Environment.ProcessorCount}
                 Parallel.Invoke(options, tasks.ToArray())
+                UpdateLog("Video Segments Encoded")
                 Run_opus(My.Settings.bitrate, tempLocationPath.Text)
                 concatenate_video_files(tempLocationPath.Text + "\rav1e-concatenate-list.txt", tempLocationPath.Text)
                 merge_audio_video(OutputTxt.Text, tempLocationPath.Text)
@@ -92,12 +98,15 @@
                                          InputBrowseBtn.Enabled = True
                                          OutputBrowseBtn.Enabled = True
                                          pieceSeconds.Enabled = True
+                                         AdvancedEncoderOptionsButton.Enabled = True
+                                         ShowPSNRMetrics.Enabled = True
                                      End Sub)
                 MsgBox("Finished")
             End If
         End If
     End Sub
     Private Function Run_opus(audio_bitrate As Integer, tempFolder As String)
+        UpdateLog("Encoding Audio")
         Dim opusProcessInfo As New ProcessStartInfo
         Dim opusProcess As Process
         opusProcessInfo.FileName = "opusenc.exe"
@@ -107,33 +116,46 @@
         opusProcessInfo.UseShellExecute = False
         opusProcess = Process.Start(opusProcessInfo)
         opusProcess.WaitForExit()
+        UpdateLog("Audio encoded")
         Return True
     End Function
-    Private Function Run_rav1e(args As Array)
-        Dim Input_File As String = args(0)
-        Dim Output_File As String = args(1)
-        Dim Quantizer As Integer = args(2)
-        Dim Speed As Integer = args(3)
-        Dim MinKeyInt As Integer = args(4)
-        Dim MaxKeyInt As Integer = args(5)
-        Dim LowLat As Boolean = args(6)
-        Dim rav1eProcessInfo As New ProcessStartInfo
-        Dim rav1eProcess As Process
-        rav1eProcessInfo.FileName = "rav1e.exe"
-        rav1eProcessInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """ --quantizer " + Quantizer.ToString() + " -s " + Speed.ToString() + " -i " + MinKeyInt.ToString() + " -I " + MaxKeyInt.ToString()
-        If Not LowLat Then
-            rav1eProcessInfo.Arguments += " --low_latency false"
-        End If
-        rav1eProcessInfo.CreateNoWindow = True
-        rav1eProcessInfo.RedirectStandardOutput = False
-        rav1eProcessInfo.UseShellExecute = False
-        rav1eProcess = Process.Start(rav1eProcessInfo)
-        rav1eProcess.WaitForExit()
-        ProgressBar1.BeginInvoke(Sub() ProgressBar1.PerformStep())
+    Private Function Run_rav1e(Input_File As String, Output_File As String)
+        UpdateLog("Encoding Video part " + IO.Path.GetFileName(Input_File))
+        Using rav1eProcess As New Process()
+            rav1eProcess.StartInfo.FileName = "rav1e.exe"
+            rav1eProcess.StartInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """ --quantizer " + My.Settings.quantizer.ToString() + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
+            If Not My.Settings.lowlat Then
+                rav1eProcess.StartInfo.Arguments += " --low_latency false"
+            End If
+            If My.Settings.ShowPSNRMetrics Then
+                rav1eProcess.StartInfo.Arguments += " --psnr"
+            End If
+            rav1eProcess.StartInfo.CreateNoWindow = True
+            rav1eProcess.StartInfo.RedirectStandardOutput = True
+            rav1eProcess.StartInfo.RedirectStandardError = True
+            rav1eProcess.StartInfo.RedirectStandardInput = True
+            rav1eProcess.StartInfo.UseShellExecute = False
+            AddHandler rav1eProcess.OutputDataReceived, New DataReceivedEventHandler(Sub(sender, e)
+                                                                                         If Not e.Data = Nothing Then
+                                                                                             UpdateLog(e.Data, IO.Path.GetFileName(Input_File))
+                                                                                         End If
+                                                                                     End Sub)
+            AddHandler rav1eProcess.ErrorDataReceived, New DataReceivedEventHandler(Sub(sender, e)
+                                                                                        If Not e.Data = Nothing Then
+                                                                                            UpdateLog(e.Data, IO.Path.GetFileName(Input_File))
+                                                                                        End If
+                                                                                    End Sub)
+            rav1eProcess.Start()
+            rav1eProcess.BeginOutputReadLine()
+            rav1eProcess.BeginErrorReadLine()
+            rav1eProcess.WaitForExit()
+            UpdateLog("Video part " + IO.Path.GetFileName(Input_File) + " Encoding complete.")
+            ProgressBar1.BeginInvoke(Sub() ProgressBar1.PerformStep())
+        End Using
         Return True
     End Function
-
     Private Function split_video_file(input As String, tempFolder As String, pieceSenconds As Integer)
+        UpdateLog("Splitting input video file")
         Dim ffmpegProcessInfo As New ProcessStartInfo
         Dim ffmpegProcess As Process
         ffmpegProcessInfo.FileName = "ffmpeg.exe"
@@ -143,10 +165,12 @@
         ffmpegProcessInfo.UseShellExecute = False
         ffmpegProcess = Process.Start(ffmpegProcessInfo)
         ffmpegProcess.WaitForExit()
+        UpdateLog("Video file splitted")
         Return True
     End Function
 
     Private Function concatenate_video_files(input As String, tempFolder As String)
+        UpdateLog("Concatenating encoded video segments")
         Dim ffmpegProcessInfo As New ProcessStartInfo
         Dim ffmpegProcess As Process
         ffmpegProcessInfo.FileName = "ffmpeg.exe"
@@ -156,6 +180,7 @@
         ffmpegProcessInfo.UseShellExecute = False
         ffmpegProcess = Process.Start(ffmpegProcessInfo)
         ffmpegProcess.WaitForExit()
+        UpdateLog("Video concatenated")
         Return True
     End Function
     Private Function clean_temp_folder(tempFolder As String)
@@ -167,6 +192,7 @@
         Return True
     End Function
     Private Function merge_audio_video(output As String, tempFolder As String)
+        UpdateLog("Merging audio and video files")
         Dim ffmpegProcessInfo As New ProcessStartInfo
         Dim ffmpegProcess As Process
         ffmpegProcessInfo.FileName = "ffmpeg.exe"
@@ -176,10 +202,12 @@
         ffmpegProcessInfo.UseShellExecute = False
         ffmpegProcess = Process.Start(ffmpegProcessInfo)
         ffmpegProcess.WaitForExit()
+        UpdateLog("Merge complete")
         Return True
     End Function
 
     Private Function extract_audio(input As String, tempFolder As String)
+        UpdateLog("Extracting audio")
         Dim ffmpegProcessInfo As New ProcessStartInfo
         Dim ffmpegProcess As Process
         ffmpegProcessInfo.FileName = "ffmpeg.exe"
@@ -189,6 +217,7 @@
         ffmpegProcessInfo.UseShellExecute = False
         ffmpegProcess = Process.Start(ffmpegProcessInfo)
         ffmpegProcess.WaitForExit()
+        UpdateLog("Audio extracted")
         Return True
     End Function
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -196,11 +225,12 @@
         speed.Value = My.Settings.speed
         audioBitrate.Value = My.Settings.bitrate
         MinKeyFrameInterval.Value = My.Settings.minKeyInt
-         MaxKeyFrameInterval.Value = My.Settings.maxKeyInt
+        MaxKeyFrameInterval.Value = My.Settings.maxKeyInt
         pieceSeconds.Value = My.Settings.pieceSeconds
         LowLatencyCheckbox.Checked = My.Settings.lowlat
         tempLocationPath.Text = My.Settings.tempFolder
         RemoveTempFiles.Checked = My.Settings.removeTempFiles
+        ShowPSNRMetrics.Checked = My.Settings.ShowPSNRMetrics
         If OpusEncExists() Then
             GetOpusencVersion()
         Else
@@ -223,6 +253,20 @@
         GUILoaded = True
     End Sub
 
+    Private Delegate Sub UpdateLogInvoker(message As String, PartName As String)
+    Private Sub UpdateLog(message As String, Optional PartName As String = "")
+        If ProgressLog.InvokeRequired Then
+            ProgressLog.Invoke(New UpdateLogInvoker(AddressOf UpdateLog), message, PartName)
+        Else
+            If Not PartName = "" Then
+                ProgressLog.AppendText(Date.Now().ToString() + " || " + PartName + " || " + message + vbCrLf)
+            Else
+                ProgressLog.AppendText(Date.Now().ToString() + " || " + message + vbCrLf)
+            End If
+            ProgressLog.SelectionStart = ProgressLog.Text.Length - 1
+            ProgressLog.ScrollToCaret()
+        End If
+    End Sub
     Private Sub GetOpusencVersion()
         Dim opusProcessInfo As New ProcessStartInfo
         Dim opusProcess As Process
@@ -338,6 +382,26 @@
     Private Sub pieceSenconds_ValueChanged(sender As Object, e As EventArgs) Handles pieceSeconds.ValueChanged
         If GUILoaded Then
             My.Settings.pieceSeconds = pieceSeconds.Value
+            My.Settings.Save()
+        End If
+    End Sub
+
+    Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        For Each rav1e_proc In Process.GetProcessesByName("rav1e")
+            rav1e_proc.Kill()
+        Next
+        For Each gui_proc In Process.GetProcessesByName("rav1e_gui")
+            gui_proc.Kill()
+        Next
+    End Sub
+
+    Private Sub AdvancedEncoderOptionsButton_Click(sender As Object, e As EventArgs) Handles AdvancedEncoderOptionsButton.Click
+        AdvancedOptions.ShowDialog()
+    End Sub
+
+    Private Sub ShowPSNRMetrics_CheckedChanged(sender As Object, e As EventArgs) Handles ShowPSNRMetrics.CheckedChanged
+        If GUILoaded Then
+            My.Settings.ShowPSNRMetrics = ShowPSNRMetrics.Checked
             My.Settings.Save()
         End If
     End Sub
