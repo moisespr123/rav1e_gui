@@ -394,9 +394,7 @@ Public Class Form1
         For Each rav1e_proc In Process.GetProcessesByName("rav1e")
             rav1e_proc.Kill()
         Next
-        For Each gui_proc In Process.GetProcessesByName("rav1e_gui")
-            gui_proc.Kill()
-        Next
+        Close()
     End Sub
 
     Private Sub AdvancedEncoderOptionsButton_Click(sender As Object, e As EventArgs) Handles AdvancedEncoderOptionsButton.Click
@@ -407,6 +405,20 @@ Public Class Form1
         If GUILoaded Then
             My.Settings.ShowPSNRMetrics = ShowPSNRMetrics.Checked
             My.Settings.Save()
+        End If
+    End Sub
+
+    Private Sub ClearLogBtn_Click(sender As Object, e As EventArgs) Handles ClearLogBtn.Click
+        ProgressLog.Clear()
+    End Sub
+
+    Private Sub SaveLogBtn_Click(sender As Object, e As EventArgs) Handles SaveLogBtn.Click
+        Dim saveDialog As New SaveFileDialog With {
+            .Filter = "Log File|*.log",
+            .Title = "Browse to save the log file"}
+        Dim dialogResult As DialogResult = saveDialog.ShowDialog()
+        If DialogResult.OK Then
+            My.Computer.FileSystem.WriteAllText(saveDialog.FileName, ProgressLog.Text, False)
         End If
     End Sub
 End Class

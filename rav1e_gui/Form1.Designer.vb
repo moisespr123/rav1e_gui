@@ -61,6 +61,8 @@ Partial Class Form1
         Me.Label14 = New System.Windows.Forms.Label()
         Me.ProgressLog = New System.Windows.Forms.RichTextBox()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.SaveLogBtn = New System.Windows.Forms.Button()
+        Me.ClearLogBtn = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         CType(Me.CPUThreads, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MaxKeyFrameInterval, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -474,7 +476,7 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ProgressLog.Location = New System.Drawing.Point(6, 26)
         Me.ProgressLog.Name = "ProgressLog"
-        Me.ProgressLog.Size = New System.Drawing.Size(609, 392)
+        Me.ProgressLog.Size = New System.Drawing.Size(609, 363)
         Me.ProgressLog.TabIndex = 18
         Me.ProgressLog.Text = ""
         '
@@ -504,11 +506,32 @@ Partial Class Form1
         '
         'SplitContainer1.Panel2
         '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.ClearLogBtn)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.SaveLogBtn)
         Me.SplitContainer1.Panel2.Controls.Add(Me.ProgressLog)
         Me.SplitContainer1.Panel2.Controls.Add(Me.Label14)
         Me.SplitContainer1.Size = New System.Drawing.Size(1102, 430)
         Me.SplitContainer1.SplitterDistance = 471
         Me.SplitContainer1.TabIndex = 19
+        '
+        'SaveLogBtn
+        '
+        Me.SaveLogBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SaveLogBtn.Location = New System.Drawing.Point(413, 395)
+        Me.SaveLogBtn.Name = "SaveLogBtn"
+        Me.SaveLogBtn.Size = New System.Drawing.Size(202, 23)
+        Me.SaveLogBtn.TabIndex = 19
+        Me.SaveLogBtn.Text = "Save Log"
+        Me.SaveLogBtn.UseVisualStyleBackColor = True
+        '
+        'ClearLogBtn
+        '
+        Me.ClearLogBtn.Location = New System.Drawing.Point(6, 395)
+        Me.ClearLogBtn.Name = "ClearLogBtn"
+        Me.ClearLogBtn.Size = New System.Drawing.Size(202, 23)
+        Me.ClearLogBtn.TabIndex = 20
+        Me.ClearLogBtn.Text = "Clear Log"
+        Me.ClearLogBtn.UseVisualStyleBackColor = True
         '
         'Form1
         '
@@ -576,4 +599,6 @@ Partial Class Form1
     Friend WithEvents ShowPSNRMetrics As CheckBox
     Friend WithEvents CPUThreads As NumericUpDown
     Friend WithEvents Label15 As Label
+    Friend WithEvents ClearLogBtn As Button
+    Friend WithEvents SaveLogBtn As Button
 End Class
