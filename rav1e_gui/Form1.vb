@@ -46,6 +46,7 @@ Public Class Form1
             BrowseTempLocation.Enabled = False
             AdvancedEncoderOptionsButton.Enabled = False
             ShowPSNRMetrics.Enabled = False
+            CPUThreads.Enabled = False
             If Not IO.Path.GetExtension(OutputTxt.Text) = ".webm" And Not IO.Path.GetExtension(OutputTxt.Text) = ".mkv" Then
                 OutputTxt.Text = My.Computer.FileSystem.GetParentPath(OutputTxt.Text) + "\" + IO.Path.GetFileNameWithoutExtension(OutputTxt.Text) + ".webm"
             End If
@@ -76,7 +77,7 @@ Public Class Form1
                 Next
                 streamWriter.Close()
                 UpdateLog("Encoding Video Segments")
-                Dim options As New ParallelOptions With {.MaxDegreeOfParallelism = Environment.ProcessorCount}
+                Dim options As New ParallelOptions With {.MaxDegreeOfParallelism = CPUThreads.Value}
                 Parallel.Invoke(options, tasks.ToArray())
                 UpdateLog("Video Segments Encoded")
                 Run_opus(My.Settings.bitrate, tempLocationPath.Text)
@@ -100,6 +101,7 @@ Public Class Form1
                                          pieceSeconds.Enabled = True
                                          AdvancedEncoderOptionsButton.Enabled = True
                                          ShowPSNRMetrics.Enabled = True
+                                         CPUThreads.Enabled = True
                                      End Sub)
                 MsgBox("Finished")
             End If
@@ -221,6 +223,8 @@ Public Class Form1
         Return True
     End Function
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        CPUThreads.Maximum = Environment.ProcessorCount
+        CPUThreads.Value = CPUThreads.Maximum
         quantizer.Value = My.Settings.quantizer
         speed.Value = My.Settings.speed
         audioBitrate.Value = My.Settings.bitrate

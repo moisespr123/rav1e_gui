@@ -35,6 +35,9 @@ Partial Class Form1
         Me.Label6 = New System.Windows.Forms.Label()
         Me.OpusVersionLabel = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.CPUThreads = New System.Windows.Forms.NumericUpDown()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.ShowPSNRMetrics = New System.Windows.Forms.CheckBox()
         Me.AdvancedEncoderOptionsButton = New System.Windows.Forms.Button()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.MaxKeyFrameInterval = New System.Windows.Forms.NumericUpDown()
@@ -58,8 +61,8 @@ Partial Class Form1
         Me.Label14 = New System.Windows.Forms.Label()
         Me.ProgressLog = New System.Windows.Forms.RichTextBox()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
-        Me.ShowPSNRMetrics = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.CPUThreads, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MaxKeyFrameInterval, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MinKeyFrameInterval, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pieceSeconds, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -194,6 +197,8 @@ Partial Class Form1
         Me.GroupBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.CPUThreads)
+        Me.GroupBox1.Controls.Add(Me.Label15)
         Me.GroupBox1.Controls.Add(Me.ShowPSNRMetrics)
         Me.GroupBox1.Controls.Add(Me.AdvancedEncoderOptionsButton)
         Me.GroupBox1.Controls.Add(Me.Label13)
@@ -220,6 +225,38 @@ Partial Class Form1
         Me.GroupBox1.TabIndex = 15
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Encoder Options"
+        '
+        'CPUThreads
+        '
+        Me.CPUThreads.Location = New System.Drawing.Point(275, 37)
+        Me.CPUThreads.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
+        Me.CPUThreads.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.CPUThreads.Name = "CPUThreads"
+        Me.CPUThreads.Size = New System.Drawing.Size(47, 20)
+        Me.CPUThreads.TabIndex = 34
+        Me.CPUThreads.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(269, 21)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(49, 13)
+        Me.Label15.TabIndex = 33
+        Me.Label15.Text = "Threads:"
+        '
+        'ShowPSNRMetrics
+        '
+        Me.ShowPSNRMetrics.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.ShowPSNRMetrics.AutoSize = True
+        Me.ShowPSNRMetrics.Checked = True
+        Me.ShowPSNRMetrics.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.ShowPSNRMetrics.Location = New System.Drawing.Point(105, 67)
+        Me.ShowPSNRMetrics.Name = "ShowPSNRMetrics"
+        Me.ShowPSNRMetrics.Size = New System.Drawing.Size(150, 17)
+        Me.ShowPSNRMetrics.TabIndex = 32
+        Me.ShowPSNRMetrics.Text = "Show PSNR metrics in log"
+        Me.ShowPSNRMetrics.UseVisualStyleBackColor = True
         '
         'AdvancedEncoderOptionsButton
         '
@@ -474,19 +511,6 @@ Partial Class Form1
         Me.SplitContainer1.SplitterDistance = 471
         Me.SplitContainer1.TabIndex = 19
         '
-        'ShowPSNRMetrics
-        '
-        Me.ShowPSNRMetrics.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.ShowPSNRMetrics.AutoSize = True
-        Me.ShowPSNRMetrics.Checked = True
-        Me.ShowPSNRMetrics.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.ShowPSNRMetrics.Location = New System.Drawing.Point(105, 67)
-        Me.ShowPSNRMetrics.Name = "ShowPSNRMetrics"
-        Me.ShowPSNRMetrics.Size = New System.Drawing.Size(150, 17)
-        Me.ShowPSNRMetrics.TabIndex = 32
-        Me.ShowPSNRMetrics.Text = "Show PSNR metrics in log"
-        Me.ShowPSNRMetrics.UseVisualStyleBackColor = True
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -497,6 +521,7 @@ Partial Class Form1
         Me.Text = "rav1e GUI"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.CPUThreads, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MaxKeyFrameInterval, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MinKeyFrameInterval, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pieceSeconds, System.ComponentModel.ISupportInitialize).EndInit()
@@ -550,4 +575,6 @@ Partial Class Form1
     Friend WithEvents SplitContainer1 As SplitContainer
     Friend WithEvents AdvancedEncoderOptionsButton As Button
     Friend WithEvents ShowPSNRMetrics As CheckBox
+    Friend WithEvents CPUThreads As NumericUpDown
+    Friend WithEvents Label15 As Label
 End Class
