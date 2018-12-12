@@ -30,6 +30,20 @@ Public Class Form1
         If MinKeyFrameInterval.Value > MaxKeyFrameInterval.Value Then
             MsgBox("Minimum Keyframe Interval must be smaller than or equal to the Maximum Keyframe Interval")
         Else
+            Dim CheckTempFolder As String() = IO.Directory.GetFiles(tempLocationPath.Text)
+            If CheckTempFolder.Count > 0 Then
+                For Each item In CheckTempFolder
+                    If item.Contains(".ivf") Or item.Contains(".txt") Or item.Contains(".y4m") Or item.Contains(".wav") Or item.Contains(".opus") Then
+                        Dim result As DialogResult = MsgBox("The temporary folder contains temporary files. It is recommended that the folder is cleaned up for best results. Otherwise, you could get an incorrect AV1 file. Do you want to clean the folder?", MsgBoxStyle.YesNo)
+                        If result = DialogResult.Yes Then
+                            For Each ItemToDelete In CheckTempFolder
+                                If ItemToDelete.Contains(".ivf") Or ItemToDelete.Contains(".txt") Or ItemToDelete.Contains(".y4m") Or ItemToDelete.Contains(".wav") Or ItemToDelete.Contains(".opus") Then My.Computer.FileSystem.DeleteFile(ItemToDelete)
+                            Next
+                        End If
+                        Exit For
+                    End If
+                Next
+            End If
             StartBtn.Enabled = False
             InputTxt.Enabled = False
             OutputTxt.Enabled = False

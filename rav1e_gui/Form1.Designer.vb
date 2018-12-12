@@ -61,8 +61,8 @@ Partial Class Form1
         Me.Label14 = New System.Windows.Forms.Label()
         Me.ProgressLog = New System.Windows.Forms.RichTextBox()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
-        Me.SaveLogBtn = New System.Windows.Forms.Button()
         Me.ClearLogBtn = New System.Windows.Forms.Button()
+        Me.SaveLogBtn = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         CType(Me.CPUThreads, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MaxKeyFrameInterval, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -182,7 +182,7 @@ Partial Class Form1
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(28, 13)
         Me.Label6.TabIndex = 12
-        Me.Label6.Text = "v1.4"
+        Me.Label6.Text = "v1.5"
         '
         'OpusVersionLabel
         '
@@ -516,16 +516,6 @@ Partial Class Form1
         Me.SplitContainer1.SplitterDistance = 471
         Me.SplitContainer1.TabIndex = 19
         '
-        'SaveLogBtn
-        '
-        Me.SaveLogBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SaveLogBtn.Location = New System.Drawing.Point(413, 395)
-        Me.SaveLogBtn.Name = "SaveLogBtn"
-        Me.SaveLogBtn.Size = New System.Drawing.Size(202, 23)
-        Me.SaveLogBtn.TabIndex = 19
-        Me.SaveLogBtn.Text = "Save Log"
-        Me.SaveLogBtn.UseVisualStyleBackColor = True
-        '
         'ClearLogBtn
         '
         Me.ClearLogBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
@@ -535,6 +525,16 @@ Partial Class Form1
         Me.ClearLogBtn.TabIndex = 20
         Me.ClearLogBtn.Text = "Clear Log"
         Me.ClearLogBtn.UseVisualStyleBackColor = True
+        '
+        'SaveLogBtn
+        '
+        Me.SaveLogBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SaveLogBtn.Location = New System.Drawing.Point(413, 395)
+        Me.SaveLogBtn.Name = "SaveLogBtn"
+        Me.SaveLogBtn.Size = New System.Drawing.Size(202, 23)
+        Me.SaveLogBtn.TabIndex = 19
+        Me.SaveLogBtn.Text = "Save Log"
+        Me.SaveLogBtn.UseVisualStyleBackColor = True
         '
         'Form1
         '
