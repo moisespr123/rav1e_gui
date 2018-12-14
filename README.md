@@ -1,9 +1,9 @@
 # rav1e_gui
 A GUI to convert video files to AV1 using rav1e
 
-![Main Window Screenshot](https://moisescardona.me/files/2018-12-09/1.PNG)
+![Main Window Screenshot](https://moisescardona.me/files/2018-12-09/1.webp)
 
-![Advanced Encoder Options Window Screenshot](https://moisescardona.me/files/2018-12-09/2.PNG)
+![Advanced Encoder Options Window Screenshot](https://moisescardona.me/files/2018-12-09/2.webp)
 
 I wrote this software to test the rav1e software. Unfortunately, at the current state, rav1e is single-threaded. This GUI solves the issue and enable multithreading by converting and splitting the input video file into segments of the length specified by the user in y4m format and extracting the audio as a WAV file using ffmpeg. It then encodes each file using a CPU thread. After the encoding is finished, the WAV file is converted to Opus and the .ivf files are concatenated. Lastly, the .ivf and .opus files are merged into a .webm or .mkv container.
 
