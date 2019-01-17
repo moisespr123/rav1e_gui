@@ -241,6 +241,7 @@ Public Class Form1
         Return True
     End Function
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        IO.Directory.SetCurrentDirectory(IO.Path.GetDirectoryName(Process.GetCurrentProcess.MainModule.FileName))
         CPUThreads.Maximum = Environment.ProcessorCount
         CPUThreads.Value = CPUThreads.Maximum
         quantizer.Value = My.Settings.quantizer
@@ -271,6 +272,10 @@ Public Class Form1
             MessageBox.Show("ffmpeg.exe was not found. Exiting...")
             Process.Start("https://moisescardona.me/downloading_ffmpeg_rav1e_gui")
             Me.Close()
+        End If
+        Dim vars As String() = Environment.GetCommandLineArgs
+        If vars.Count > 1 Then
+            InputTxt.Text = vars(1)
         End If
         GUILoaded = True
     End Sub
