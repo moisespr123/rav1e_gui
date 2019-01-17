@@ -182,7 +182,7 @@ Partial Class Form1
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(28, 13)
         Me.Label6.TabIndex = 12
-        Me.Label6.Text = "v1.5"
+        Me.Label6.Text = "v1.6"
         '
         'OpusVersionLabel
         '
@@ -538,6 +538,7 @@ Partial Class Form1
         '
         'Form1
         '
+        Me.AllowDrop = True
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1102, 430)

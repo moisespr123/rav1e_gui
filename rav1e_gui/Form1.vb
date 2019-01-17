@@ -450,4 +450,13 @@ Public Class Form1
             My.Computer.FileSystem.WriteAllText(saveDialog.FileName, ProgressLog.Text, False)
         End If
     End Sub
+
+    Private Sub Form1_DragEnter(sender As Object, e As DragEventArgs) Handles MyBase.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        End If
+    End Sub
+    Private Sub Form1_DragDrop(sender As Object, e As DragEventArgs) Handles MyBase.DragDrop
+        InputTxt.Text = CType(e.Data.GetData(DataFormats.FileDrop), String())(0)
+    End Sub
 End Class
