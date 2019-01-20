@@ -1,0 +1,9 @@
+image: Visual Studio 2017
+configuration: Release
+
+build_script:
+ - msbuild c:\projects\rav1e_gui\build\rav1e_gui.sln
+
+artifacts:
+ - path: \**\rav1e_gui*.exe
+ - path: \**\rav1e_gui*.zip
