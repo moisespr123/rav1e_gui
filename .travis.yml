@@ -1,0 +1,6 @@
+language: csharp
+solution: rav1e_gui.sln
+
+os:
+- linux
+- osx
