@@ -30,11 +30,11 @@ Public Class Form1
         If MinKeyFrameInterval.Value > MaxKeyFrameInterval.Value Then
             MsgBox("Minimum Keyframe Interval must be smaller than or equal to the Maximum Keyframe Interval")
         ElseIf String.IsNullOrWhiteSpace(InputTxt.Text) Then
-            MsgBox("No input file has been specified")
+            MsgBox("No input file has been specified. Please enter or browse for an input video file")
         ElseIf String.IsNullOrWhiteSpace(OutputTxt.Text) Then
-            MsgBox("No output file has been specified")
+            MsgBox("No output file has been specified. Please enter or browse for an output video file")
         ElseIf String.IsNullOrWhiteSpace(tempLocationPath.Text) Then
-            MsgBox("Temporary folder has not been specified. Please enter a temporary path")
+            MsgBox("Temporary folder has not been specified. Please enter or browse for a temporary path")
         Else
             Dim CheckTempFolder As String() = IO.Directory.GetFiles(tempLocationPath.Text)
             If CheckTempFolder.Count > 0 Then
