@@ -78,6 +78,7 @@ Public Class Form1
         CPUThreads.Enabled = False
         SaveLogBtn.Enabled = False
         ClearLogBtn.Enabled = False
+        PauseResumeButton.Enabled = True
     End Sub
     Private Sub ResumePreviousEncodeSession()
         DisableElements()
@@ -181,6 +182,7 @@ Public Class Form1
                                  CPUThreads.Enabled = True
                                  SaveLogBtn.Enabled = True
                                  ClearLogBtn.Enabled = True
+                                 PauseResumeButton.Enabled = False
                              End Sub)
         MsgBox("Finished")
     End Sub
@@ -528,5 +530,27 @@ Public Class Form1
     End Sub
     Private Sub Form1_DragDrop(sender As Object, e As DragEventArgs) Handles MyBase.DragDrop
         InputTxt.Text = CType(e.Data.GetData(DataFormats.FileDrop), String())(0)
+    End Sub
+
+    Private Sub PauseResumeButton_Click(sender As Object, e As EventArgs) Handles PauseResumeButton.Click
+        If PauseResumeButton.Text = "Pause" Then
+            UpdateLog("Pausing encode")
+            Try
+                For Each rav1e_proc In Process.GetProcessesByName("rav1e")
+                    SuspendResumeProcess.SuspendProcess(rav1e_proc.Id)
+                Next
+            Catch
+            End Try
+            PauseResumeButton.Text = "Resume"
+        Else
+            UpdateLog("Resuming encode")
+            Try
+                For Each rav1e_proc In Process.GetProcessesByName("rav1e")
+                    SuspendResumeProcess.ResumeProcess(rav1e_proc.Id)
+                Next
+            Catch
+            End Try
+            PauseResumeButton.Text = "Pause"
+        End If
     End Sub
 End Class

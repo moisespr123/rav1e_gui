@@ -61,6 +61,7 @@ Partial Class Form1
         Me.Label14 = New System.Windows.Forms.Label()
         Me.ProgressLog = New System.Windows.Forms.RichTextBox()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.PauseResumeButton = New System.Windows.Forms.Button()
         Me.ClearLogBtn = New System.Windows.Forms.Button()
         Me.SaveLogBtn = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
@@ -508,6 +509,7 @@ Partial Class Form1
         '
         'SplitContainer1.Panel2
         '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.PauseResumeButton)
         Me.SplitContainer1.Panel2.Controls.Add(Me.ClearLogBtn)
         Me.SplitContainer1.Panel2.Controls.Add(Me.SaveLogBtn)
         Me.SplitContainer1.Panel2.Controls.Add(Me.ProgressLog)
@@ -516,10 +518,21 @@ Partial Class Form1
         Me.SplitContainer1.SplitterDistance = 471
         Me.SplitContainer1.TabIndex = 19
         '
+        'PauseResumeButton
+        '
+        Me.PauseResumeButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PauseResumeButton.Enabled = False
+        Me.PauseResumeButton.Location = New System.Drawing.Point(6, 395)
+        Me.PauseResumeButton.Name = "PauseResumeButton"
+        Me.PauseResumeButton.Size = New System.Drawing.Size(193, 23)
+        Me.PauseResumeButton.TabIndex = 21
+        Me.PauseResumeButton.Text = "Pause"
+        Me.PauseResumeButton.UseVisualStyleBackColor = True
+        '
         'ClearLogBtn
         '
-        Me.ClearLogBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.ClearLogBtn.Location = New System.Drawing.Point(6, 395)
+        Me.ClearLogBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ClearLogBtn.Location = New System.Drawing.Point(205, 395)
         Me.ClearLogBtn.Name = "ClearLogBtn"
         Me.ClearLogBtn.Size = New System.Drawing.Size(202, 23)
         Me.ClearLogBtn.TabIndex = 20
@@ -605,4 +618,5 @@ Partial Class Form1
     Friend WithEvents Label15 As Label
     Friend WithEvents ClearLogBtn As Button
     Friend WithEvents SaveLogBtn As Button
+    Friend WithEvents PauseResumeButton As Button
 End Class
