@@ -1,6 +1,7 @@
 ﻿Imports System.Threading
 
 Public Class Form1
+    Private Exiting As Boolean = False
     Private GUILoaded As Boolean = False
     Private Sub InputBrowseBtn_Click(sender As Object, e As EventArgs) Handles InputBrowseBtn.Click
         Dim InputBrowser As New OpenFileDialog With {
@@ -176,6 +177,9 @@ Public Class Form1
             rav1eProcess.BeginErrorReadLine()
             rav1eProcess.WaitForExit()
             UpdateLog("Video part " + IO.Path.GetFileName(Input_File) + " Encoding complete.")
+            If Not Exiting Then
+                IO.File.Delete(Input_File)
+            End If
             ProgressBar1.BeginInvoke(Sub() ProgressBar1.PerformStep())
         End Using
         Return True
@@ -420,6 +424,7 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        Exiting = True
         While True
             Try
                 For Each rav1e_proc In Process.GetProcessesByName("rav1e")
