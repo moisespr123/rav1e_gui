@@ -56,9 +56,9 @@ Public Class Form1
                     End If
                 End If
             End If
-            End If
+        End If
     End Sub
-    Private Sub ResumePreviousEncodeSession()
+    Private Sub DisableElements()
         StartBtn.Enabled = False
         InputTxt.Enabled = False
         OutputTxt.Enabled = False
@@ -78,6 +78,9 @@ Public Class Form1
         CPUThreads.Enabled = False
         SaveLogBtn.Enabled = False
         ClearLogBtn.Enabled = False
+    End Sub
+    Private Sub ResumePreviousEncodeSession()
+        DisableElements()
         Dim StartTasks As New Thread(Sub() Part2(True))
         StartTasks.Start()
     End Sub
@@ -105,25 +108,7 @@ Public Class Form1
                     End If
                 Next
             End If
-            StartBtn.Enabled = False
-            InputTxt.Enabled = False
-            OutputTxt.Enabled = False
-            InputBrowseBtn.Enabled = False
-            OutputBrowseBtn.Enabled = False
-            pieceSeconds.Enabled = False
-            audioBitrate.Enabled = False
-            quantizer.Enabled = False
-            speed.Enabled = False
-            MinKeyFrameInterval.Enabled = False
-            MaxKeyFrameInterval.Enabled = False
-            LowLatencyCheckbox.Enabled = False
-            tempLocationPath.Enabled = False
-            BrowseTempLocation.Enabled = False
-            AdvancedEncoderOptionsButton.Enabled = False
-            ShowPSNRMetrics.Enabled = False
-            CPUThreads.Enabled = False
-            SaveLogBtn.Enabled = False
-            ClearLogBtn.Enabled = False
+            DisableElements()
             If Not IO.Path.GetExtension(OutputTxt.Text) = ".webm" And Not IO.Path.GetExtension(OutputTxt.Text) = ".mkv" Then
                 OutputTxt.Text = My.Computer.FileSystem.GetParentPath(OutputTxt.Text) + "\" + IO.Path.GetFileNameWithoutExtension(OutputTxt.Text) + ".webm"
             End If
