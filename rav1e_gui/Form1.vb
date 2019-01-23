@@ -26,7 +26,61 @@ Public Class Form1
             OutputTxt.Text = OutputBrowser.FileName
         End If
     End Sub
-
+    Private Sub CheckForLockFile()
+        If Not String.IsNullOrWhiteSpace(tempLocationPath.Text) Then
+            Dim y4mFound As Boolean = False
+            Dim wavFound As Boolean = False
+            Dim CheckTempFolder As String() = IO.Directory.GetFiles(tempLocationPath.Text)
+            If CheckTempFolder.Count > 0 Then
+                If CheckTempFolder.Contains(tempLocationPath.Text + "\lock") And CheckTempFolder.Contains(tempLocationPath.Text + "\rav1e-concatenate-list.txt") Then
+                    For Each item In CheckTempFolder
+                        If IO.Path.GetExtension(item) = ".y4m" And item.Contains("y4m-part-") Then
+                            If Not y4mFound Then y4mFound = True
+                        ElseIf item.Contains(".wav") Then
+                            If Not wavFound Then wavFound = True
+                        End If
+                    Next
+                End If
+            End If
+            If y4mFound And wavFound Then
+                Dim result As DialogResult = MsgBox("The temporary folder contains temporary files from an uninterrumpted session. Do you want to continue the previous encoding session?", MsgBoxStyle.YesNo)
+                If result = DialogResult.Yes Then
+                    OutputTxt.Text = My.Computer.FileSystem.ReadAllText(tempLocationPath.Text + "\lock").TrimEnd
+                    ResumePreviousEncodeSession()
+                Else
+                    Dim result2 As DialogResult = MsgBox("Do you want to clean the folder?", MsgBoxStyle.YesNo)
+                    If result2 = DialogResult.Yes Then
+                        For Each ItemToDelete In CheckTempFolder
+                            If ItemToDelete.Contains(".ivf") Or ItemToDelete.Contains(".txt") Or ItemToDelete.Contains(".y4m") Or ItemToDelete.Contains(".wav") Or ItemToDelete.Contains(".opus") Then My.Computer.FileSystem.DeleteFile(ItemToDelete)
+                        Next
+                    End If
+                End If
+            End If
+            End If
+    End Sub
+    Private Sub ResumePreviousEncodeSession()
+        StartBtn.Enabled = False
+        InputTxt.Enabled = False
+        OutputTxt.Enabled = False
+        InputBrowseBtn.Enabled = False
+        OutputBrowseBtn.Enabled = False
+        pieceSeconds.Enabled = False
+        audioBitrate.Enabled = False
+        quantizer.Enabled = False
+        speed.Enabled = False
+        MinKeyFrameInterval.Enabled = False
+        MaxKeyFrameInterval.Enabled = False
+        LowLatencyCheckbox.Enabled = False
+        tempLocationPath.Enabled = False
+        BrowseTempLocation.Enabled = False
+        AdvancedEncoderOptionsButton.Enabled = False
+        ShowPSNRMetrics.Enabled = False
+        CPUThreads.Enabled = False
+        SaveLogBtn.Enabled = False
+        ClearLogBtn.Enabled = False
+        Dim StartTasks As New Thread(Sub() Part2(True))
+        StartTasks.Start()
+    End Sub
     Private Sub StartBtn_Click(sender As Object, e As EventArgs) Handles StartBtn.Click
         If MinKeyFrameInterval.Value > MaxKeyFrameInterval.Value Then
             MsgBox("Minimum Keyframe Interval must be smaller than or equal to the Maximum Keyframe Interval")
@@ -73,64 +127,77 @@ Public Class Form1
             If Not IO.Path.GetExtension(OutputTxt.Text) = ".webm" And Not IO.Path.GetExtension(OutputTxt.Text) = ".mkv" Then
                 OutputTxt.Text = My.Computer.FileSystem.GetParentPath(OutputTxt.Text) + "\" + IO.Path.GetFileNameWithoutExtension(OutputTxt.Text) + ".webm"
             End If
-            Dim StartTasks As New Threading.Thread(Sub() StartThreads())
+            My.Computer.FileSystem.WriteAllText(tempLocationPath.Text + "\lock", OutputTxt.Text, False)
+            Dim StartTasks As New Thread(Sub() Part1())
             StartTasks.Start()
         End If
     End Sub
-    Private Sub StartThreads()
+
+    Private Sub Part1()
         If split_video_file(InputTxt.Text, tempLocationPath.Text, My.Settings.pieceSeconds) Then
             If extract_audio(InputTxt.Text, tempLocationPath.Text) Then
-                Dim ItemsToProcess As List(Of String) = New List(Of String)
-                For Each File As String In IO.Directory.GetFiles(tempLocationPath.Text)
-                    If IO.Path.GetExtension(File) = ".y4m" And File.Contains("y4m-part-") Then
-                        ItemsToProcess.Add(File)
-                    End If
-                Next
-                ItemsToProcess.Sort()
-                ProgressBar1.BeginInvoke(Sub()
-                                             ProgressBar1.Maximum = ItemsToProcess.Count
-                                             ProgressBar1.Value = 0
-                                         End Sub)
-                Dim tasks = New List(Of Action)
-                Dim streamWriter As New IO.StreamWriter(tempLocationPath.Text + "\rav1e-concatenate-list.txt")
-                For Counter As Integer = 0 To ItemsToProcess.Count - 1
-                    streamWriter.WriteLine("file '" + tempLocationPath.Text.Replace("\", "/") + "/" + IO.Path.GetFileNameWithoutExtension(ItemsToProcess(Counter)) + ".ivf" + "'")
-                    Dim video_item As String = ItemsToProcess(Counter)
-                    tasks.Add(Function() Run_rav1e(video_item, tempLocationPath.Text + "\" + IO.Path.GetFileNameWithoutExtension(video_item) + ".ivf"))
-                Next
-                streamWriter.Close()
-                UpdateLog("Encoding Video Segments")
-                Dim options As New ParallelOptions With {.MaxDegreeOfParallelism = CPUThreads.Value}
-                Parallel.Invoke(options, tasks.ToArray())
-                UpdateLog("Video Segments Encoded")
-                Run_opus(My.Settings.bitrate, tempLocationPath.Text)
-                concatenate_video_files(tempLocationPath.Text + "\rav1e-concatenate-list.txt", tempLocationPath.Text)
-                merge_audio_video(OutputTxt.Text, tempLocationPath.Text)
-                If RemoveTempFiles.Checked Then clean_temp_folder(tempLocationPath.Text)
-                StartBtn.BeginInvoke(Sub()
-                                         StartBtn.Enabled = True
-                                         audioBitrate.Enabled = True
-                                         quantizer.Enabled = True
-                                         speed.Enabled = True
-                                         MinKeyFrameInterval.Enabled = True
-                                         MaxKeyFrameInterval.Enabled = True
-                                         LowLatencyCheckbox.Enabled = True
-                                         tempLocationPath.Enabled = True
-                                         BrowseTempLocation.Enabled = True
-                                         OutputTxt.Enabled = True
-                                         InputTxt.Enabled = True
-                                         InputBrowseBtn.Enabled = True
-                                         OutputBrowseBtn.Enabled = True
-                                         pieceSeconds.Enabled = True
-                                         AdvancedEncoderOptionsButton.Enabled = True
-                                         ShowPSNRMetrics.Enabled = True
-                                         CPUThreads.Enabled = True
-                                         SaveLogBtn.Enabled = True
-                                         ClearLogBtn.Enabled = True
-                                     End Sub)
-                MsgBox("Finished")
+                Part2()
             End If
         End If
+    End Sub
+
+    Private Sub Part2(Optional ResumeTasks As Boolean = False)
+        Dim ItemsToProcess As List(Of String) = New List(Of String)
+        For Each File As String In IO.Directory.GetFiles(tempLocationPath.Text)
+            If IO.Path.GetExtension(File) = ".y4m" And File.Contains("y4m-part-") Then
+                ItemsToProcess.Add(File)
+            End If
+        Next
+        ItemsToProcess.Sort()
+        ProgressBar1.BeginInvoke(Sub()
+                                     ProgressBar1.Maximum = ItemsToProcess.Count
+                                     ProgressBar1.Value = 0
+                                 End Sub)
+        Dim tasks = New List(Of Action)
+        If Not ResumeTasks Then
+            Dim streamWriter As New IO.StreamWriter(tempLocationPath.Text + "\rav1e-concatenate-list.txt")
+            For Counter As Integer = 0 To ItemsToProcess.Count - 1
+                streamWriter.WriteLine("file '" + tempLocationPath.Text.Replace("\", "/") + "/" + IO.Path.GetFileNameWithoutExtension(ItemsToProcess(Counter)) + ".ivf" + "'")
+                Dim video_item As String = ItemsToProcess(Counter)
+                tasks.Add(Function() Run_rav1e(video_item, tempLocationPath.Text + "\" + IO.Path.GetFileNameWithoutExtension(video_item) + ".ivf"))
+            Next
+            streamWriter.Close()
+        Else
+            For Counter As Integer = 0 To ItemsToProcess.Count - 1
+                Dim video_item As String = ItemsToProcess(Counter)
+                tasks.Add(Function() Run_rav1e(video_item, tempLocationPath.Text + "\" + IO.Path.GetFileNameWithoutExtension(video_item) + ".ivf"))
+            Next
+        End If
+        UpdateLog("Encoding Video Segments")
+        Dim options As New ParallelOptions With {.MaxDegreeOfParallelism = CPUThreads.Value}
+        Parallel.Invoke(options, tasks.ToArray())
+        UpdateLog("Video Segments Encoded")
+        Run_opus(My.Settings.bitrate, tempLocationPath.Text)
+        concatenate_video_files(tempLocationPath.Text + "\rav1e-concatenate-list.txt", tempLocationPath.Text)
+        merge_audio_video(OutputTxt.Text, tempLocationPath.Text)
+        If RemoveTempFiles.Checked Then clean_temp_folder(tempLocationPath.Text)
+        StartBtn.BeginInvoke(Sub()
+                                 StartBtn.Enabled = True
+                                 audioBitrate.Enabled = True
+                                 quantizer.Enabled = True
+                                 speed.Enabled = True
+                                 MinKeyFrameInterval.Enabled = True
+                                 MaxKeyFrameInterval.Enabled = True
+                                 LowLatencyCheckbox.Enabled = True
+                                 tempLocationPath.Enabled = True
+                                 BrowseTempLocation.Enabled = True
+                                 OutputTxt.Enabled = True
+                                 InputTxt.Enabled = True
+                                 InputBrowseBtn.Enabled = True
+                                 OutputBrowseBtn.Enabled = True
+                                 pieceSeconds.Enabled = True
+                                 AdvancedEncoderOptionsButton.Enabled = True
+                                 ShowPSNRMetrics.Enabled = True
+                                 CPUThreads.Enabled = True
+                                 SaveLogBtn.Enabled = True
+                                 ClearLogBtn.Enabled = True
+                             End Sub)
+        MsgBox("Finished")
     End Sub
     Private Function Run_opus(audio_bitrate As Integer, tempFolder As String)
         UpdateLog("Encoding Audio")
@@ -214,11 +281,12 @@ Public Class Form1
         Return True
     End Function
     Private Function clean_temp_folder(tempFolder As String)
-        For Each File As String In IO.Directory.GetFiles(tempLocationPath.Text)
+        For Each File As String In IO.Directory.GetFiles(tempFolder)
             If (IO.Path.GetExtension(File) = ".y4m" Or IO.Path.GetExtension(File) = ".ivf" And File.Contains("y4m-part-")) Or IO.Path.GetFileName(File) = "rav1e-audio.opus" Or IO.Path.GetFileName(File) = "rav1e-audio.wav" Or IO.Path.GetFileName(File) = "rav1e-concatenated-file.ivf" Or IO.Path.GetFileName(File) = "rav1e-concatenate-list.txt" Then
                 My.Computer.FileSystem.DeleteFile(File)
             End If
         Next
+        My.Computer.FileSystem.DeleteFile(tempFolder + "\lock")
         Return True
     End Function
     Private Function merge_audio_video(output As String, tempFolder As String)
@@ -288,6 +356,7 @@ Public Class Form1
             InputTxt.Text = vars(1)
         End If
         GUILoaded = True
+        If Not String.IsNullOrWhiteSpace(tempLocationPath.Text) Then CheckForLockFile()
     End Sub
 
     Private Delegate Sub UpdateLogInvoker(message As String, PartName As String)
