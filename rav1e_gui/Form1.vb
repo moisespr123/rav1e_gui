@@ -541,6 +541,7 @@ Public Class Form1
                 Next
             Catch
             End Try
+            UpdateLog("Encode paused (Some progress may still be reported)")
             PauseResumeButton.Text = "Resume"
         Else
             UpdateLog("Resuming encode")
@@ -550,6 +551,7 @@ Public Class Form1
                 Next
             Catch
             End Try
+            UpdateLog("Encode resumed")
             PauseResumeButton.Text = "Pause"
         End If
     End Sub
