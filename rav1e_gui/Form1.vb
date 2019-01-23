@@ -43,7 +43,7 @@ Public Class Form1
                 End If
             End If
             If y4mFound And wavFound Then
-                Dim result As DialogResult = MsgBox("The temporary folder contains temporary files from an uninterrumpted session. Do you want to continue the previous encoding session?", MsgBoxStyle.YesNo)
+                Dim result As DialogResult = MsgBox("The temporary folder contains temporary files from a previous session. Do you want to continue the previous encoding session?", MsgBoxStyle.YesNo)
                 If result = DialogResult.Yes Then
                     OutputTxt.Text = My.Computer.FileSystem.ReadAllText(tempLocationPath.Text + "\lock").TrimEnd
                     ResumePreviousEncodeSession()
