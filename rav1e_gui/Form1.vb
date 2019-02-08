@@ -204,7 +204,7 @@ Public Class Form1
         UpdateLog("Encoding Video part " + IO.Path.GetFileName(Input_File))
         Using rav1eProcess As New Process()
             rav1eProcess.StartInfo.FileName = "rav1e.exe"
-            rav1eProcess.StartInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """ --quantizer " + My.Settings.quantizer.ToString() + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
+            rav1eProcess.StartInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """ --quantizer " + My.Settings.quantizer.ToString() + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
             If Not My.Settings.lowlat Then
                 rav1eProcess.StartInfo.Arguments += " --low_latency false"
             End If
@@ -306,7 +306,16 @@ Public Class Form1
         Return True
     End Function
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim ignoreLocations As Boolean = False
+        Dim vars As String() = Environment.GetCommandLineArgs
+        If vars.Count > 1 Then
+            If vars.Contains("ignore_locations") Then ignoreLocations = True
+            For var As Integer = 1 To vars.Count - 1
+                If Not vars(var) = "ignore_locations" Then InputTxt.Text = vars(var)
+            Next
+        End If
         IO.Directory.SetCurrentDirectory(IO.Path.GetDirectoryName(Process.GetCurrentProcess.MainModule.FileName))
+
         CPUThreads.Maximum = Environment.ProcessorCount
         CPUThreads.Value = CPUThreads.Maximum
         quantizer.Value = My.Settings.quantizer
@@ -319,28 +328,26 @@ Public Class Form1
         tempLocationPath.Text = My.Settings.tempFolder
         RemoveTempFiles.Checked = My.Settings.removeTempFiles
         ShowPSNRMetrics.Checked = My.Settings.ShowPSNRMetrics
-        If OpusEncExists() Then
-            GetOpusencVersion()
-        Else
-            MessageBox.Show("opusenc.exe was not found. Exiting...")
-            Process.Start("https://moisescardona.me/opusenc_compiles")
-            Me.Close()
-        End If
-        If rav1eExists() Then
-            GetRav1eVersion()
-        Else
-            MessageBox.Show("rav1e.exe was not found. Exiting...")
-            Process.Start("https://moisescardona.me/rav1e_compiles")
-            Me.Close()
-        End If
-        If Not ffmpegExists() Then
-            MessageBox.Show("ffmpeg.exe was not found. Exiting...")
-            Process.Start("https://moisescardona.me/downloading_ffmpeg_rav1e_gui")
-            Me.Close()
-        End If
-        Dim vars As String() = Environment.GetCommandLineArgs
-        If vars.Count > 1 Then
-            InputTxt.Text = vars(1)
+        If Not ignoreLocations Then
+            If OpusEncExists() Then
+                GetOpusencVersion()
+            Else
+                MessageBox.Show("opusenc.exe was not found. Exiting...")
+                Process.Start("https://moisescardona.me/opusenc_compiles")
+                Me.Close()
+            End If
+            If rav1eExists() Then
+                GetRav1eVersion()
+            Else
+                MessageBox.Show("rav1e.exe was not found. Exiting...")
+                Process.Start("https://moisescardona.me/rav1e_compiles")
+                Me.Close()
+            End If
+            If Not ffmpegExists() Then
+                MessageBox.Show("ffmpeg.exe was not found. Exiting...")
+                Process.Start("https://moisescardona.me/downloading_ffmpeg_rav1e_gui")
+                Me.Close()
+            End If
         End If
         GUILoaded = True
         If Not String.IsNullOrWhiteSpace(tempLocationPath.Text) Then CheckForLockFile()

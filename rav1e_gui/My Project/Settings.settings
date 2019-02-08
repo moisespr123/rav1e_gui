@@ -44,5 +44,11 @@
     <Setting Name="ShowPSNRMetrics" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="Range" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Unspecified</Value>
+    </Setting>
+    <Setting Name="ContentLight" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0,0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
