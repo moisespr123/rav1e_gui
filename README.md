@@ -1,23 +1,23 @@
 # rav1e_gui [![Travis Build Status](https://travis-ci.org/moisesmcardona/rav1e_gui.svg?branch=master)](https://travis-ci.org/moisesmcardona/rav1e_gui) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/moisesmcardona/rav1e_gui?branch=master&svg=true)](https://ci.appveyor.com/project/moisesmcardona/rav1e-gui)
 A GUI to convert video files to AV1 using rav1e
 
-![Main Window Screenshot](https://moisescardona.me/files/2019-01-23/1.PNG)
+![Main Window Screenshot](https://moisescardona.me/wp-content/uploads/2019/01/image-10.png)
 
-![Advanced Encoder Options Window Screenshot](https://moisescardona.me/files/2018-12-09/2.webp)
+![Advanced Encoder Options Window Screenshot](https://moisescardona.me/wp-content/uploads/2018/12/image-6.png)
 
 I wrote this software to test the rav1e software. Unfortunately, at the current state, rav1e is single-threaded. This GUI solves the issue and enable multithreading by converting and splitting the input video file into segments of the length specified by the user in y4m format and extracting the audio as a WAV file using ffmpeg. It then encodes each file using a CPU thread. After the encoding is finished, the WAV file is converted to Opus and the .ivf files are concatenated. Lastly, the .ivf and .opus files are merged into a .webm or .mkv container.
 
 Written in Visual Basic .NET using Visual Studio 2017.
 ## Dependencies:
 
-* You need my build of `opusenc.exe`. You can get it here: https://moisescardona.me/opusenc_compiles
-* You need ffmpeg as found here: https://ffmpeg.zeranoe.com/builds/. Use the nightly builds. [Instructions here.](https://moisescardona.me/downloading_ffmpeg_rav1e_gui)
-* You also need rav1e. [Builds here.](https://moisescardona.me/rav1e_compiles)
+* You need my build of `opusenc.exe`. You can get it here: https://moisescardona.me/opusenc-builds/
+* You need ffmpeg as found here: https://ffmpeg.zeranoe.com/builds/. Use the nightly builds. [Instructions here.](https://moisescardona.me/downloading-ffmpeg-rav1e-gui/)
+* You also need rav1e. [Builds here.](https://moisescardona.me/rav1e-builds/)
 
 Builds comes with opusenc and rav1e bundled, but not ffmpeg due to licensing restrictions.
 
 # Updated components builds:
 
-Ocasionally, rav1e and opusenc gets updated. You can download the latest version of rav1e_gui with these updated tools included here: [https://moisescardona.me/rav1e_gui](https://moisescardona.me/rav1e_gui)
+Ocasionally, rav1e and opusenc gets updated. You can download the latest version of rav1e_gui with these updated tools included here: [https://moisescardona.me/rav1e-gui](https://moisescardona.me/rav1e-gui)
 
 Enjoy!

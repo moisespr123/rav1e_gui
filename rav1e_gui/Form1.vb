@@ -333,19 +333,19 @@ Public Class Form1
                 GetOpusencVersion()
             Else
                 MessageBox.Show("opusenc.exe was not found. Exiting...")
-                Process.Start("https://moisescardona.me/opusenc_compiles")
+                Process.Start("https://moisescardona.me/opusenc-builds/")
                 Me.Close()
             End If
             If rav1eExists() Then
                 GetRav1eVersion()
             Else
                 MessageBox.Show("rav1e.exe was not found. Exiting...")
-                Process.Start("https://moisescardona.me/rav1e_compiles")
+                Process.Start("https://moisescardona.me/rav1e-builds/")
                 Me.Close()
             End If
             If Not ffmpegExists() Then
                 MessageBox.Show("ffmpeg.exe was not found. Exiting...")
-                Process.Start("https://moisescardona.me/downloading_ffmpeg_rav1e_gui")
+                Process.Start("https://moisescardona.me/downloading-ffmpeg-rav1e-gui/")
                 Me.Close()
             End If
         End If
