@@ -206,7 +206,7 @@ Partial Class AdvancedOptions
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(384, 324)
+        Me.ClientSize = New System.Drawing.Size(384, 277)
         Me.Controls.Add(Me.CloseButton)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
