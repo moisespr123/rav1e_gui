@@ -93,18 +93,18 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("64")>  _
-        Public Property bitrate() As Integer
+        Public Property AudioBitrate() As Integer
             Get
-                Return CType(Me("bitrate"),Integer)
+                Return CType(Me("AudioBitrate"),Integer)
             End Get
             Set
-                Me("bitrate") = value
+                Me("AudioBitrate") = value
             End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
         Public Property lowlat() As Boolean
             Get
                 Return CType(Me("lowlat"),Boolean)
@@ -243,6 +243,54 @@ Namespace My
             End Get
             Set
                 Me("ContentLight") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1024")>  _
+        Public Property VideoBitrate() As Integer
+            Get
+                Return CType(Me("VideoBitrate"),Integer)
+            End Get
+            Set
+                Me("VideoBitrate") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property useBitrate() As Boolean
+            Get
+                Return CType(Me("useBitrate"),Boolean)
+            End Get
+            Set
+                Me("useBitrate") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property useQuantizer() As Boolean
+            Get
+                Return CType(Me("useQuantizer"),Boolean)
+            End Get
+            Set
+                Me("useQuantizer") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property twoPass() As Boolean
+            Get
+                Return CType(Me("twoPass"),Boolean)
+            End Get
+            Set
+                Me("twoPass") = value
             End Set
         End Property
     End Class

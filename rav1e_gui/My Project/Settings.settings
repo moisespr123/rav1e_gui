@@ -11,11 +11,11 @@
     <Setting Name="tempFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="bitrate" Type="System.Int32" Scope="User">
+    <Setting Name="AudioBitrate" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">64</Value>
     </Setting>
     <Setting Name="lowlat" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="minKeyInt" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">12</Value>
@@ -49,6 +49,18 @@
     </Setting>
     <Setting Name="ContentLight" Type="System.String" Scope="User">
       <Value Profile="(Default)">0,0</Value>
+    </Setting>
+    <Setting Name="VideoBitrate" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1024</Value>
+    </Setting>
+    <Setting Name="useBitrate" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="useQuantizer" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="twoPass" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -79,6 +79,10 @@ Public Class Form1
         SaveLogBtn.Enabled = False
         ClearLogBtn.Enabled = False
         PauseResumeButton.Enabled = True
+        twoPass.Enabled = False
+        useQuantizer.Enabled = False
+        useBitrate.Enabled = False
+        videoBitrate.Enabled = False
     End Sub
     Private Sub ResumePreviousEncodeSession()
         DisableElements()
@@ -158,14 +162,13 @@ Public Class Form1
         Dim options As New ParallelOptions With {.MaxDegreeOfParallelism = CPUThreads.Value}
         Parallel.Invoke(options, tasks.ToArray())
         UpdateLog("Video Segments Encoded")
-        Run_opus(My.Settings.bitrate, tempLocationPath.Text)
+        Run_opus(My.Settings.AudioBitrate, tempLocationPath.Text)
         concatenate_video_files(tempLocationPath.Text + "\rav1e-concatenate-list.txt", tempLocationPath.Text)
         merge_audio_video(OutputTxt.Text, tempLocationPath.Text)
         If RemoveTempFiles.Checked Then clean_temp_folder(tempLocationPath.Text)
         StartBtn.BeginInvoke(Sub()
                                  StartBtn.Enabled = True
                                  audioBitrate.Enabled = True
-                                 quantizer.Enabled = True
                                  speed.Enabled = True
                                  MinKeyFrameInterval.Enabled = True
                                  MaxKeyFrameInterval.Enabled = True
@@ -183,6 +186,11 @@ Public Class Form1
                                  SaveLogBtn.Enabled = True
                                  ClearLogBtn.Enabled = True
                                  PauseResumeButton.Enabled = False
+                                 twoPass.Enabled = True
+                                 useQuantizer.Enabled = True
+                                 useBitrate.Enabled = True
+                                 If My.Settings.useQuantizer Then quantizer.Enabled = True
+                                 If My.Settings.useBitrate Then videoBitrate.Enabled = True
                              End Sub)
         MsgBox("Finished")
     End Sub
@@ -204,12 +212,21 @@ Public Class Form1
         UpdateLog("Encoding Video part " + IO.Path.GetFileName(Input_File))
         Using rav1eProcess As New Process()
             rav1eProcess.StartInfo.FileName = "rav1e.exe"
-            rav1eProcess.StartInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """ --quantizer " + My.Settings.quantizer.ToString() + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
+            Dim VideoBitrateString As String = String.Empty
+            If My.Settings.useBitrate Then
+                VideoBitrateString = "-b " + My.Settings.VideoBitrate.ToString()
+            Else
+                VideoBitrateString = "--quantizer " + My.Settings.quantizer.ToString()
+            End If
+            rav1eProcess.StartInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """  " + VideoBitrateString + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
             If Not My.Settings.lowlat Then
                 rav1eProcess.StartInfo.Arguments += " --low_latency false"
             End If
             If My.Settings.ShowPSNRMetrics Then
                 rav1eProcess.StartInfo.Arguments += " --psnr"
+            End If
+            If My.Settings.twoPass Then
+                rav1eProcess.StartInfo.Arguments += " -p 2"
             End If
             rav1eProcess.StartInfo.CreateNoWindow = True
             rav1eProcess.StartInfo.RedirectStandardOutput = True
@@ -319,8 +336,12 @@ Public Class Form1
         CPUThreads.Maximum = Environment.ProcessorCount
         CPUThreads.Value = CPUThreads.Maximum
         quantizer.Value = My.Settings.quantizer
+        videoBitrate.Text = My.Settings.VideoBitrate
+        useQuantizer.Checked = My.Settings.useQuantizer
+        useBitrate.Checked = My.Settings.useBitrate
+        twoPass.Checked = My.Settings.twoPass
         speed.Value = My.Settings.speed
-        audioBitrate.Value = My.Settings.bitrate
+        audioBitrate.Value = My.Settings.AudioBitrate
         MinKeyFrameInterval.Value = My.Settings.minKeyInt
         MaxKeyFrameInterval.Value = My.Settings.maxKeyInt
         pieceSeconds.Value = My.Settings.pieceSeconds
@@ -328,27 +349,9 @@ Public Class Form1
         tempLocationPath.Text = My.Settings.tempFolder
         RemoveTempFiles.Checked = My.Settings.removeTempFiles
         ShowPSNRMetrics.Checked = My.Settings.ShowPSNRMetrics
-        If Not ignoreLocations Then
-            If OpusEncExists() Then
-                GetOpusencVersion()
-            Else
-                MessageBox.Show("opusenc.exe was not found. Exiting...")
-                Process.Start("https://moisescardona.me/opusenc-builds/")
-                Me.Close()
-            End If
-            If rav1eExists() Then
-                GetRav1eVersion()
-            Else
-                MessageBox.Show("rav1e.exe was not found. Exiting...")
-                Process.Start("https://moisescardona.me/rav1e-builds/")
-                Me.Close()
-            End If
-            If Not ffmpegExists() Then
-                MessageBox.Show("ffmpeg.exe was not found. Exiting...")
-                Process.Start("https://moisescardona.me/downloading-ffmpeg-rav1e-gui/")
-                Me.Close()
-            End If
-        End If
+        GetOpusencVersion()
+        GetRav1eVersion()
+        GetFfmpegVersion()
         GUILoaded = True
         If Not String.IsNullOrWhiteSpace(tempLocationPath.Text) Then CheckForLockFile()
     End Sub
@@ -368,28 +371,57 @@ Public Class Form1
         End If
     End Sub
     Private Sub GetOpusencVersion()
-        Dim opusProcessInfo As New ProcessStartInfo
-        Dim opusProcess As Process
-        opusProcessInfo.FileName = "opusenc.exe"
-        opusProcessInfo.Arguments = "-V"
-        opusProcessInfo.CreateNoWindow = True
-        opusProcessInfo.RedirectStandardOutput = True
-        opusProcessInfo.UseShellExecute = False
-        opusProcess = Process.Start(opusProcessInfo)
-        opusProcess.WaitForExit()
-        OpusVersionLabel.Text = "opusenc version: " + opusProcess.StandardOutput.ReadLine()
+        Try
+            Dim opusProcessInfo As New ProcessStartInfo
+            Dim opusProcess As Process
+            opusProcessInfo.FileName = "opusenc.exe"
+            opusProcessInfo.Arguments = "-V"
+            opusProcessInfo.CreateNoWindow = True
+            opusProcessInfo.RedirectStandardOutput = True
+            opusProcessInfo.UseShellExecute = False
+            opusProcess = Process.Start(opusProcessInfo)
+            opusProcess.WaitForExit()
+            OpusVersionLabel.Text = "opusenc version: " + opusProcess.StandardOutput.ReadLine()
+        Catch ex As Exception
+            MessageBox.Show("opusenc.exe was not found. Exiting...")
+            Process.Start("https://moisescardona.me/opusenc-builds/")
+            Me.Close()
+        End Try
     End Sub
     Private Sub GetRav1eVersion()
-        Dim rav1eProcessInfo As New ProcessStartInfo
-        Dim rav1eProcess As Process
-        rav1eProcessInfo.FileName = "rav1e.exe"
-        rav1eProcessInfo.Arguments = "-V"
-        rav1eProcessInfo.CreateNoWindow = True
-        rav1eProcessInfo.RedirectStandardOutput = True
-        rav1eProcessInfo.UseShellExecute = False
-        rav1eProcess = Process.Start(rav1eProcessInfo)
-        rav1eProcess.WaitForExit()
-        rav1eVersionLabel.Text = "rav1e version: " + rav1eProcess.StandardOutput.ReadLine()
+        Try
+            Dim rav1eProcessInfo As New ProcessStartInfo
+            Dim rav1eProcess As Process
+            rav1eProcessInfo.FileName = "rav1e.exe"
+            rav1eProcessInfo.Arguments = "-V"
+            rav1eProcessInfo.CreateNoWindow = True
+            rav1eProcessInfo.RedirectStandardOutput = True
+            rav1eProcessInfo.UseShellExecute = False
+            rav1eProcess = Process.Start(rav1eProcessInfo)
+            rav1eProcess.WaitForExit()
+            rav1eVersionLabel.Text = "rav1e version: " + rav1eProcess.StandardOutput.ReadLine()
+        Catch ex As Exception
+            MessageBox.Show("rav1e.exe was not found. Exiting...")
+            Process.Start("https://moisescardona.me/rav1e-builds/")
+            Me.Close()
+        End Try
+    End Sub
+    Private Sub GetFfmpegVersion()
+        Try
+            Dim ffmpegProcessInfo As New ProcessStartInfo
+            Dim ffmpegProcess As Process
+            ffmpegProcessInfo.FileName = "ffmpeg.exe"
+            ffmpegProcessInfo.CreateNoWindow = True
+            ffmpegProcessInfo.RedirectStandardError = True
+            ffmpegProcessInfo.UseShellExecute = False
+            ffmpegProcess = Process.Start(ffmpegProcessInfo)
+            ffmpegProcess.WaitForExit()
+            ffmpegVersionLabel.Text = "ffmpeg version: " + ffmpegProcess.StandardError.ReadLine()
+        Catch ex As Exception
+            MessageBox.Show("ffmpeg.exe was not found. Exiting...")
+            Process.Start("https://moisescardona.me/downloading-ffmpeg-rav1e-gui/")
+            Me.Close()
+        End Try
     End Sub
 
     Private Function rav1eExists() As Boolean
@@ -437,7 +469,7 @@ Public Class Form1
 
     Private Sub audioBitrate_ValueChanged(sender As Object, e As EventArgs) Handles audioBitrate.ValueChanged
         If GUILoaded Then
-            My.Settings.bitrate = audioBitrate.Value
+            My.Settings.AudioBitrate = audioBitrate.Value
             My.Settings.Save()
         End If
     End Sub
@@ -561,5 +593,39 @@ Public Class Form1
             UpdateLog("Encode resumed")
             PauseResumeButton.Text = "Pause"
         End If
+    End Sub
+
+    Private Sub UseQuantizer_CheckedChanged(sender As Object, e As EventArgs) Handles useQuantizer.CheckedChanged
+        If GUILoaded Then
+            My.Settings.useQuantizer = useQuantizer.Checked
+            My.Settings.Save()
+        End If
+        quantizer.Enabled = True
+        videoBitrate.Enabled = False
+    End Sub
+
+    Private Sub VideoBitrate_TextChanged(sender As Object, e As EventArgs) Handles videoBitrate.TextChanged
+        If GUILoaded Then
+            My.Settings.VideoBitrate = videoBitrate.Text
+            My.Settings.Save()
+        End If
+    End Sub
+
+    Private Sub UseBitrate_CheckedChanged(sender As Object, e As EventArgs) Handles useBitrate.CheckedChanged
+        If GUILoaded Then
+            My.Settings.useBitrate = useBitrate.Checked
+            My.Settings.Save()
+        End If
+        quantizer.Enabled = False
+        videoBitrate.Enabled = True
+    End Sub
+
+    Private Sub TwoPass_CheckedChanged(sender As Object, e As EventArgs) Handles twoPass.CheckedChanged
+        If GUILoaded Then
+            My.Settings.twoPass = twoPass.Checked
+            My.Settings.Save()
+        End If
+        quantizer.Enabled = False
+        videoBitrate.Enabled = True
     End Sub
 End Class
