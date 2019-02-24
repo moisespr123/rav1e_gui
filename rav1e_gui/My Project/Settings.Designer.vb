@@ -164,7 +164,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Psnr")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Psychovisual")>  _
         Public Property Tune() As String
             Get
                 Return CType(Me("Tune"),String)

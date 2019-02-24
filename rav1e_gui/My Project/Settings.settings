@@ -30,7 +30,7 @@
       <Value Profile="(Default)">240</Value>
     </Setting>
     <Setting Name="Tune" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Psnr</Value>
+      <Value Profile="(Default)">Psychovisual</Value>
     </Setting>
     <Setting Name="ColorPrimaries" Type="System.String" Scope="User">
       <Value Profile="(Default)">Unspecified</Value>
