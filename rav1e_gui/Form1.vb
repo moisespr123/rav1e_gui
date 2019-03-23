@@ -625,7 +625,5 @@ Public Class Form1
             My.Settings.twoPass = twoPass.Checked
             My.Settings.Save()
         End If
-        quantizer.Enabled = False
-        videoBitrate.Enabled = True
     End Sub
 End Class
