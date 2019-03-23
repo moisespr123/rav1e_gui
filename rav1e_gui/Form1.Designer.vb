@@ -35,42 +35,43 @@ Partial Class Form1
         Me.Label6 = New System.Windows.Forms.Label()
         Me.OpusVersionLabel = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.CPUThreads = New System.Windows.Forms.NumericUpDown()
-        Me.Label15 = New System.Windows.Forms.Label()
+        Me.twoPass = New System.Windows.Forms.CheckBox()
+        Me.Label16 = New System.Windows.Forms.Label()
         Me.ShowPSNRMetrics = New System.Windows.Forms.CheckBox()
+        Me.CPUThreads = New System.Windows.Forms.NumericUpDown()
+        Me.videoBitrate = New System.Windows.Forms.TextBox()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.useBitrate = New System.Windows.Forms.RadioButton()
         Me.AdvancedEncoderOptionsButton = New System.Windows.Forms.Button()
+        Me.useQuantizer = New System.Windows.Forms.RadioButton()
         Me.Label13 = New System.Windows.Forms.Label()
+        Me.quantizer = New System.Windows.Forms.NumericUpDown()
+        Me.LowLatencyCheckbox = New System.Windows.Forms.CheckBox()
         Me.MaxKeyFrameInterval = New System.Windows.Forms.NumericUpDown()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.MinKeyFrameInterval = New System.Windows.Forms.NumericUpDown()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.pieceSeconds = New System.Windows.Forms.NumericUpDown()
         Me.Label11 = New System.Windows.Forms.Label()
-        Me.RemoveTempFiles = New System.Windows.Forms.CheckBox()
-        Me.LowLatencyCheckbox = New System.Windows.Forms.CheckBox()
         Me.audioBitrate = New System.Windows.Forms.NumericUpDown()
         Me.Label9 = New System.Windows.Forms.Label()
+        Me.speed = New System.Windows.Forms.NumericUpDown()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.RemoveTempFiles = New System.Windows.Forms.CheckBox()
         Me.BrowseTempLocation = New System.Windows.Forms.Button()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.tempLocationPath = New System.Windows.Forms.TextBox()
-        Me.speed = New System.Windows.Forms.NumericUpDown()
-        Me.Label7 = New System.Windows.Forms.Label()
         Me.rav1eVersionLabel = New System.Windows.Forms.Label()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.ProgressLog = New System.Windows.Forms.RichTextBox()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.ffmpegVersionLabel = New System.Windows.Forms.Label()
         Me.PauseResumeButton = New System.Windows.Forms.Button()
         Me.ClearLogBtn = New System.Windows.Forms.Button()
         Me.SaveLogBtn = New System.Windows.Forms.Button()
-        Me.quantizer = New System.Windows.Forms.NumericUpDown()
-        Me.useQuantizer = New System.Windows.Forms.RadioButton()
-        Me.useBitrate = New System.Windows.Forms.RadioButton()
-        Me.videoBitrate = New System.Windows.Forms.TextBox()
-        Me.Label16 = New System.Windows.Forms.Label()
-        Me.twoPass = New System.Windows.Forms.CheckBox()
-        Me.ffmpegVersionLabel = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         CType(Me.CPUThreads, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.quantizer, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MaxKeyFrameInterval, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MinKeyFrameInterval, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pieceSeconds, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -80,7 +81,6 @@ Partial Class Form1
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
-        CType(Me.quantizer, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -186,9 +186,9 @@ Partial Class Form1
         Me.Label6.AutoSize = True
         Me.Label6.Location = New System.Drawing.Point(408, 446)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(28, 13)
+        Me.Label6.Size = New System.Drawing.Size(34, 13)
         Me.Label6.TabIndex = 12
-        Me.Label6.Text = "v1.9"
+        Me.Label6.Text = "v1.10"
         '
         'OpusVersionLabel
         '
@@ -234,24 +234,24 @@ Partial Class Form1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Encoder Options"
         '
-        'CPUThreads
+        'twoPass
         '
-        Me.CPUThreads.Location = New System.Drawing.Point(216, 32)
-        Me.CPUThreads.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
-        Me.CPUThreads.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.CPUThreads.Name = "CPUThreads"
-        Me.CPUThreads.Size = New System.Drawing.Size(47, 20)
-        Me.CPUThreads.TabIndex = 34
-        Me.CPUThreads.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.twoPass.AutoSize = True
+        Me.twoPass.Location = New System.Drawing.Point(90, 123)
+        Me.twoPass.Name = "twoPass"
+        Me.twoPass.Size = New System.Drawing.Size(58, 17)
+        Me.twoPass.TabIndex = 35
+        Me.twoPass.Text = "2-Pass"
+        Me.twoPass.UseVisualStyleBackColor = True
         '
-        'Label15
+        'Label16
         '
-        Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(210, 16)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(49, 13)
-        Me.Label15.TabIndex = 33
-        Me.Label15.Text = "Threads:"
+        Me.Label16.AutoSize = True
+        Me.Label16.Location = New System.Drawing.Point(149, 94)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(30, 13)
+        Me.Label16.TabIndex = 8
+        Me.Label16.Text = "kbps"
         '
         'ShowPSNRMetrics
         '
@@ -265,6 +265,43 @@ Partial Class Form1
         Me.ShowPSNRMetrics.Text = "Show PSNR metrics in log"
         Me.ShowPSNRMetrics.UseVisualStyleBackColor = True
         '
+        'CPUThreads
+        '
+        Me.CPUThreads.Location = New System.Drawing.Point(216, 32)
+        Me.CPUThreads.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
+        Me.CPUThreads.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.CPUThreads.Name = "CPUThreads"
+        Me.CPUThreads.Size = New System.Drawing.Size(47, 20)
+        Me.CPUThreads.TabIndex = 34
+        Me.CPUThreads.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'videoBitrate
+        '
+        Me.videoBitrate.Location = New System.Drawing.Point(83, 87)
+        Me.videoBitrate.Name = "videoBitrate"
+        Me.videoBitrate.Size = New System.Drawing.Size(60, 20)
+        Me.videoBitrate.TabIndex = 7
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(210, 16)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(49, 13)
+        Me.Label15.TabIndex = 33
+        Me.Label15.Text = "Threads:"
+        '
+        'useBitrate
+        '
+        Me.useBitrate.AutoSize = True
+        Me.useBitrate.Location = New System.Drawing.Point(83, 65)
+        Me.useBitrate.Name = "useBitrate"
+        Me.useBitrate.Size = New System.Drawing.Size(55, 17)
+        Me.useBitrate.TabIndex = 6
+        Me.useBitrate.TabStop = True
+        Me.useBitrate.Text = "Bitrate"
+        Me.useBitrate.UseVisualStyleBackColor = True
+        '
         'AdvancedEncoderOptionsButton
         '
         Me.AdvancedEncoderOptionsButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -275,6 +312,17 @@ Partial Class Form1
         Me.AdvancedEncoderOptionsButton.Text = "Advanced Options"
         Me.AdvancedEncoderOptionsButton.UseVisualStyleBackColor = True
         '
+        'useQuantizer
+        '
+        Me.useQuantizer.AutoSize = True
+        Me.useQuantizer.Location = New System.Drawing.Point(9, 64)
+        Me.useQuantizer.Name = "useQuantizer"
+        Me.useQuantizer.Size = New System.Drawing.Size(70, 17)
+        Me.useQuantizer.TabIndex = 0
+        Me.useQuantizer.TabStop = True
+        Me.useQuantizer.Text = "Quantizer"
+        Me.useQuantizer.UseVisualStyleBackColor = True
+        '
         'Label13
         '
         Me.Label13.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -284,6 +332,26 @@ Partial Class Form1
         Me.Label13.Size = New System.Drawing.Size(95, 13)
         Me.Label13.TabIndex = 30
         Me.Label13.Text = "keyframe intervals:"
+        '
+        'quantizer
+        '
+        Me.quantizer.Location = New System.Drawing.Point(9, 87)
+        Me.quantizer.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
+        Me.quantizer.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.quantizer.Name = "quantizer"
+        Me.quantizer.Size = New System.Drawing.Size(50, 20)
+        Me.quantizer.TabIndex = 5
+        Me.quantizer.Value = New Decimal(New Integer() {100, 0, 0, 0})
+        '
+        'LowLatencyCheckbox
+        '
+        Me.LowLatencyCheckbox.AutoSize = True
+        Me.LowLatencyCheckbox.Location = New System.Drawing.Point(6, 123)
+        Me.LowLatencyCheckbox.Name = "LowLatencyCheckbox"
+        Me.LowLatencyCheckbox.Size = New System.Drawing.Size(87, 17)
+        Me.LowLatencyCheckbox.TabIndex = 9
+        Me.LowLatencyCheckbox.Text = "Low Latency"
+        Me.LowLatencyCheckbox.UseVisualStyleBackColor = True
         '
         'MaxKeyFrameInterval
         '
@@ -346,28 +414,6 @@ Partial Class Form1
         Me.Label11.TabIndex = 23
         Me.Label11.Text = "part seconds:"
         '
-        'RemoveTempFiles
-        '
-        Me.RemoveTempFiles.AutoSize = True
-        Me.RemoveTempFiles.Checked = True
-        Me.RemoveTempFiles.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.RemoveTempFiles.Location = New System.Drawing.Point(6, 135)
-        Me.RemoveTempFiles.Name = "RemoveTempFiles"
-        Me.RemoveTempFiles.Size = New System.Drawing.Size(143, 17)
-        Me.RemoveTempFiles.TabIndex = 14
-        Me.RemoveTempFiles.Text = "Remove Temporary Files"
-        Me.RemoveTempFiles.UseVisualStyleBackColor = True
-        '
-        'LowLatencyCheckbox
-        '
-        Me.LowLatencyCheckbox.AutoSize = True
-        Me.LowLatencyCheckbox.Location = New System.Drawing.Point(6, 123)
-        Me.LowLatencyCheckbox.Name = "LowLatencyCheckbox"
-        Me.LowLatencyCheckbox.Size = New System.Drawing.Size(87, 17)
-        Me.LowLatencyCheckbox.TabIndex = 9
-        Me.LowLatencyCheckbox.Text = "Low Latency"
-        Me.LowLatencyCheckbox.UseVisualStyleBackColor = True
-        '
         'audioBitrate
         '
         Me.audioBitrate.Location = New System.Drawing.Point(65, 32)
@@ -386,6 +432,36 @@ Partial Class Form1
         Me.Label9.Size = New System.Drawing.Size(68, 13)
         Me.Label9.TabIndex = 18
         Me.Label9.Text = "audio bitrate:"
+        '
+        'speed
+        '
+        Me.speed.Location = New System.Drawing.Point(9, 32)
+        Me.speed.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
+        Me.speed.Name = "speed"
+        Me.speed.Size = New System.Drawing.Size(50, 20)
+        Me.speed.TabIndex = 6
+        Me.speed.Value = New Decimal(New Integer() {3, 0, 0, 0})
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(6, 16)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(39, 13)
+        Me.Label7.TabIndex = 2
+        Me.Label7.Text = "speed:"
+        '
+        'RemoveTempFiles
+        '
+        Me.RemoveTempFiles.AutoSize = True
+        Me.RemoveTempFiles.Checked = True
+        Me.RemoveTempFiles.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.RemoveTempFiles.Location = New System.Drawing.Point(6, 135)
+        Me.RemoveTempFiles.Name = "RemoveTempFiles"
+        Me.RemoveTempFiles.Size = New System.Drawing.Size(143, 17)
+        Me.RemoveTempFiles.TabIndex = 14
+        Me.RemoveTempFiles.Text = "Remove Temporary Files"
+        Me.RemoveTempFiles.UseVisualStyleBackColor = True
         '
         'BrowseTempLocation
         '
@@ -414,24 +490,6 @@ Partial Class Form1
         Me.tempLocationPath.Name = "tempLocationPath"
         Me.tempLocationPath.Size = New System.Drawing.Size(349, 20)
         Me.tempLocationPath.TabIndex = 12
-        '
-        'speed
-        '
-        Me.speed.Location = New System.Drawing.Point(9, 32)
-        Me.speed.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
-        Me.speed.Name = "speed"
-        Me.speed.Size = New System.Drawing.Size(50, 20)
-        Me.speed.TabIndex = 6
-        Me.speed.Value = New Decimal(New Integer() {3, 0, 0, 0})
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(6, 16)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(39, 13)
-        Me.Label7.TabIndex = 2
-        Me.Label7.Text = "speed:"
         '
         'rav1eVersionLabel
         '
@@ -505,6 +563,16 @@ Partial Class Form1
         Me.SplitContainer1.SplitterDistance = 448
         Me.SplitContainer1.TabIndex = 19
         '
+        'ffmpegVersionLabel
+        '
+        Me.ffmpegVersionLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.ffmpegVersionLabel.AutoSize = True
+        Me.ffmpegVersionLabel.Location = New System.Drawing.Point(6, 427)
+        Me.ffmpegVersionLabel.Name = "ffmpegVersionLabel"
+        Me.ffmpegVersionLabel.Size = New System.Drawing.Size(79, 13)
+        Me.ffmpegVersionLabel.TabIndex = 17
+        Me.ffmpegVersionLabel.Text = "ffmpeg version:"
+        '
         'PauseResumeButton
         '
         Me.PauseResumeButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -536,74 +604,6 @@ Partial Class Form1
         Me.SaveLogBtn.Text = "Save Log"
         Me.SaveLogBtn.UseVisualStyleBackColor = True
         '
-        'quantizer
-        '
-        Me.quantizer.Location = New System.Drawing.Point(9, 87)
-        Me.quantizer.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
-        Me.quantizer.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.quantizer.Name = "quantizer"
-        Me.quantizer.Size = New System.Drawing.Size(50, 20)
-        Me.quantizer.TabIndex = 5
-        Me.quantizer.Value = New Decimal(New Integer() {100, 0, 0, 0})
-        '
-        'useQuantizer
-        '
-        Me.useQuantizer.AutoSize = True
-        Me.useQuantizer.Location = New System.Drawing.Point(9, 64)
-        Me.useQuantizer.Name = "useQuantizer"
-        Me.useQuantizer.Size = New System.Drawing.Size(70, 17)
-        Me.useQuantizer.TabIndex = 0
-        Me.useQuantizer.TabStop = True
-        Me.useQuantizer.Text = "Quantizer"
-        Me.useQuantizer.UseVisualStyleBackColor = True
-        '
-        'useBitrate
-        '
-        Me.useBitrate.AutoSize = True
-        Me.useBitrate.Location = New System.Drawing.Point(83, 65)
-        Me.useBitrate.Name = "useBitrate"
-        Me.useBitrate.Size = New System.Drawing.Size(55, 17)
-        Me.useBitrate.TabIndex = 6
-        Me.useBitrate.TabStop = True
-        Me.useBitrate.Text = "Bitrate"
-        Me.useBitrate.UseVisualStyleBackColor = True
-        '
-        'videoBitrate
-        '
-        Me.videoBitrate.Location = New System.Drawing.Point(83, 87)
-        Me.videoBitrate.Name = "videoBitrate"
-        Me.videoBitrate.Size = New System.Drawing.Size(60, 20)
-        Me.videoBitrate.TabIndex = 7
-        '
-        'Label16
-        '
-        Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(149, 94)
-        Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(30, 13)
-        Me.Label16.TabIndex = 8
-        Me.Label16.Text = "kbps"
-        '
-        'twoPass
-        '
-        Me.twoPass.AutoSize = True
-        Me.twoPass.Location = New System.Drawing.Point(90, 123)
-        Me.twoPass.Name = "twoPass"
-        Me.twoPass.Size = New System.Drawing.Size(58, 17)
-        Me.twoPass.TabIndex = 35
-        Me.twoPass.Text = "2-Pass"
-        Me.twoPass.UseVisualStyleBackColor = True
-        '
-        'ffmpegVersionLabel
-        '
-        Me.ffmpegVersionLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.ffmpegVersionLabel.AutoSize = True
-        Me.ffmpegVersionLabel.Location = New System.Drawing.Point(6, 427)
-        Me.ffmpegVersionLabel.Name = "ffmpegVersionLabel"
-        Me.ffmpegVersionLabel.Size = New System.Drawing.Size(79, 13)
-        Me.ffmpegVersionLabel.TabIndex = 17
-        Me.ffmpegVersionLabel.Text = "ffmpeg version:"
-        '
         'Form1
         '
         Me.AllowDrop = True
@@ -616,6 +616,7 @@ Partial Class Form1
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.CPUThreads, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.quantizer, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MaxKeyFrameInterval, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MinKeyFrameInterval, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pieceSeconds, System.ComponentModel.ISupportInitialize).EndInit()
@@ -627,7 +628,6 @@ Partial Class Form1
         Me.SplitContainer1.Panel2.PerformLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.ResumeLayout(False)
-        CType(Me.quantizer, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
