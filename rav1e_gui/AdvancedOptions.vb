@@ -7,6 +7,8 @@
         TransferCharacteristicsComboBox.SelectedItem = My.Settings.TransferCharacteristics
         RangeComboBox.SelectedItem = My.Settings.Range
         QualityTuningComboBox.SelectedItem = My.Settings.Tune
+        TilingRowsNumericUpDown.Value = My.Settings.TilingRows
+        TilingColumsNumericUpDown.Value = My.Settings.TilingColumns
     End Sub
     Private Sub ColorPrimariesComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ColorPrimariesComboBox.SelectedIndexChanged
         My.Settings.ColorPrimaries = ColorPrimariesComboBox.SelectedItem
@@ -39,6 +41,16 @@
 
     Private Sub RangeComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles RangeComboBox.SelectedIndexChanged
         My.Settings.Range = RangeComboBox.SelectedItem
+        My.Settings.Save()
+    End Sub
+
+    Private Sub TilingRowsNumericUpDown_ValueChanged(sender As Object, e As EventArgs) Handles TilingRowsNumericUpDown.ValueChanged
+        My.Settings.TilingRows = TilingRowsNumericUpDown.Value
+        My.Settings.Save()
+    End Sub
+
+    Private Sub TilingColumsNumericUpDown_ValueChanged(sender As Object, e As EventArgs) Handles TilingColumsNumericUpDown.ValueChanged
+        My.Settings.TilingColumns = TilingColumsNumericUpDown.Value
         My.Settings.Save()
     End Sub
 End Class

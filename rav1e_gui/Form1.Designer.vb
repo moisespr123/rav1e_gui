@@ -69,6 +69,7 @@ Partial Class Form1
         Me.PauseResumeButton = New System.Windows.Forms.Button()
         Me.ClearLogBtn = New System.Windows.Forms.Button()
         Me.SaveLogBtn = New System.Windows.Forms.Button()
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
         CType(Me.CPUThreads, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.quantizer, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -205,6 +206,7 @@ Partial Class Form1
         Me.GroupBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.CheckBox1)
         Me.GroupBox1.Controls.Add(Me.twoPass)
         Me.GroupBox1.Controls.Add(Me.Label16)
         Me.GroupBox1.Controls.Add(Me.ShowPSNRMetrics)
@@ -604,6 +606,16 @@ Partial Class Form1
         Me.SaveLogBtn.Text = "Save Log"
         Me.SaveLogBtn.UseVisualStyleBackColor = True
         '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(213, 94)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(70, 17)
+        Me.CheckBox1.TabIndex = 36
+        Me.CheckBox1.Text = "Use Tiles"
+        Me.CheckBox1.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AllowDrop = True
@@ -679,4 +691,5 @@ Partial Class Form1
     Friend WithEvents useQuantizer As RadioButton
     Friend WithEvents twoPass As CheckBox
     Friend WithEvents ffmpegVersionLabel As Label
+    Friend WithEvents CheckBox1 As CheckBox
 End Class

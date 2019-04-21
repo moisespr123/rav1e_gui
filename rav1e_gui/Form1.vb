@@ -124,6 +124,7 @@ Public Class Form1
     End Sub
 
     Private Sub Part1()
+
         If split_video_file(InputTxt.Text, tempLocationPath.Text, My.Settings.pieceSeconds) Then
             If extract_audio(InputTxt.Text, tempLocationPath.Text) Then
                 Part2()

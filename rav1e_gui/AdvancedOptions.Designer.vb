@@ -37,8 +37,16 @@ Partial Class AdvancedOptions
         Me.QualityTuningComboBox = New System.Windows.Forms.ComboBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.CloseButton = New System.Windows.Forms.Button()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.TilingRowsNumericUpDown = New System.Windows.Forms.NumericUpDown()
+        Me.TilingColumsNumericUpDown = New System.Windows.Forms.NumericUpDown()
+        Me.Label8 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
+        CType(Me.TilingRowsNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TilingColumsNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -195,18 +203,68 @@ Partial Class AdvancedOptions
         '
         Me.CloseButton.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.CloseButton.Location = New System.Drawing.Point(12, 243)
+        Me.CloseButton.Location = New System.Drawing.Point(13, 355)
         Me.CloseButton.Name = "CloseButton"
         Me.CloseButton.Size = New System.Drawing.Size(360, 23)
         Me.CloseButton.TabIndex = 2
         Me.CloseButton.Text = "Close"
         Me.CloseButton.UseVisualStyleBackColor = True
         '
+        'GroupBox3
+        '
+        Me.GroupBox3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox3.Controls.Add(Me.TilingColumsNumericUpDown)
+        Me.GroupBox3.Controls.Add(Me.Label8)
+        Me.GroupBox3.Controls.Add(Me.TilingRowsNumericUpDown)
+        Me.GroupBox3.Controls.Add(Me.Label7)
+        Me.GroupBox3.Location = New System.Drawing.Point(12, 242)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(361, 61)
+        Me.GroupBox3.TabIndex = 7
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Tiling"
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(6, 28)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(37, 13)
+        Me.Label7.TabIndex = 2
+        Me.Label7.Text = "Rows:"
+        '
+        'TilingRowsNumericUpDown
+        '
+        Me.TilingRowsNumericUpDown.Location = New System.Drawing.Point(49, 26)
+        Me.TilingRowsNumericUpDown.Maximum = New Decimal(New Integer() {6, 0, 0, 0})
+        Me.TilingRowsNumericUpDown.Name = "TilingRowsNumericUpDown"
+        Me.TilingRowsNumericUpDown.Size = New System.Drawing.Size(51, 20)
+        Me.TilingRowsNumericUpDown.TabIndex = 3
+        '
+        'TilingColumsNumericUpDown
+        '
+        Me.TilingColumsNumericUpDown.Location = New System.Drawing.Point(180, 26)
+        Me.TilingColumsNumericUpDown.Maximum = New Decimal(New Integer() {6, 0, 0, 0})
+        Me.TilingColumsNumericUpDown.Name = "TilingColumsNumericUpDown"
+        Me.TilingColumsNumericUpDown.Size = New System.Drawing.Size(51, 20)
+        Me.TilingColumsNumericUpDown.TabIndex = 5
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(124, 28)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(50, 13)
+        Me.Label8.TabIndex = 4
+        Me.Label8.Text = "Columns:"
+        '
         'AdvancedOptions
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(384, 277)
+        Me.ClientSize = New System.Drawing.Size(384, 399)
+        Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.CloseButton)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
@@ -218,6 +276,10 @@ Partial Class AdvancedOptions
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        CType(Me.TilingRowsNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TilingColumsNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -237,4 +299,9 @@ Partial Class AdvancedOptions
     Friend WithEvents Label5 As Label
     Friend WithEvents ContentLightTextBox As TextBox
     Friend WithEvents Label6 As Label
+    Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents Label7 As Label
+    Friend WithEvents TilingColumsNumericUpDown As NumericUpDown
+    Friend WithEvents Label8 As Label
+    Friend WithEvents TilingRowsNumericUpDown As NumericUpDown
 End Class

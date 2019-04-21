@@ -293,6 +293,30 @@ Namespace My
                 Me("twoPass") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("6")>  _
+        Public Property TilingRows() As Integer
+            Get
+                Return CType(Me("TilingRows"),Integer)
+            End Get
+            Set
+                Me("TilingRows") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("6")>  _
+        Public Property TilingColumns() As Integer
+            Get
+                Return CType(Me("TilingColumns"),Integer)
+            End Get
+            Set
+                Me("TilingColumns") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
