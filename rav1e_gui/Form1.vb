@@ -431,7 +431,7 @@ Public Class Form1
             ffmpegProcessInfo.UseShellExecute = False
             ffmpegProcess = Process.Start(ffmpegProcessInfo)
             ffmpegProcess.WaitForExit()
-            ffmpegVersionLabel.Text = "ffmpeg version: " + ffmpegProcess.StandardError.ReadLine()
+            ffmpegVersionLabel.Text = ffmpegProcess.StandardError.ReadLine()
         Catch ex As Exception
             MessageBox.Show("ffmpeg.exe was not found. Exiting...")
             Process.Start("https://moisescardona.me/downloading-ffmpeg-rav1e-gui/")
