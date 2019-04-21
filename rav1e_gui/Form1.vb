@@ -28,21 +28,21 @@ Public Class Form1
     End Sub
     Private Sub CheckForLockFile()
         If Not String.IsNullOrWhiteSpace(tempLocationPath.Text) Then
-            Dim y4mFound As Boolean = False
+            Dim videoFound As Boolean = False
             Dim wavFound As Boolean = False
             Dim CheckTempFolder As String() = IO.Directory.GetFiles(tempLocationPath.Text)
             If CheckTempFolder.Count > 0 Then
                 If CheckTempFolder.Contains(tempLocationPath.Text + "\lock") And CheckTempFolder.Contains(tempLocationPath.Text + "\rav1e-concatenate-list.txt") Then
                     For Each item In CheckTempFolder
-                        If IO.Path.GetExtension(item) = ".y4m" And item.Contains("y4m-part-") Then
-                            If Not y4mFound Then y4mFound = True
+                        If item.Contains("y4m-part-") Then
+                            If Not videoFound Then videoFound = True
                         ElseIf item.Contains(".wav") Then
                             If Not wavFound Then wavFound = True
                         End If
                     Next
                 End If
             End If
-            If y4mFound And wavFound Then
+            If videoFound And wavFound Then
                 Dim result As DialogResult = MsgBox("The temporary folder contains temporary files from a previous session. Do you want to continue the previous encoding session?", MsgBoxStyle.YesNo)
                 If result = DialogResult.Yes Then
                     OutputTxt.Text = My.Computer.FileSystem.ReadAllText(tempLocationPath.Text + "\lock").TrimEnd
@@ -166,9 +166,6 @@ Public Class Form1
         Parallel.Invoke(options, tasks.ToArray())
         UpdateLog("Video Segments Encoded")
         Run_opus(My.Settings.AudioBitrate, tempLocationPath.Text)
-        If My.Settings.UseTiling Then
-            IO.File.Move(tempLocationPath.Text + "\" + ItemsToProcess(1), tempLocationPath.Text + "\rav1e-concatenated-file.ivf")
-        End If
         concatenate_video_files(tempLocationPath.Text + "\rav1e-concatenate-list.txt", tempLocationPath.Text)
         merge_audio_video(OutputTxt.Text, tempLocationPath.Text)
         If RemoveTempFiles.Checked Then clean_temp_folder(tempLocationPath.Text)
