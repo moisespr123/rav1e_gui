@@ -35,6 +35,7 @@ Partial Class Form1
         Me.Label6 = New System.Windows.Forms.Label()
         Me.OpusVersionLabel = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.UseTilingCheckbox = New System.Windows.Forms.CheckBox()
         Me.twoPass = New System.Windows.Forms.CheckBox()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.ShowPSNRMetrics = New System.Windows.Forms.CheckBox()
@@ -69,7 +70,6 @@ Partial Class Form1
         Me.PauseResumeButton = New System.Windows.Forms.Button()
         Me.ClearLogBtn = New System.Windows.Forms.Button()
         Me.SaveLogBtn = New System.Windows.Forms.Button()
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
         CType(Me.CPUThreads, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.quantizer, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -206,7 +206,7 @@ Partial Class Form1
         Me.GroupBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.GroupBox1.Controls.Add(Me.CheckBox1)
+        Me.GroupBox1.Controls.Add(Me.UseTilingCheckbox)
         Me.GroupBox1.Controls.Add(Me.twoPass)
         Me.GroupBox1.Controls.Add(Me.Label16)
         Me.GroupBox1.Controls.Add(Me.ShowPSNRMetrics)
@@ -236,10 +236,20 @@ Partial Class Form1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Encoder Options"
         '
+        'UseTilingCheckbox
+        '
+        Me.UseTilingCheckbox.AutoSize = True
+        Me.UseTilingCheckbox.Location = New System.Drawing.Point(174, 61)
+        Me.UseTilingCheckbox.Name = "UseTilingCheckbox"
+        Me.UseTilingCheckbox.Size = New System.Drawing.Size(70, 17)
+        Me.UseTilingCheckbox.TabIndex = 36
+        Me.UseTilingCheckbox.Text = "Use Tiles"
+        Me.UseTilingCheckbox.UseVisualStyleBackColor = True
+        '
         'twoPass
         '
         Me.twoPass.AutoSize = True
-        Me.twoPass.Location = New System.Drawing.Point(90, 123)
+        Me.twoPass.Location = New System.Drawing.Point(174, 107)
         Me.twoPass.Name = "twoPass"
         Me.twoPass.Size = New System.Drawing.Size(58, 17)
         Me.twoPass.TabIndex = 35
@@ -249,7 +259,7 @@ Partial Class Form1
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(149, 94)
+        Me.Label16.Location = New System.Drawing.Point(131, 90)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(30, 13)
         Me.Label16.TabIndex = 8
@@ -260,7 +270,7 @@ Partial Class Form1
         Me.ShowPSNRMetrics.AutoSize = True
         Me.ShowPSNRMetrics.Checked = True
         Me.ShowPSNRMetrics.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.ShowPSNRMetrics.Location = New System.Drawing.Point(152, 123)
+        Me.ShowPSNRMetrics.Location = New System.Drawing.Point(11, 119)
         Me.ShowPSNRMetrics.Name = "ShowPSNRMetrics"
         Me.ShowPSNRMetrics.Size = New System.Drawing.Size(150, 17)
         Me.ShowPSNRMetrics.TabIndex = 32
@@ -279,7 +289,7 @@ Partial Class Form1
         '
         'videoBitrate
         '
-        Me.videoBitrate.Location = New System.Drawing.Point(83, 87)
+        Me.videoBitrate.Location = New System.Drawing.Point(65, 85)
         Me.videoBitrate.Name = "videoBitrate"
         Me.videoBitrate.Size = New System.Drawing.Size(60, 20)
         Me.videoBitrate.TabIndex = 7
@@ -296,7 +306,7 @@ Partial Class Form1
         'useBitrate
         '
         Me.useBitrate.AutoSize = True
-        Me.useBitrate.Location = New System.Drawing.Point(83, 65)
+        Me.useBitrate.Location = New System.Drawing.Point(9, 88)
         Me.useBitrate.Name = "useBitrate"
         Me.useBitrate.Size = New System.Drawing.Size(55, 17)
         Me.useBitrate.TabIndex = 6
@@ -337,7 +347,7 @@ Partial Class Form1
         '
         'quantizer
         '
-        Me.quantizer.Location = New System.Drawing.Point(9, 87)
+        Me.quantizer.Location = New System.Drawing.Point(83, 61)
         Me.quantizer.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         Me.quantizer.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.quantizer.Name = "quantizer"
@@ -348,7 +358,7 @@ Partial Class Form1
         'LowLatencyCheckbox
         '
         Me.LowLatencyCheckbox.AutoSize = True
-        Me.LowLatencyCheckbox.Location = New System.Drawing.Point(6, 123)
+        Me.LowLatencyCheckbox.Location = New System.Drawing.Point(174, 84)
         Me.LowLatencyCheckbox.Name = "LowLatencyCheckbox"
         Me.LowLatencyCheckbox.Size = New System.Drawing.Size(87, 17)
         Me.LowLatencyCheckbox.TabIndex = 9
@@ -606,16 +616,6 @@ Partial Class Form1
         Me.SaveLogBtn.Text = "Save Log"
         Me.SaveLogBtn.UseVisualStyleBackColor = True
         '
-        'CheckBox1
-        '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(213, 94)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(70, 17)
-        Me.CheckBox1.TabIndex = 36
-        Me.CheckBox1.Text = "Use Tiles"
-        Me.CheckBox1.UseVisualStyleBackColor = True
-        '
         'Form1
         '
         Me.AllowDrop = True
@@ -691,5 +691,5 @@ Partial Class Form1
     Friend WithEvents useQuantizer As RadioButton
     Friend WithEvents twoPass As CheckBox
     Friend WithEvents ffmpegVersionLabel As Label
-    Friend WithEvents CheckBox1 As CheckBox
+    Friend WithEvents UseTilingCheckbox As CheckBox
 End Class

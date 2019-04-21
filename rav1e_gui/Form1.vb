@@ -82,6 +82,7 @@ Public Class Form1
         twoPass.Enabled = False
         useQuantizer.Enabled = False
         useBitrate.Enabled = False
+        UseTilingCheckbox.Enabled = False
         videoBitrate.Enabled = False
     End Sub
     Private Sub ResumePreviousEncodeSession()
@@ -124,8 +125,9 @@ Public Class Form1
     End Sub
 
     Private Sub Part1()
-
-        If split_video_file(InputTxt.Text, tempLocationPath.Text, My.Settings.pieceSeconds) Then
+        Dim PieceSeconds As Long = 0
+        If Not UseTilingCheckbox.Checked Then PieceSeconds = My.Settings.pieceSeconds
+        If split_video_file(InputTxt.Text, tempLocationPath.Text, PieceSeconds) Then
             If extract_audio(InputTxt.Text, tempLocationPath.Text) Then
                 Part2()
             End If
@@ -164,6 +166,9 @@ Public Class Form1
         Parallel.Invoke(options, tasks.ToArray())
         UpdateLog("Video Segments Encoded")
         Run_opus(My.Settings.AudioBitrate, tempLocationPath.Text)
+        If My.Settings.UseTiling Then
+            IO.File.Move(tempLocationPath.Text + "\" + ItemsToProcess(1), tempLocationPath.Text + "\rav1e-concatenated-file.ivf")
+        End If
         concatenate_video_files(tempLocationPath.Text + "\rav1e-concatenate-list.txt", tempLocationPath.Text)
         merge_audio_video(OutputTxt.Text, tempLocationPath.Text)
         If RemoveTempFiles.Checked Then clean_temp_folder(tempLocationPath.Text)
@@ -180,7 +185,7 @@ Public Class Form1
                                  InputTxt.Enabled = True
                                  InputBrowseBtn.Enabled = True
                                  OutputBrowseBtn.Enabled = True
-                                 pieceSeconds.Enabled = True
+                                 pieceSeconds.Enabled = Not UseTilingCheckbox.Checked
                                  AdvancedEncoderOptionsButton.Enabled = True
                                  ShowPSNRMetrics.Enabled = True
                                  CPUThreads.Enabled = True
@@ -190,8 +195,10 @@ Public Class Form1
                                  twoPass.Enabled = True
                                  useQuantizer.Enabled = True
                                  useBitrate.Enabled = True
+                                 UseTilingCheckbox.Enabled = True
                                  If My.Settings.useQuantizer Then quantizer.Enabled = True
                                  If My.Settings.useBitrate Then videoBitrate.Enabled = True
+
                              End Sub)
         MsgBox("Finished")
     End Sub
@@ -219,9 +226,12 @@ Public Class Form1
             Else
                 VideoBitrateString = "--quantizer " + My.Settings.quantizer.ToString()
             End If
+            If UseTilingCheckbox.Checked Then
+                VideoBitrateString += " --threads " + My.Settings.CPUThreads.ToString() + " --tile-rows-log2 " + My.Settings.TilingRows.ToString() + " --tile-cols-log2 " + My.Settings.TilingColumns.ToString()
+            End If
             rav1eProcess.StartInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """  " + VideoBitrateString + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
-            If Not My.Settings.lowlat Then
-                rav1eProcess.StartInfo.Arguments += " --low_latency false"
+            If My.Settings.lowlat Then
+                rav1eProcess.StartInfo.Arguments += " --low_latency true"
             End If
             If My.Settings.ShowPSNRMetrics Then
                 rav1eProcess.StartInfo.Arguments += " --psnr"
@@ -256,12 +266,18 @@ Public Class Form1
         End Using
         Return True
     End Function
-    Private Function split_video_file(input As String, tempFolder As String, pieceSenconds As Integer)
-        UpdateLog("Splitting input video file")
+    Private Function split_video_file(input As String, tempFolder As String, pieceSeconds As Integer)
+
         Dim ffmpegProcessInfo As New ProcessStartInfo
         Dim ffmpegProcess As Process
         ffmpegProcessInfo.FileName = "ffmpeg.exe"
-        ffmpegProcessInfo.Arguments = "-i """ + input + """ -f segment -segment_time " + pieceSenconds.ToString() + " """ + tempFolder + "/y4m-part-%6d.y4m"" -y"
+        If pieceSeconds > 0 Then
+            UpdateLog("Splitting input video file")
+            ffmpegProcessInfo.Arguments = "-i """ + input + """ -f segment -segment_time " + pieceSeconds.ToString() + " """ + tempFolder + "/y4m-part-%6d.y4m"" -y"
+        Else
+            UpdateLog("Encoding input video to Y4M")
+            ffmpegProcessInfo.Arguments = "-i """ + input + """ """ + tempFolder + "/y4m-part-000001.y4m"" -y"
+        End If
         ffmpegProcessInfo.CreateNoWindow = True
         ffmpegProcessInfo.RedirectStandardOutput = False
         ffmpegProcessInfo.UseShellExecute = False
@@ -335,7 +351,7 @@ Public Class Form1
         IO.Directory.SetCurrentDirectory(IO.Path.GetDirectoryName(Process.GetCurrentProcess.MainModule.FileName))
 
         CPUThreads.Maximum = Environment.ProcessorCount
-        CPUThreads.Value = CPUThreads.Maximum
+        If My.Settings.CPUThreads > 0 Then CPUThreads.Value = My.Settings.CPUThreads Else CPUThreads.Value = CPUThreads.Maximum
         quantizer.Value = My.Settings.quantizer
         videoBitrate.Text = My.Settings.VideoBitrate
         useQuantizer.Checked = My.Settings.useQuantizer
@@ -345,6 +361,7 @@ Public Class Form1
         audioBitrate.Value = My.Settings.AudioBitrate
         MinKeyFrameInterval.Value = My.Settings.minKeyInt
         MaxKeyFrameInterval.Value = My.Settings.maxKeyInt
+        UseTilingCheckbox.Checked = My.Settings.UseTiling
         pieceSeconds.Value = My.Settings.pieceSeconds
         LowLatencyCheckbox.Checked = My.Settings.lowlat
         tempLocationPath.Text = My.Settings.tempFolder
@@ -624,6 +641,21 @@ Public Class Form1
     Private Sub TwoPass_CheckedChanged(sender As Object, e As EventArgs) Handles twoPass.CheckedChanged
         If GUILoaded Then
             My.Settings.twoPass = twoPass.Checked
+            My.Settings.Save()
+        End If
+    End Sub
+
+    Private Sub UseTilingCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles UseTilingCheckbox.CheckedChanged
+        If GUILoaded Then
+            My.Settings.UseTiling = UseTilingCheckbox.Checked
+            My.Settings.Save()
+        End If
+        pieceSeconds.Enabled = Not UseTilingCheckbox.Checked
+    End Sub
+
+    Private Sub CPUThreads_ValueChanged(sender As Object, e As EventArgs) Handles CPUThreads.ValueChanged
+        If GUILoaded Then
+            My.Settings.CPUThreads = CPUThreads.Value
             My.Settings.Save()
         End If
     End Sub

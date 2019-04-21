@@ -317,6 +317,30 @@ Namespace My
                 Me("TilingColumns") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property UseTiling() As Boolean
+            Get
+                Return CType(Me("UseTiling"),Boolean)
+            End Get
+            Set
+                Me("UseTiling") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property CPUThreads() As Integer
+            Get
+                Return CType(Me("CPUThreads"),Integer)
+            End Get
+            Set
+                Me("CPUThreads") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
