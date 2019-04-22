@@ -29,20 +29,20 @@ Public Class Form1
     Private Sub CheckForLockFile()
         If Not String.IsNullOrWhiteSpace(tempLocationPath.Text) Then
             Dim videoFound As Boolean = False
-            Dim wavFound As Boolean = False
+            Dim opusFound As Boolean = False
             Dim CheckTempFolder As String() = IO.Directory.GetFiles(tempLocationPath.Text)
             If CheckTempFolder.Count > 0 Then
                 If CheckTempFolder.Contains(tempLocationPath.Text + "\lock") And CheckTempFolder.Contains(tempLocationPath.Text + "\rav1e-concatenate-list.txt") Then
                     For Each item In CheckTempFolder
                         If item.Contains("y4m-part-") Then
                             If Not videoFound Then videoFound = True
-                        ElseIf item.Contains(".wav") Then
-                            If Not wavFound Then wavFound = True
+                        ElseIf item.Contains(".opus") Then
+                            If Not opusFound Then opusFound = True
                         End If
                     Next
                 End If
             End If
-            If videoFound And wavFound Then
+            If videoFound And opusFound Then
                 Dim result As DialogResult = MsgBox("The temporary folder contains temporary files from a previous session. Do you want to continue the previous encoding session?", MsgBoxStyle.YesNo)
                 If result = DialogResult.Yes Then
                     OutputTxt.Text = My.Computer.FileSystem.ReadAllText(tempLocationPath.Text + "\lock").TrimEnd
@@ -51,7 +51,7 @@ Public Class Form1
                     Dim result2 As DialogResult = MsgBox("Do you want to clean the folder?", MsgBoxStyle.YesNo)
                     If result2 = DialogResult.Yes Then
                         For Each ItemToDelete In CheckTempFolder
-                            If ItemToDelete.Contains(".ivf") Or ItemToDelete.Contains(".txt") Or ItemToDelete.Contains(".y4m") Or ItemToDelete.Contains(".wav") Or ItemToDelete.Contains(".opus") Then My.Computer.FileSystem.DeleteFile(ItemToDelete)
+                            If ItemToDelete.Contains(".ivf") Or ItemToDelete.Contains(".txt") Or ItemToDelete.Contains(".y4m") Or ItemToDelete.Contains(".opus") Then My.Computer.FileSystem.DeleteFile(ItemToDelete)
                         Next
                     End If
                 End If
@@ -103,11 +103,11 @@ Public Class Form1
             Dim CheckTempFolder As String() = IO.Directory.GetFiles(tempLocationPath.Text)
             If CheckTempFolder.Count > 0 Then
                 For Each item In CheckTempFolder
-                    If item.Contains(".ivf") Or item.Contains(".txt") Or item.Contains(".y4m") Or item.Contains(".wav") Or item.Contains(".opus") Then
+                    If item.Contains(".ivf") Or item.Contains(".txt") Or item.Contains(".y4m") Or item.Contains(".opus") Then
                         Dim result As DialogResult = MsgBox("The temporary folder contains temporary files. It is recommended that the folder is cleaned up for best results. Otherwise, you could get an incorrect AV1 file. Do you want to clean the folder?", MsgBoxStyle.YesNo)
                         If result = DialogResult.Yes Then
                             For Each ItemToDelete In CheckTempFolder
-                                If ItemToDelete.Contains(".ivf") Or ItemToDelete.Contains(".txt") Or ItemToDelete.Contains(".y4m") Or ItemToDelete.Contains(".wav") Or ItemToDelete.Contains(".opus") Then My.Computer.FileSystem.DeleteFile(ItemToDelete)
+                                If ItemToDelete.Contains(".ivf") Or ItemToDelete.Contains(".txt") Or ItemToDelete.Contains(".y4m") Or ItemToDelete.Contains(".opus") Then My.Computer.FileSystem.DeleteFile(ItemToDelete)
                             Next
                         End If
                         Exit For
@@ -128,7 +128,7 @@ Public Class Form1
         Dim PieceSeconds As Long = 0
         If Not UseTilingCheckbox.Checked Then PieceSeconds = My.Settings.pieceSeconds
         If split_video_file(InputTxt.Text, tempLocationPath.Text, PieceSeconds) Then
-            If extract_audio(InputTxt.Text, tempLocationPath.Text) Then
+            If extract_audio(InputTxt.Text, My.Settings.AudioBitrate, tempLocationPath.Text) Then
                 Part2()
             End If
         End If
@@ -165,7 +165,6 @@ Public Class Form1
         Dim options As New ParallelOptions With {.MaxDegreeOfParallelism = CPUThreads.Value}
         Parallel.Invoke(options, tasks.ToArray())
         UpdateLog("Video Segments Encoded")
-        Run_opus(My.Settings.AudioBitrate, tempLocationPath.Text)
         concatenate_video_files(tempLocationPath.Text + "\rav1e-concatenate-list.txt", tempLocationPath.Text)
         merge_audio_video(OutputTxt.Text, tempLocationPath.Text)
         If RemoveTempFiles.Checked Then clean_temp_folder(tempLocationPath.Text)
@@ -199,20 +198,6 @@ Public Class Form1
                              End Sub)
         MsgBox("Finished")
     End Sub
-    Private Function Run_opus(audio_bitrate As Integer, tempFolder As String)
-        UpdateLog("Encoding Audio")
-        Dim opusProcessInfo As New ProcessStartInfo
-        Dim opusProcess As Process
-        opusProcessInfo.FileName = "opusenc.exe"
-        opusProcessInfo.Arguments = "--music --bitrate " & audio_bitrate & " """ + tempFolder + "\rav1e-audio.wav"""
-        opusProcessInfo.CreateNoWindow = True
-        opusProcessInfo.RedirectStandardOutput = False
-        opusProcessInfo.UseShellExecute = False
-        opusProcess = Process.Start(opusProcessInfo)
-        opusProcess.WaitForExit()
-        UpdateLog("Audio encoded")
-        Return True
-    End Function
     Private Function Run_rav1e(Input_File As String, Output_File As String)
         UpdateLog("Encoding Video part " + IO.Path.GetFileName(Input_File))
         Using rav1eProcess As New Process()
@@ -300,7 +285,7 @@ Public Class Form1
     End Function
     Private Function clean_temp_folder(tempFolder As String)
         For Each File As String In IO.Directory.GetFiles(tempFolder)
-            If (IO.Path.GetExtension(File) = ".y4m" Or IO.Path.GetExtension(File) = ".ivf" And File.Contains("y4m-part-")) Or IO.Path.GetFileName(File) = "rav1e-audio.opus" Or IO.Path.GetFileName(File) = "rav1e-audio.wav" Or IO.Path.GetFileName(File) = "rav1e-concatenated-file.ivf" Or IO.Path.GetFileName(File) = "rav1e-concatenate-list.txt" Then
+            If (IO.Path.GetExtension(File) = ".y4m" Or IO.Path.GetExtension(File) = ".ivf" And File.Contains("y4m-part-")) Or IO.Path.GetFileName(File) = "rav1e-audio.opus" Or IO.Path.GetFileName(File) = "rav1e-concatenated-file.ivf" Or IO.Path.GetFileName(File) = "rav1e-concatenate-list.txt" Then
                 My.Computer.FileSystem.DeleteFile(File)
             End If
         Next
@@ -322,18 +307,18 @@ Public Class Form1
         Return True
     End Function
 
-    Private Function extract_audio(input As String, tempFolder As String)
-        UpdateLog("Extracting audio")
+    Private Function extract_audio(input As String, bitrate As Integer, tempFolder As String)
+        UpdateLog("Extracting and encoding audio")
         Dim ffmpegProcessInfo As New ProcessStartInfo
         Dim ffmpegProcess As Process
         ffmpegProcessInfo.FileName = "ffmpeg.exe"
-        ffmpegProcessInfo.Arguments = "-i """ + input + """ -vn """ + tempFolder + "\rav1e-audio.wav"" -y"
+        ffmpegProcessInfo.Arguments = "-i """ + input + """ -c:a libopus -application audio -b:a " + bitrate.ToString() + "K """ + tempFolder + "\rav1e-audio.opus"" -y"
         ffmpegProcessInfo.CreateNoWindow = True
         ffmpegProcessInfo.RedirectStandardOutput = False
         ffmpegProcessInfo.UseShellExecute = False
         ffmpegProcess = Process.Start(ffmpegProcessInfo)
         ffmpegProcess.WaitForExit()
-        UpdateLog("Audio extracted")
+        UpdateLog("Audio extracted and encoded")
         Return True
     End Function
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -364,7 +349,6 @@ Public Class Form1
         tempLocationPath.Text = My.Settings.tempFolder
         RemoveTempFiles.Checked = My.Settings.removeTempFiles
         ShowPSNRMetrics.Checked = My.Settings.ShowPSNRMetrics
-        GetOpusencVersion()
         GetRav1eVersion()
         GetFfmpegVersion()
         GUILoaded = True
@@ -384,24 +368,6 @@ Public Class Form1
             ProgressLog.SelectionStart = ProgressLog.Text.Length - 1
             ProgressLog.ScrollToCaret()
         End If
-    End Sub
-    Private Sub GetOpusencVersion()
-        Try
-            Dim opusProcessInfo As New ProcessStartInfo
-            Dim opusProcess As Process
-            opusProcessInfo.FileName = "opusenc.exe"
-            opusProcessInfo.Arguments = "-V"
-            opusProcessInfo.CreateNoWindow = True
-            opusProcessInfo.RedirectStandardOutput = True
-            opusProcessInfo.UseShellExecute = False
-            opusProcess = Process.Start(opusProcessInfo)
-            opusProcess.WaitForExit()
-            OpusVersionLabel.Text = "opusenc version: " + opusProcess.StandardOutput.ReadLine()
-        Catch ex As Exception
-            MessageBox.Show("opusenc.exe was not found. Exiting...")
-            Process.Start("https://moisescardona.me/opusenc-builds/")
-            Me.Close()
-        End Try
     End Sub
     Private Sub GetRav1eVersion()
         Try
@@ -448,13 +414,6 @@ Public Class Form1
     End Function
     Private Function ffmpegExists() As Boolean
         If My.Computer.FileSystem.FileExists("ffmpeg.exe") Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-    Private Function OpusEncExists() As Boolean
-        If My.Computer.FileSystem.FileExists("opusenc.exe") Then
             Return True
         Else
             Return False

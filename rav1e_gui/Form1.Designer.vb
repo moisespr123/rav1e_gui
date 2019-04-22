@@ -33,7 +33,6 @@ Partial Class Form1
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
-        Me.OpusVersionLabel = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.UseTilingCheckbox = New System.Windows.Forms.CheckBox()
         Me.twoPass = New System.Windows.Forms.CheckBox()
@@ -190,16 +189,6 @@ Partial Class Form1
         Me.Label6.Size = New System.Drawing.Size(34, 13)
         Me.Label6.TabIndex = 12
         Me.Label6.Text = "v1.11"
-        '
-        'OpusVersionLabel
-        '
-        Me.OpusVersionLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.OpusVersionLabel.AutoSize = True
-        Me.OpusVersionLabel.Location = New System.Drawing.Point(6, 414)
-        Me.OpusVersionLabel.Name = "OpusVersionLabel"
-        Me.OpusVersionLabel.Size = New System.Drawing.Size(88, 13)
-        Me.OpusVersionLabel.TabIndex = 14
-        Me.OpusVersionLabel.Text = "opusenc version:"
         '
         'GroupBox1
         '
@@ -507,7 +496,7 @@ Partial Class Form1
         '
         Me.rav1eVersionLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.rav1eVersionLabel.AutoSize = True
-        Me.rav1eVersionLabel.Location = New System.Drawing.Point(6, 401)
+        Me.rav1eVersionLabel.Location = New System.Drawing.Point(6, 414)
         Me.rav1eVersionLabel.Name = "rav1eVersionLabel"
         Me.rav1eVersionLabel.Size = New System.Drawing.Size(74, 13)
         Me.rav1eVersionLabel.TabIndex = 16
@@ -549,7 +538,6 @@ Partial Class Form1
         Me.SplitContainer1.Panel1.Controls.Add(Me.Label1)
         Me.SplitContainer1.Panel1.Controls.Add(Me.GroupBox1)
         Me.SplitContainer1.Panel1.Controls.Add(Me.Label2)
-        Me.SplitContainer1.Panel1.Controls.Add(Me.OpusVersionLabel)
         Me.SplitContainer1.Panel1.Controls.Add(Me.InputTxt)
         Me.SplitContainer1.Panel1.Controls.Add(Me.Label6)
         Me.SplitContainer1.Panel1.Controls.Add(Me.OutputTxt)
@@ -655,7 +643,6 @@ Partial Class Form1
     Friend WithEvents ProgressBar1 As ProgressBar
     Friend WithEvents Label5 As Label
     Friend WithEvents Label6 As Label
-    Friend WithEvents OpusVersionLabel As Label
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents BrowseTempLocation As Button
     Friend WithEvents Label8 As Label
