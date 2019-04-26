@@ -405,21 +405,6 @@ Public Class Form1
         End Try
     End Sub
 
-    Private Function rav1eExists() As Boolean
-        If My.Computer.FileSystem.FileExists("rav1e.exe") Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-    Private Function ffmpegExists() As Boolean
-        If My.Computer.FileSystem.FileExists("ffmpeg.exe") Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
     Private Sub tempLocationPath_TextChanged(sender As Object, e As EventArgs) Handles tempLocationPath.TextChanged
         If GUILoaded Then
             My.Settings.tempFolder = tempLocationPath.Text
