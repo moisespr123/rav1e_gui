@@ -77,7 +77,6 @@ Public Class Form1
         ShowPSNRMetrics.Enabled = False
         CPUThreads.Enabled = False
         SaveLogBtn.Enabled = False
-        ClearLogBtn.Enabled = False
         PauseResumeButton.Enabled = True
         twoPass.Enabled = False
         useQuantizer.Enabled = False
@@ -167,7 +166,7 @@ Public Class Form1
         UpdateLog("Video Segments Encoded")
         concatenate_video_files(tempLocationPath.Text + "\rav1e-concatenate-list.txt", tempLocationPath.Text)
         merge_audio_video(OutputTxt.Text, tempLocationPath.Text)
-        If RemoveTempFiles.Checked Then clean_temp_folder(tempLocationPath.Text)
+        If RemoveTempFiles.Checked Then clean_temp_folder(tempLocationPath.Text) Else IO.File.Delete(tempLocationPath.Text + "\lock")
         StartBtn.BeginInvoke(Sub()
                                  StartBtn.Enabled = True
                                  audioBitrate.Enabled = True
@@ -186,7 +185,6 @@ Public Class Form1
                                  ShowPSNRMetrics.Enabled = True
                                  CPUThreads.Enabled = True
                                  SaveLogBtn.Enabled = True
-                                 ClearLogBtn.Enabled = True
                                  PauseResumeButton.Enabled = False
                                  twoPass.Enabled = True
                                  useQuantizer.Enabled = True
@@ -198,7 +196,7 @@ Public Class Form1
                              End Sub)
         MsgBox("Finished")
     End Sub
-    Private Function Run_rav1e(Input_File As String, Output_File As String)
+    Private Function Run_rav1e(Input_File As String, Output_File As String, Optional SecondPass As Boolean = False)
         UpdateLog("Encoding Video part " + IO.Path.GetFileName(Input_File))
         Using rav1eProcess As New Process()
             rav1eProcess.StartInfo.FileName = "rav1e.exe"
@@ -211,15 +209,19 @@ Public Class Form1
             If UseTilingCheckbox.Checked Then
                 VideoBitrateString += " --threads " + My.Settings.CPUThreads.ToString() + " --tile-rows-log2 " + My.Settings.TilingRows.ToString() + " --tile-cols-log2 " + My.Settings.TilingColumns.ToString()
             End If
-            rav1eProcess.StartInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """  " + VideoBitrateString + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
+            If My.Settings.twoPass And Not SecondPass Then
+                UpdateLog("Doing first pass for video part " + IO.Path.GetFileName(Input_File) + "")
+                rav1eProcess.StartInfo.Arguments = """" + Input_File + """ --first-pass """ + Output_File + ".first-pass-arg-output"" -o """ + Output_File + ".first-pass.ivf""  " + VideoBitrateString + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
+            ElseIf My.Settings.twoPass And SecondPass Then
+                rav1eProcess.StartInfo.Arguments = """" + Input_File + """ --second-pass """ + Output_File + ".first-pass-arg-output"" -o """ + Output_File + """  " + VideoBitrateString + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
+            Else
+                rav1eProcess.StartInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """  " + VideoBitrateString + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
+            End If
             If My.Settings.lowlat Then
                 rav1eProcess.StartInfo.Arguments += " --low_latency"
             End If
             If My.Settings.ShowPSNRMetrics Then
                 rav1eProcess.StartInfo.Arguments += " --psnr"
-            End If
-            If My.Settings.twoPass Then
-                rav1eProcess.StartInfo.Arguments += " -p 2"
             End If
             rav1eProcess.StartInfo.CreateNoWindow = True
             rav1eProcess.StartInfo.RedirectStandardOutput = True
@@ -240,11 +242,19 @@ Public Class Form1
             rav1eProcess.BeginOutputReadLine()
             rav1eProcess.BeginErrorReadLine()
             rav1eProcess.WaitForExit()
-            UpdateLog("Video part " + IO.Path.GetFileName(Input_File) + " Encoding complete.")
-            If Not Exiting Then
-                IO.File.Delete(Input_File)
+
+            If My.Settings.twoPass And Not SecondPass Then
+                UpdateLog("Video part " + IO.Path.GetFileName(Input_File) + " First pass encoding complete.")
+                Run_rav1e(Input_File, Output_File, True)
+            Else
+                UpdateLog("Video part " + IO.Path.GetFileName(Input_File) + " encoding complete.")
+                If Not Exiting Then
+                    IO.File.Delete(Input_File)
+                    If IO.File.Exists(Output_File + ".first-pass-arg-output") Then IO.File.Delete(Output_File + ".first-pass-arg-output")
+                    If IO.File.Exists(Output_File + ".first-pass-file-output.ivf") Then IO.File.Delete(Output_File + ".first-pass-file-output.ivf")
+                End If
+                ProgressBar1.BeginInvoke(Sub() ProgressBar1.PerformStep())
             End If
-            ProgressBar1.BeginInvoke(Sub() ProgressBar1.PerformStep())
         End Using
         Return True
     End Function
@@ -335,7 +345,7 @@ Public Class Form1
         CPUThreads.Maximum = Environment.ProcessorCount
         If My.Settings.CPUThreads > 0 Then CPUThreads.Value = My.Settings.CPUThreads Else CPUThreads.Value = CPUThreads.Maximum
         quantizer.Value = My.Settings.quantizer
-        videoBitrate.Text = My.Settings.VideoBitrate
+        videoBitrate.Value = My.Settings.VideoBitrate
         useQuantizer.Checked = My.Settings.useQuantizer
         useBitrate.Checked = My.Settings.useBitrate
         twoPass.Checked = My.Settings.twoPass
@@ -374,7 +384,7 @@ Public Class Form1
             Dim rav1eProcessInfo As New ProcessStartInfo
             Dim rav1eProcess As Process
             rav1eProcessInfo.FileName = "rav1e.exe"
-            rav1eProcessInfo.Arguments = "-V"
+            rav1eProcessInfo.Arguments = "-0"
             rav1eProcessInfo.CreateNoWindow = True
             rav1eProcessInfo.RedirectStandardOutput = True
             rav1eProcessInfo.UseShellExecute = False
@@ -563,9 +573,9 @@ Public Class Form1
         videoBitrate.Enabled = False
     End Sub
 
-    Private Sub VideoBitrate_TextChanged(sender As Object, e As EventArgs) Handles videoBitrate.TextChanged
+    Private Sub VideoBitrate_ValueChanged(sender As Object, e As EventArgs) Handles videoBitrate.ValueChanged
         If GUILoaded Then
-            My.Settings.VideoBitrate = videoBitrate.Text
+            My.Settings.VideoBitrate = videoBitrate.Value
             My.Settings.Save()
         End If
     End Sub

@@ -34,12 +34,12 @@ Partial Class Form1
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.videoBitrate = New System.Windows.Forms.NumericUpDown()
         Me.UseTilingCheckbox = New System.Windows.Forms.CheckBox()
         Me.twoPass = New System.Windows.Forms.CheckBox()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.ShowPSNRMetrics = New System.Windows.Forms.CheckBox()
         Me.CPUThreads = New System.Windows.Forms.NumericUpDown()
-        Me.videoBitrate = New System.Windows.Forms.TextBox()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.useBitrate = New System.Windows.Forms.RadioButton()
         Me.AdvancedEncoderOptionsButton = New System.Windows.Forms.Button()
@@ -70,6 +70,7 @@ Partial Class Form1
         Me.ClearLogBtn = New System.Windows.Forms.Button()
         Me.SaveLogBtn = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.videoBitrate, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CPUThreads, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.quantizer, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MaxKeyFrameInterval, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -188,19 +189,19 @@ Partial Class Form1
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(34, 13)
         Me.Label6.TabIndex = 12
-        Me.Label6.Text = "v1.12"
+        Me.Label6.Text = "v1.13"
         '
         'GroupBox1
         '
         Me.GroupBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.videoBitrate)
         Me.GroupBox1.Controls.Add(Me.UseTilingCheckbox)
         Me.GroupBox1.Controls.Add(Me.twoPass)
         Me.GroupBox1.Controls.Add(Me.Label16)
         Me.GroupBox1.Controls.Add(Me.ShowPSNRMetrics)
         Me.GroupBox1.Controls.Add(Me.CPUThreads)
-        Me.GroupBox1.Controls.Add(Me.videoBitrate)
         Me.GroupBox1.Controls.Add(Me.Label15)
         Me.GroupBox1.Controls.Add(Me.useBitrate)
         Me.GroupBox1.Controls.Add(Me.AdvancedEncoderOptionsButton)
@@ -225,6 +226,16 @@ Partial Class Form1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Encoder Options"
         '
+        'videoBitrate
+        '
+        Me.videoBitrate.Location = New System.Drawing.Point(65, 84)
+        Me.videoBitrate.Maximum = New Decimal(New Integer() {999999, 0, 0, 0})
+        Me.videoBitrate.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.videoBitrate.Name = "videoBitrate"
+        Me.videoBitrate.Size = New System.Drawing.Size(68, 20)
+        Me.videoBitrate.TabIndex = 37
+        Me.videoBitrate.Value = New Decimal(New Integer() {10000, 0, 0, 0})
+        '
         'UseTilingCheckbox
         '
         Me.UseTilingCheckbox.AutoSize = True
@@ -248,7 +259,7 @@ Partial Class Form1
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(131, 90)
+        Me.Label16.Location = New System.Drawing.Point(133, 90)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(30, 13)
         Me.Label16.TabIndex = 8
@@ -275,13 +286,6 @@ Partial Class Form1
         Me.CPUThreads.Size = New System.Drawing.Size(47, 20)
         Me.CPUThreads.TabIndex = 34
         Me.CPUThreads.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'videoBitrate
-        '
-        Me.videoBitrate.Location = New System.Drawing.Point(65, 85)
-        Me.videoBitrate.Name = "videoBitrate"
-        Me.videoBitrate.Size = New System.Drawing.Size(60, 20)
-        Me.videoBitrate.TabIndex = 7
         '
         'Label15
         '
@@ -615,6 +619,7 @@ Partial Class Form1
         Me.Text = "rav1e GUI"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.videoBitrate, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CPUThreads, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.quantizer, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MaxKeyFrameInterval, System.ComponentModel.ISupportInitialize).EndInit()
@@ -673,10 +678,10 @@ Partial Class Form1
     Friend WithEvents PauseResumeButton As Button
     Friend WithEvents quantizer As NumericUpDown
     Friend WithEvents Label16 As Label
-    Friend WithEvents videoBitrate As TextBox
     Friend WithEvents useBitrate As RadioButton
     Friend WithEvents useQuantizer As RadioButton
     Friend WithEvents twoPass As CheckBox
     Friend WithEvents ffmpegVersionLabel As Label
     Friend WithEvents UseTilingCheckbox As CheckBox
+    Friend WithEvents videoBitrate As NumericUpDown
 End Class

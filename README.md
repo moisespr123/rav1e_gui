@@ -1,7 +1,7 @@
 # rav1e_gui [![Travis Build Status](https://travis-ci.org/moisesmcardona/rav1e_gui.svg?branch=master)](https://travis-ci.org/moisesmcardona/rav1e_gui) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/moisesmcardona/rav1e_gui?branch=master&svg=true)](https://ci.appveyor.com/project/moisesmcardona/rav1e-gui)
 A GUI to convert video files to AV1 using rav1e
 
-![Main Window Screenshot](https://moisescardona.me/wp-content/uploads/2019/04/rav1e-GUI-v1.12-Main-Window.png)
+![Main Window Screenshot](https://moisescardona.me/wp-content/uploads/2019/07/rav1e-GUI-v1.13.png)
 
 ![Advanced Encoder Options Window Screenshot](https://moisescardona.me/wp-content/uploads/2019/04/rav1e-GUI-v1.11-Advanced-Options.png)
 
