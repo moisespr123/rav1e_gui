@@ -619,4 +619,8 @@ Public Class Form1
             My.Settings.Save()
         End If
     End Sub
+
+    Private Sub InputTxt_TextChanged(sender As Object, e As EventArgs) Handles InputTxt.TextChanged
+        OutputTxt.Text = IO.Path.ChangeExtension(InputTxt.Text, ".webm")
+    End Sub
 End Class
