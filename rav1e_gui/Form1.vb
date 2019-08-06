@@ -3,6 +3,8 @@
 Public Class Form1
     Private Exiting As Boolean = False
     Private GUILoaded As Boolean = False
+    Private Const PipeBuffer As Integer = 1024 * 1024 * 1024
+    Private ExtensionsAndFilesList As String() = {".txt", ".opus", "video-part", "InputVideo", ".ivf", "lock"}
     Private Sub InputBrowseBtn_Click(sender As Object, e As EventArgs) Handles InputBrowseBtn.Click
         Dim InputBrowser As New OpenFileDialog With {
             .Title = "Browse for a video file",
@@ -37,7 +39,7 @@ Public Class Form1
             If CheckTempFolder.Count > 0 Then
                 If CheckTempFolder.Contains(tempLocationPath.Text + "\lock") And CheckTempFolder.Contains(tempLocationPath.Text + "\rav1e-concatenate-list.txt") Then
                     For Each item In CheckTempFolder
-                        If item.Contains("y4m-part-") Then
+                        If item.Contains("InputVideo") Then
                             If Not videoFound Then videoFound = True
                         ElseIf item.Contains(".opus") Then
                             If Not opusFound Then opusFound = True
@@ -48,14 +50,12 @@ Public Class Form1
             If videoFound And opusFound Then
                 Dim result As DialogResult = MsgBox("The temporary folder contains temporary files from a previous session. Do you want to continue the previous encoding session?", MsgBoxStyle.YesNo)
                 If result = DialogResult.Yes Then
-                    OutputTxt.Text = My.Computer.FileSystem.ReadAllText(tempLocationPath.Text + "\lock").TrimEnd
+                    OutputTxt.Text = IO.File.ReadAllText(tempLocationPath.Text + "\lock").TrimEnd
                     ResumePreviousEncodeSession()
                 Else
                     Dim result2 As DialogResult = MsgBox("Do you want to clean the folder?", MsgBoxStyle.YesNo)
                     If result2 = DialogResult.Yes Then
-                        For Each ItemToDelete In CheckTempFolder
-                            If ItemToDelete.Contains(".ivf") Or ItemToDelete.Contains(".txt") Or ItemToDelete.Contains(".y4m") Or ItemToDelete.Contains(".opus") Then My.Computer.FileSystem.DeleteFile(ItemToDelete)
-                        Next
+                        clean_temp_folder(tempLocationPath.Text)
                     End If
                 End If
             End If
@@ -108,9 +108,7 @@ Public Class Form1
                     If item.Contains(".ivf") Or item.Contains(".txt") Or item.Contains(".y4m") Or item.Contains(".opus") Then
                         Dim result As DialogResult = MsgBox("The temporary folder contains temporary files. It is recommended that the folder is cleaned up for best results. Otherwise, you could get an incorrect AV1 file. Do you want to clean the folder?", MsgBoxStyle.YesNo)
                         If result = DialogResult.Yes Then
-                            For Each ItemToDelete In CheckTempFolder
-                                If ItemToDelete.Contains(".ivf") Or ItemToDelete.Contains(".txt") Or ItemToDelete.Contains(".y4m") Or ItemToDelete.Contains(".opus") Then My.Computer.FileSystem.DeleteFile(ItemToDelete)
-                            Next
+                            clean_temp_folder(tempLocationPath.Text)
                         End If
                         Exit For
                     End If
@@ -138,11 +136,15 @@ Public Class Form1
 
     Private Sub Part2(Optional ResumeTasks As Boolean = False)
         Dim ItemsToProcess As List(Of String) = New List(Of String)
-        For Each File As String In IO.Directory.GetFiles(tempLocationPath.Text)
-            If IO.Path.GetExtension(File) = ".y4m" And File.Contains("y4m-part-") Then
-                ItemsToProcess.Add(File)
-            End If
-        Next
+        If IO.File.Exists(tempLocationPath.Text + "/InputVideo") Then
+            ItemsToProcess.Add(IO.File.ReadAllText(tempLocationPath.Text + "/InputVideo"))
+        Else
+            For Each File As String In IO.Directory.GetFiles(tempLocationPath.Text)
+                If IO.Path.GetExtension(File) = IO.File.ReadAllText(tempLocationPath.Text + "/InputVideoExt") And File.Contains("video-part-") Then
+                    ItemsToProcess.Add(File)
+                End If
+            Next
+        End If
         ItemsToProcess.Sort()
         ProgressBar1.BeginInvoke(Sub()
                                      ProgressBar1.Maximum = ItemsToProcess.Count
@@ -200,6 +202,7 @@ Public Class Form1
         MsgBox("Finished")
     End Sub
     Private Function Run_rav1e(Input_File As String, Output_File As String, Optional SecondPass As Boolean = False)
+        Dim InputPipe As New IO.Pipes.NamedPipeServerStream(IO.Path.GetFileNameWithoutExtension(Input_File) + ".y4m", IO.Pipes.PipeDirection.Out, -1, IO.Pipes.PipeTransmissionMode.Byte, IO.Pipes.PipeOptions.Asynchronous, PipeBuffer, 0)
         UpdateLog("Encoding Video part " + IO.Path.GetFileName(Input_File))
         Using rav1eProcess As New Process()
             rav1eProcess.StartInfo.FileName = "rav1e.exe"
@@ -214,11 +217,11 @@ Public Class Form1
             End If
             If My.Settings.twoPass And Not SecondPass Then
                 UpdateLog("Doing first pass for video part " + IO.Path.GetFileName(Input_File) + "")
-                rav1eProcess.StartInfo.Arguments = """" + Input_File + """ --first-pass """ + Output_File + ".first-pass-arg-output"" -o """ + Output_File + ".first-pass.ivf""  " + VideoBitrateString + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
+                rav1eProcess.StartInfo.Arguments = """\\.\pipe\" + IO.Path.GetFileNameWithoutExtension(Input_File) + ".y4m"" --first-pass """ + Output_File + ".first-pass-arg-output"" -o """ + Output_File + ".first-pass.ivf""  " + VideoBitrateString + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
             ElseIf My.Settings.twoPass And SecondPass Then
-                rav1eProcess.StartInfo.Arguments = """" + Input_File + """ --second-pass """ + Output_File + ".first-pass-arg-output"" -o """ + Output_File + """  " + VideoBitrateString + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
+                rav1eProcess.StartInfo.Arguments = """\\.\pipe\" + IO.Path.GetFileNameWithoutExtension(Input_File) + ".y4m"" --second-pass """ + Output_File + ".first-pass-arg-output"" -o """ + Output_File + """  " + VideoBitrateString + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
             Else
-                rav1eProcess.StartInfo.Arguments = """" + Input_File + """ -o """ + Output_File + """  " + VideoBitrateString + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
+                rav1eProcess.StartInfo.Arguments = """\\.\pipe\" + IO.Path.GetFileNameWithoutExtension(Input_File) + ".y4m"" -o """ + Output_File + """  " + VideoBitrateString + " -s " + My.Settings.speed.ToString() + " -i " + My.Settings.minKeyInt.ToString() + " -I " + My.Settings.maxKeyInt.ToString() + " --tune " + My.Settings.Tune.ToLower() + " --primaries " + My.Settings.ColorPrimaries.ToLower() + " --content_light " + My.Settings.ContentLight + " --matrix " + My.Settings.MatrixCoefficients.ToLower() + " --range " + My.Settings.Range + " --transfer " + My.Settings.TransferCharacteristics.ToLower() + " -v"
             End If
             If My.Settings.lowlat Then
                 rav1eProcess.StartInfo.Arguments += " --low_latency"
@@ -244,15 +247,14 @@ Public Class Form1
             rav1eProcess.Start()
             rav1eProcess.BeginOutputReadLine()
             rav1eProcess.BeginErrorReadLine()
+            WriteByteAsync(InputPipe, Input_File, SecondPass)
             rav1eProcess.WaitForExit()
-
             If My.Settings.twoPass And Not SecondPass Then
                 UpdateLog("Video part " + IO.Path.GetFileName(Input_File) + " First pass encoding complete.")
                 Run_rav1e(Input_File, Output_File, True)
             Else
                 UpdateLog("Video part " + IO.Path.GetFileName(Input_File) + " encoding complete.")
                 If Not Exiting Then
-                    IO.File.Delete(Input_File)
                     If IO.File.Exists(Output_File + ".first-pass-arg-output") Then IO.File.Delete(Output_File + ".first-pass-arg-output")
                     If IO.File.Exists(Output_File + ".first-pass-file-output.ivf") Then IO.File.Delete(Output_File + ".first-pass-file-output.ivf")
                 End If
@@ -261,48 +263,82 @@ Public Class Form1
         End Using
         Return True
     End Function
-    Private Function split_video_file(input As String, tempFolder As String, pieceSeconds As Integer)
-
+    Private Async Sub WriteByteAsync(InputPipe As IO.Pipes.NamedPipeServerStream, Input As String, SecondPass As Boolean)
+        Dim OutputPipe As New IO.Pipes.NamedPipeServerStream(IO.Path.GetFileNameWithoutExtension(Input) + "-out.y4m", IO.Pipes.PipeDirection.In, -1, IO.Pipes.PipeTransmissionMode.Byte, IO.Pipes.PipeOptions.WriteThrough, 0, PipeBuffer)
         Dim ffmpegProcessInfo As New ProcessStartInfo
         Dim ffmpegProcess As Process
         ffmpegProcessInfo.FileName = "ffmpeg.exe"
-        If pieceSeconds > 0 Then
-            UpdateLog("Splitting input video file")
-            ffmpegProcessInfo.Arguments = "-i """ + input + """ -f segment -segment_time " + pieceSeconds.ToString() + " """ + tempFolder + "/y4m-part-%6d.y4m"" -y"
-        Else
-            UpdateLog("Encoding input video to Y4M")
-            ffmpegProcessInfo.Arguments = "-i """ + input + """ """ + tempFolder + "/y4m-part-000001.y4m"" -y"
-        End If
+        ffmpegProcessInfo.Arguments = "-i """ + Input + """ ""\\.\pipe\" + IO.Path.GetFileNameWithoutExtension(Input) + "-out.y4m"" -y"
         ffmpegProcessInfo.CreateNoWindow = True
-        ffmpegProcessInfo.RedirectStandardOutput = False
+        ffmpegProcessInfo.RedirectStandardInput = True
+        ffmpegProcessInfo.RedirectStandardOutput = True
         ffmpegProcessInfo.UseShellExecute = False
         ffmpegProcess = Process.Start(ffmpegProcessInfo)
+        Dim lastRead As Integer
+        OutputPipe.WaitForConnection()
+        InputPipe.WaitForConnection()
+        Dim buffer As Byte() = New Byte(PipeBuffer) {}
+        Do
+            Try
+                lastRead = OutputPipe.Read(buffer, 0, PipeBuffer)
+                Await InputPipe.WriteAsync(buffer, 0, lastRead)
+            Catch
+            End Try
+            InputPipe.Flush()
+        Loop While lastRead > 0
+        OutputPipe.Dispose()
         ffmpegProcess.WaitForExit()
-        UpdateLog("Video file splitted")
+        InputPipe.Dispose()
+        If Not Exiting And (Not My.Settings.twoPass Or (My.Settings.twoPass And SecondPass)) Then
+            If Not My.Settings.UseTiling Then
+                IO.File.Delete(Input)
+            End If
+        End If
+    End Sub
+    Private Function split_video_file(input As String, tempFolder As String, pieceSeconds As Integer)
+        If pieceSeconds > 0 Then
+            Dim ffmpegProcessInfo As New ProcessStartInfo
+            Dim ffmpegProcess As Process
+            ffmpegProcessInfo.FileName = "ffmpeg.exe"
+            UpdateLog("Splitting input video file")
+            IO.File.WriteAllText(tempFolder + "/InputVideoExt", IO.Path.GetExtension(input))
+            ffmpegProcessInfo.Arguments = "-i """ + input + """ -c copy -f segment -segment_time " + pieceSeconds.ToString() + " """ + tempFolder + "/video-part-%6d" + IO.Path.GetExtension(input) + """ -y"
+            ffmpegProcessInfo.CreateNoWindow = True
+            ffmpegProcessInfo.RedirectStandardOutput = False
+            ffmpegProcessInfo.UseShellExecute = False
+            ffmpegProcess = Process.Start(ffmpegProcessInfo)
+            ffmpegProcess.WaitForExit()
+            UpdateLog("Video file splitted")
+        Else
+            IO.File.WriteAllText(tempFolder + "/InputVideo", input)
+        End If
         Return True
     End Function
 
     Private Function concatenate_video_files(input As String, tempFolder As String)
-        UpdateLog("Concatenating encoded video segments")
-        Dim ffmpegProcessInfo As New ProcessStartInfo
-        Dim ffmpegProcess As Process
-        ffmpegProcessInfo.FileName = "ffmpeg.exe"
-        ffmpegProcessInfo.Arguments = "-f concat -safe 0 -i """ + input + """ -c copy """ + tempFolder + "\rav1e-concatenated-file.ivf"" -y"
-        ffmpegProcessInfo.CreateNoWindow = True
-        ffmpegProcessInfo.RedirectStandardOutput = False
-        ffmpegProcessInfo.UseShellExecute = False
-        ffmpegProcess = Process.Start(ffmpegProcessInfo)
-        ffmpegProcess.WaitForExit()
-        UpdateLog("Video concatenated")
+        If Not My.Settings.UseTiling Then
+            UpdateLog("Concatenating encoded video segments")
+            Dim ffmpegProcessInfo As New ProcessStartInfo
+            Dim ffmpegProcess As Process
+            ffmpegProcessInfo.FileName = "ffmpeg.exe"
+            ffmpegProcessInfo.Arguments = "-f concat -safe 0 -i """ + input + """ -c copy """ + tempFolder + "\rav1e-concatenated-file.ivf"" -y"
+            ffmpegProcessInfo.CreateNoWindow = True
+            ffmpegProcessInfo.RedirectStandardOutput = False
+            ffmpegProcessInfo.UseShellExecute = False
+            ffmpegProcess = Process.Start(ffmpegProcessInfo)
+            ffmpegProcess.WaitForExit()
+            UpdateLog("Video concatenated")
+        Else
+            IO.File.Move(input, tempFolder + "\rav1e-concatenated-file.ivf")
+        End If
         Return True
     End Function
     Private Function clean_temp_folder(tempFolder As String)
-        For Each File As String In IO.Directory.GetFiles(tempFolder)
-            If (IO.Path.GetExtension(File) = ".y4m" Or IO.Path.GetExtension(File) = ".ivf" And File.Contains("y4m-part-")) Or IO.Path.GetFileName(File) = "rav1e-audio.opus" Or IO.Path.GetFileName(File) = "rav1e-concatenated-file.ivf" Or IO.Path.GetFileName(File) = "rav1e-concatenate-list.txt" Then
-                My.Computer.FileSystem.DeleteFile(File)
-            End If
+        For Each file As String In IO.Directory.GetFiles(tempFolder)
+            For Each value In ExtensionsAndFilesList
+                If file.Contains(value) Then If IO.File.Exists(file) Then IO.File.Delete(file)
+            Next
         Next
-        My.Computer.FileSystem.DeleteFile(tempFolder + "\lock")
         Return True
     End Function
     Private Function merge_audio_video(output As String, tempFolder As String)
@@ -498,13 +534,20 @@ Public Class Form1
         Exiting = True
         While True
             Try
+                For Each ffmpeg_proc In Process.GetProcessesByName("ffmpeg")
+                    ffmpeg_proc.Kill()
+                Next
                 For Each rav1e_proc In Process.GetProcessesByName("rav1e")
                     rav1e_proc.Kill()
                 Next
             Catch
             End Try
-            Dim Processes As Array = Process.GetProcessesByName("rav1e")
-            If Processes.Length = 0 Then
+            Dim rav1e_processes As Array = Process.GetProcessesByName("rav1e")
+            If rav1e_processes.Length = 0 Then
+                Exit While
+            End If
+            Dim ffmpeg_processes As Array = Process.GetProcessesByName("ffmpeg")
+            If rav1e_processes.Length = 0 Then
                 Exit While
             End If
         End While
@@ -534,7 +577,7 @@ Public Class Form1
             .Title = "Browse to save the log file"}
         Dim dialogResult As DialogResult = saveDialog.ShowDialog()
         If DialogResult.OK Then
-            My.Computer.FileSystem.WriteAllText(saveDialog.FileName, ProgressLog.Text, False)
+            IO.File.WriteAllText(saveDialog.FileName, ProgressLog.Text)
         End If
     End Sub
 
