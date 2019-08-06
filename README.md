@@ -1,9 +1,9 @@
 # RAV1E GUI [![Travis Build Status](https://travis-ci.org/moisesmcardona/rav1e_gui.svg?branch=master)](https://travis-ci.org/moisesmcardona/rav1e_gui) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/moisesmcardona/rav1e_gui?branch=master&svg=true)](https://ci.appveyor.com/project/moisesmcardona/rav1e-gui)
 A GUI to convert video files to AV1 using rav1e
 
-![Main Window Screenshot](https://moisescardona.me/wp-content/uploads/2019/07/rav1e-GUI-v1.14.jpg)
+![Main Window Screenshot](https://moisescardona.me/wp-content/uploads/2019/08/rav1e-GUI-v1.15-Main-Window.png)
 
-![Advanced Encoder Options Window Screenshot](https://moisescardona.me/wp-content/uploads/2019/04/rav1e-GUI-v1.11-Advanced-Options.png)
+![Advanced Encoder Options Window Screenshot](https://moisescardona.me/wp-content/uploads/2019/08/rav1e-GUI-v1.15-Advanced-Window.png)
 
 I wrote this software to test the rav1e software. The GUI encodes the input video to .y4m to feed it into rav1e. The audio is encoded to Opus using ffmpeg. After the encoding is finished, the .ivf files are concatenated. Lastly, the .ivf and .opus (if video has audio) files are merged into a .webm or .mkv container.
 
