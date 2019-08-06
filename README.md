@@ -18,6 +18,6 @@ Builds come with rav1e bundled, but not ffmpeg due to licensing restrictions.
 
 # Updated components builds:
 
-Ocasionally, rav1e and opusenc gets updated. You can download the latest version of rav1e_gui with these updated tools included here: [https://moisescardona.me/rav1e-gui](https://moisescardona.me/rav1e-gui)
+Ocasionally, rav1e gets updated. You can download the latest version of rav1e_gui with the latest version of rav1e included here: [https://moisescardona.me/rav1e-gui](https://moisescardona.me/rav1e-gui)
 
 Enjoy!
