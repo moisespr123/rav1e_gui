@@ -38,15 +38,15 @@ Partial Class AdvancedOptions
         Me.Label4 = New System.Windows.Forms.Label()
         Me.CloseButton = New System.Windows.Forms.Button()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.TilingRowsNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.TilingColumsNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.Label8 = New System.Windows.Forms.Label()
+        Me.TilingRowsNumericUpDown = New System.Windows.Forms.NumericUpDown()
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
-        CType(Me.TilingRowsNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TilingColumsNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TilingRowsNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -91,7 +91,7 @@ Partial Class AdvancedOptions
         Me.RangeComboBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.RangeComboBox.FormattingEnabled = True
-        Me.RangeComboBox.Items.AddRange(New Object() {"Unspecified", "Limited", "Full"})
+        Me.RangeComboBox.Items.AddRange(New Object() {"Limited", "Full"})
         Me.RangeComboBox.Location = New System.Drawing.Point(127, 93)
         Me.RangeComboBox.Name = "RangeComboBox"
         Me.RangeComboBox.Size = New System.Drawing.Size(219, 21)
@@ -225,23 +225,6 @@ Partial Class AdvancedOptions
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Tiling"
         '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(6, 28)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(37, 13)
-        Me.Label7.TabIndex = 2
-        Me.Label7.Text = "Rows:"
-        '
-        'TilingRowsNumericUpDown
-        '
-        Me.TilingRowsNumericUpDown.Location = New System.Drawing.Point(49, 26)
-        Me.TilingRowsNumericUpDown.Maximum = New Decimal(New Integer() {6, 0, 0, 0})
-        Me.TilingRowsNumericUpDown.Name = "TilingRowsNumericUpDown"
-        Me.TilingRowsNumericUpDown.Size = New System.Drawing.Size(51, 20)
-        Me.TilingRowsNumericUpDown.TabIndex = 3
-        '
         'TilingColumsNumericUpDown
         '
         Me.TilingColumsNumericUpDown.Location = New System.Drawing.Point(180, 26)
@@ -258,6 +241,23 @@ Partial Class AdvancedOptions
         Me.Label8.Size = New System.Drawing.Size(50, 13)
         Me.Label8.TabIndex = 4
         Me.Label8.Text = "Columns:"
+        '
+        'TilingRowsNumericUpDown
+        '
+        Me.TilingRowsNumericUpDown.Location = New System.Drawing.Point(49, 26)
+        Me.TilingRowsNumericUpDown.Maximum = New Decimal(New Integer() {6, 0, 0, 0})
+        Me.TilingRowsNumericUpDown.Name = "TilingRowsNumericUpDown"
+        Me.TilingRowsNumericUpDown.Size = New System.Drawing.Size(51, 20)
+        Me.TilingRowsNumericUpDown.TabIndex = 3
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(6, 28)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(37, 13)
+        Me.Label7.TabIndex = 2
+        Me.Label7.Text = "Rows:"
         '
         'AdvancedOptions
         '
@@ -278,8 +278,8 @@ Partial Class AdvancedOptions
         Me.GroupBox2.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
-        CType(Me.TilingRowsNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TilingColumsNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TilingRowsNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
