@@ -14,7 +14,7 @@ Originally written in Visual Basic .NET using Visual Studio 2017 and updated usi
 * You need ffmpeg as found here: https://ffmpeg.zeranoe.com/builds/. Use the nightly builds. [Instructions here.](https://moisescardona.me/downloading-ffmpeg-rav1e-gui/)
 * You also need rav1e. The software comes bundled with it already, but newer builds can be found here: [https://moisescardona.me/rav1e-builds/](https://moisescardona.me/rav1e-builds/)
 
-Builds comes with opusenc and rav1e bundled, but not ffmpeg due to licensing restrictions.
+Builds come with rav1e bundled, but not ffmpeg due to licensing restrictions.
 
 # Updated components builds:
 
