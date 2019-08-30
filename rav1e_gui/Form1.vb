@@ -210,7 +210,7 @@ Public Class Form1
                 VideoBitrateString = "--quantizer " + My.Settings.quantizer.ToString()
             End If
             If UseTilingCheckbox.Checked Then
-                VideoBitrateString += " --threads " + My.Settings.CPUThreads.ToString() + " --tile-rows-log2 " + My.Settings.TilingRows.ToString() + " --tile-cols-log2 " + My.Settings.TilingColumns.ToString()
+                VideoBitrateString += " --threads " + My.Settings.CPUThreads.ToString() + " --tile-rows " + My.Settings.TilingRows.ToString() + " --tile-cols " + My.Settings.TilingColumns.ToString()
             End If
             If My.Settings.twoPass And Not SecondPass Then
                 UpdateLog("Doing first pass for video part " + IO.Path.GetFileName(Input_File) + "")
