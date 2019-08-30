@@ -35,7 +35,6 @@
             MsgBox("The Tile Rows is not a power of 2. It must be a power of 2 for rav1e to work correctly.")
         ElseIf Not IsPowerOfTwo(TilingColumnsNumericUpDown.Value) Then
             MsgBox("The Tile Columns is not a power of 2. It must be a power of 2 for rav1e to work correctly.")
-
         Else
             Close()
         End If
