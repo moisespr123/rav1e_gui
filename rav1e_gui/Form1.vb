@@ -210,6 +210,7 @@ Public Class Form1
                 VideoBitrateString = "--quantizer " + My.Settings.quantizer.ToString()
             End If
             If UseTilingCheckbox.Checked Then
+                If My.Settings.CPUThreads = 0 Then My.Settings.CPUThreads = Environment.ProcessorCount
                 VideoBitrateString += " --threads " + My.Settings.CPUThreads.ToString() + " --tile-rows " + My.Settings.TilingRows.ToString() + " --tile-cols " + My.Settings.TilingColumns.ToString()
             End If
             If My.Settings.twoPass And Not SecondPass Then

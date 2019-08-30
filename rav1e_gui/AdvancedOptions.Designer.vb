@@ -38,21 +38,21 @@ Partial Class AdvancedOptions
         Me.Label4 = New System.Windows.Forms.Label()
         Me.CloseButton = New System.Windows.Forms.Button()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.TilingColumsNumericUpDown = New System.Windows.Forms.NumericUpDown()
+        Me.TilingColumnsNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.TilingRowsNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.Label7 = New System.Windows.Forms.Label()
-        Me.GroupBox1.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
-        CType(Me.TilingColumsNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.TilingRowsNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SuspendLayout()
+        Me.GroupBox1.SuspendLayout
+        Me.GroupBox2.SuspendLayout
+        Me.GroupBox3.SuspendLayout
+        CType(Me.TilingColumnsNumericUpDown,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.TilingRowsNumericUpDown,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.SuspendLayout
         '
         'GroupBox1
         '
-        Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.GroupBox1.Controls.Add(Me.ContentLightTextBox)
         Me.GroupBox1.Controls.Add(Me.Label6)
         Me.GroupBox1.Controls.Add(Me.RangeComboBox)
@@ -67,7 +67,7 @@ Partial Class AdvancedOptions
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(361, 157)
         Me.GroupBox1.TabIndex = 0
-        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.TabStop = false
         Me.GroupBox1.Text = "Color Parameters"
         '
         'ContentLightTextBox
@@ -79,7 +79,7 @@ Partial Class AdvancedOptions
         '
         'Label6
         '
-        Me.Label6.AutoSize = True
+        Me.Label6.AutoSize = true
         Me.Label6.Location = New System.Drawing.Point(54, 48)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(73, 13)
@@ -88,9 +88,9 @@ Partial Class AdvancedOptions
         '
         'RangeComboBox
         '
-        Me.RangeComboBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.RangeComboBox.FormattingEnabled = True
+        Me.RangeComboBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.RangeComboBox.FormattingEnabled = true
         Me.RangeComboBox.Items.AddRange(New Object() {"Limited", "Full"})
         Me.RangeComboBox.Location = New System.Drawing.Point(127, 93)
         Me.RangeComboBox.Name = "RangeComboBox"
@@ -99,7 +99,7 @@ Partial Class AdvancedOptions
         '
         'Label5
         '
-        Me.Label5.AutoSize = True
+        Me.Label5.AutoSize = true
         Me.Label5.Location = New System.Drawing.Point(85, 96)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(42, 13)
@@ -108,9 +108,9 @@ Partial Class AdvancedOptions
         '
         'TransferCharacteristicsComboBox
         '
-        Me.TransferCharacteristicsComboBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TransferCharacteristicsComboBox.FormattingEnabled = True
+        Me.TransferCharacteristicsComboBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.TransferCharacteristicsComboBox.FormattingEnabled = true
         Me.TransferCharacteristicsComboBox.Items.AddRange(New Object() {"Unspecified", "BT1886", "BT470M", "BT470BG", "ST170M", "ST240M", "Linear", "Logarithmic100", "Logarithmic316", "XVYCC", "BT1361E", "SRGB", "BT2020Ten", "BT2020Twelve", "PerceptualQuantizer", "ST428", "HybridLogGamma"})
         Me.TransferCharacteristicsComboBox.Location = New System.Drawing.Point(127, 116)
         Me.TransferCharacteristicsComboBox.Name = "TransferCharacteristicsComboBox"
@@ -119,7 +119,7 @@ Partial Class AdvancedOptions
         '
         'Label3
         '
-        Me.Label3.AutoSize = True
+        Me.Label3.AutoSize = true
         Me.Label3.Location = New System.Drawing.Point(6, 119)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(121, 13)
@@ -128,9 +128,9 @@ Partial Class AdvancedOptions
         '
         'MatrixCoefficientsComboBox
         '
-        Me.MatrixCoefficientsComboBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MatrixCoefficientsComboBox.FormattingEnabled = True
+        Me.MatrixCoefficientsComboBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.MatrixCoefficientsComboBox.FormattingEnabled = true
         Me.MatrixCoefficientsComboBox.Items.AddRange(New Object() {"Unspecified", "Identity", "B709", "BT470M", "BT470BG", "ST170M", "ST240M", "YCgCo", "BT2020NonConstantLuminance", "BT2020ConstantLuminance", "ST2085", "ChromaticityDerivedNonConstantLuminance", "ChromaticityDerivedConstantLuminance", "ICtCp"})
         Me.MatrixCoefficientsComboBox.Location = New System.Drawing.Point(127, 69)
         Me.MatrixCoefficientsComboBox.Name = "MatrixCoefficientsComboBox"
@@ -139,7 +139,7 @@ Partial Class AdvancedOptions
         '
         'Label2
         '
-        Me.Label2.AutoSize = True
+        Me.Label2.AutoSize = true
         Me.Label2.Location = New System.Drawing.Point(31, 72)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(96, 13)
@@ -148,9 +148,9 @@ Partial Class AdvancedOptions
         '
         'ColorPrimariesComboBox
         '
-        Me.ColorPrimariesComboBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ColorPrimariesComboBox.FormattingEnabled = True
+        Me.ColorPrimariesComboBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.ColorPrimariesComboBox.FormattingEnabled = true
         Me.ColorPrimariesComboBox.Items.AddRange(New Object() {"Unspecified", "BT709", "BT470M", "BT470BG", "ST170M", "ST240M", "Film", "BT2020", "ST428", "P3DCI", "P3Display", "Tech3213"})
         Me.ColorPrimariesComboBox.Location = New System.Drawing.Point(128, 21)
         Me.ColorPrimariesComboBox.Name = "ColorPrimariesComboBox"
@@ -159,7 +159,7 @@ Partial Class AdvancedOptions
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
+        Me.Label1.AutoSize = true
         Me.Label1.Location = New System.Drawing.Point(48, 24)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(79, 13)
@@ -168,22 +168,22 @@ Partial Class AdvancedOptions
         '
         'GroupBox2
         '
-        Me.GroupBox2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.GroupBox2.Controls.Add(Me.QualityTuningComboBox)
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Location = New System.Drawing.Point(11, 175)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(361, 61)
         Me.GroupBox2.TabIndex = 1
-        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.TabStop = false
         Me.GroupBox2.Text = "Other Options"
         '
         'QualityTuningComboBox
         '
-        Me.QualityTuningComboBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.QualityTuningComboBox.FormattingEnabled = True
+        Me.QualityTuningComboBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.QualityTuningComboBox.FormattingEnabled = true
         Me.QualityTuningComboBox.Items.AddRange(New Object() {"Psnr", "Psychovisual"})
         Me.QualityTuningComboBox.Location = New System.Drawing.Point(128, 27)
         Me.QualityTuningComboBox.Name = "QualityTuningComboBox"
@@ -192,7 +192,7 @@ Partial Class AdvancedOptions
         '
         'Label4
         '
-        Me.Label4.AutoSize = True
+        Me.Label4.AutoSize = true
         Me.Label4.Location = New System.Drawing.Point(49, 30)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(78, 13)
@@ -201,20 +201,20 @@ Partial Class AdvancedOptions
         '
         'CloseButton
         '
-        Me.CloseButton.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.CloseButton.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.CloseButton.Location = New System.Drawing.Point(13, 355)
         Me.CloseButton.Name = "CloseButton"
         Me.CloseButton.Size = New System.Drawing.Size(360, 23)
         Me.CloseButton.TabIndex = 2
         Me.CloseButton.Text = "Close"
-        Me.CloseButton.UseVisualStyleBackColor = True
+        Me.CloseButton.UseVisualStyleBackColor = true
         '
         'GroupBox3
         '
-        Me.GroupBox3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.GroupBox3.Controls.Add(Me.TilingColumsNumericUpDown)
+        Me.GroupBox3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.GroupBox3.Controls.Add(Me.TilingColumnsNumericUpDown)
         Me.GroupBox3.Controls.Add(Me.Label8)
         Me.GroupBox3.Controls.Add(Me.TilingRowsNumericUpDown)
         Me.GroupBox3.Controls.Add(Me.Label7)
@@ -222,20 +222,21 @@ Partial Class AdvancedOptions
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(361, 61)
         Me.GroupBox3.TabIndex = 7
-        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.TabStop = false
         Me.GroupBox3.Text = "Tiling"
         '
-        'TilingColumsNumericUpDown
+        'TilingColumnsNumericUpDown
         '
-        Me.TilingColumsNumericUpDown.Location = New System.Drawing.Point(180, 26)
-        Me.TilingColumsNumericUpDown.Maximum = New Decimal(New Integer() {6, 0, 0, 0})
-        Me.TilingColumsNumericUpDown.Name = "TilingColumsNumericUpDown"
-        Me.TilingColumsNumericUpDown.Size = New System.Drawing.Size(51, 20)
-        Me.TilingColumsNumericUpDown.TabIndex = 5
+        Me.TilingColumnsNumericUpDown.Increment = New Decimal(New Integer() {2, 0, 0, 0})
+        Me.TilingColumnsNumericUpDown.Location = New System.Drawing.Point(180, 26)
+        Me.TilingColumnsNumericUpDown.Maximum = New Decimal(New Integer() {64, 0, 0, 0})
+        Me.TilingColumnsNumericUpDown.Name = "TilingColumnsNumericUpDown"
+        Me.TilingColumnsNumericUpDown.Size = New System.Drawing.Size(51, 20)
+        Me.TilingColumnsNumericUpDown.TabIndex = 5
         '
         'Label8
         '
-        Me.Label8.AutoSize = True
+        Me.Label8.AutoSize = true
         Me.Label8.Location = New System.Drawing.Point(124, 28)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(50, 13)
@@ -244,15 +245,16 @@ Partial Class AdvancedOptions
         '
         'TilingRowsNumericUpDown
         '
+        Me.TilingRowsNumericUpDown.Increment = New Decimal(New Integer() {2, 0, 0, 0})
         Me.TilingRowsNumericUpDown.Location = New System.Drawing.Point(49, 26)
-        Me.TilingRowsNumericUpDown.Maximum = New Decimal(New Integer() {6, 0, 0, 0})
+        Me.TilingRowsNumericUpDown.Maximum = New Decimal(New Integer() {64, 0, 0, 0})
         Me.TilingRowsNumericUpDown.Name = "TilingRowsNumericUpDown"
         Me.TilingRowsNumericUpDown.Size = New System.Drawing.Size(51, 20)
         Me.TilingRowsNumericUpDown.TabIndex = 3
         '
         'Label7
         '
-        Me.Label7.AutoSize = True
+        Me.Label7.AutoSize = true
         Me.Label7.Location = New System.Drawing.Point(6, 28)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(37, 13)
@@ -261,28 +263,28 @@ Partial Class AdvancedOptions
         '
         'AdvancedOptions
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(384, 399)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.CloseButton)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
+        Me.MaximizeBox = false
+        Me.MinimizeBox = false
         Me.Name = "AdvancedOptions"
         Me.Text = "Advanced Encoder Options"
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
-        Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
-        CType(Me.TilingColumsNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TilingRowsNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(false)
+        Me.GroupBox1.PerformLayout
+        Me.GroupBox2.ResumeLayout(false)
+        Me.GroupBox2.PerformLayout
+        Me.GroupBox3.ResumeLayout(false)
+        Me.GroupBox3.PerformLayout
+        CType(Me.TilingColumnsNumericUpDown,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.TilingRowsNumericUpDown,System.ComponentModel.ISupportInitialize).EndInit
+        Me.ResumeLayout(false)
 
-    End Sub
+End Sub
 
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents MatrixCoefficientsComboBox As ComboBox
@@ -301,7 +303,7 @@ Partial Class AdvancedOptions
     Friend WithEvents Label6 As Label
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents Label7 As Label
-    Friend WithEvents TilingColumsNumericUpDown As NumericUpDown
+    Friend WithEvents TilingColumnsNumericUpDown As NumericUpDown
     Friend WithEvents Label8 As Label
     Friend WithEvents TilingRowsNumericUpDown As NumericUpDown
 End Class
