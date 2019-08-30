@@ -8,7 +8,7 @@
         RangeComboBox.SelectedItem = My.Settings.Range
         QualityTuningComboBox.SelectedItem = My.Settings.Tune
         TilingRowsNumericUpDown.Value = My.Settings.TilingRows
-        TilingColumsNumericUpDown.Value = My.Settings.TilingColumns
+        TilingColumnsNumericUpDown.Value = My.Settings.TilingColumns
     End Sub
     Private Sub ColorPrimariesComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ColorPrimariesComboBox.SelectedIndexChanged
         My.Settings.ColorPrimaries = ColorPrimariesComboBox.SelectedItem
@@ -31,7 +31,13 @@
     End Sub
 
     Private Sub CloseButton_Click(sender As Object, e As EventArgs) Handles CloseButton.Click
-        Close()
+        If Not IsPowerOfTwo(TilingRowsNumericUpDown.Value) Then
+            MsgBox("The Tile Rows is not a power of 2. It must be a power of 2 for rav1e to work correctly.")
+        ElseIf Not IsPowerOfTwo(TilingColumnsNumericUpDown.Value) Then
+            MsgBox("The Tile Columns is not a power of 2. It must be a power of 2 for rav1e to work correctly.")
+        Else
+            Close()
+        End If
     End Sub
 
     Private Sub ContentLightTextBox_TextChanged(sender As Object, e As EventArgs) Handles ContentLightTextBox.TextChanged
@@ -49,8 +55,13 @@
         My.Settings.Save()
     End Sub
 
-    Private Sub TilingColumsNumericUpDown_ValueChanged(sender As Object, e As EventArgs) Handles TilingColumsNumericUpDown.ValueChanged
-        My.Settings.TilingColumns = TilingColumsNumericUpDown.Value
+    Private Sub TilingColumsNumericUpDown_ValueChanged(sender As Object, e As EventArgs) Handles TilingColumnsNumericUpDown.ValueChanged
+        My.Settings.TilingColumns = TilingColumnsNumericUpDown.Value
         My.Settings.Save()
     End Sub
+
+
+    Private Function IsPowerOfTwo(number As Integer) As Boolean
+        Return (number And (number - 1)) = 0
+    End Function
 End Class
