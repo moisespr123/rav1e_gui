@@ -205,9 +205,10 @@ Public Class Form1
     End Sub
     Private Function Run_rav1e(Input_File As String, Output_File As String, Optional SecondPass As Boolean = False)
         UpdateLog("Encoding Video part " + IO.Path.GetFileName(Input_File))
+        Dim Original_Input_File As String = Input_File
+        Dim Original_Output_File As String = Output_File
         Using rav1eProcess As New Process()
             If RunRav1eInWSL.Checked Then
-                Dim replaced As String = ""
                 Input_File = Regex.Replace(Input_File, "((.):\\)", Function(replace_letter) $"/mnt/{replace_letter.Groups(2).Value.ToLower()}/").Replace("\", "/")
                 Output_File = Regex.Replace(Output_File, "((.):\\)", Function(replace_letter) $"/mnt/{replace_letter.Groups(2).Value.ToLower()}/").Replace("\", "/")
             End If
@@ -266,9 +267,9 @@ Public Class Form1
             Else
                 UpdateLog("Video part " + IO.Path.GetFileName(Input_File) + " encoding complete.")
                 If Not Exiting Then
-                    IO.File.Delete(Input_File)
-                    If IO.File.Exists(Output_File + ".first-pass-arg-output") Then IO.File.Delete(Output_File + ".first-pass-arg-output")
-                    If IO.File.Exists(Output_File + ".first-pass-file-output.ivf") Then IO.File.Delete(Output_File + ".first-pass-file-output.ivf")
+                    IO.File.Delete(Original_Input_File)
+                    If IO.File.Exists(Original_Output_File + ".first-pass-arg-output") Then IO.File.Delete(Original_Output_File + ".first-pass-arg-output")
+                    If IO.File.Exists(Original_Output_File + ".first-pass-file-output.ivf") Then IO.File.Delete(Original_Output_File + ".first-pass-file-output.ivf")
                 End If
                 ProgressBar1.BeginInvoke(Sub() ProgressBar1.PerformStep())
             End If
@@ -383,6 +384,7 @@ Public Class Form1
         RunRav1eInWSL.Checked = My.Settings.RunRav1eInWSL
         GetRav1eVersion()
         GetFfmpegVersion()
+        DetectWSL()
         GUILoaded = True
         If Not String.IsNullOrWhiteSpace(tempLocationPath.Text) Then CheckForLockFile()
     End Sub
@@ -434,6 +436,23 @@ Public Class Form1
             MessageBox.Show("ffmpeg.exe was not found. Exiting...")
             Process.Start("https://moisescardona.me/downloading-ffmpeg-rav1e-gui/")
             Me.Close()
+        End Try
+    End Sub
+
+    Private Sub DetectWSL()
+        Try
+            Dim WSLProcessInfo As New ProcessStartInfo
+            Dim WSLProcess As Process
+            WSLProcessInfo.FileName = "wsl.exe"
+            WSLProcessInfo.Arguments = "--list"
+            WSLProcessInfo.CreateNoWindow = True
+            WSLProcessInfo.RedirectStandardError = False
+            WSLProcessInfo.UseShellExecute = False
+            WSLProcess = Process.Start(WSLProcessInfo)
+            WSLProcess.WaitForExit()
+        Catch ex As Exception
+            RunRav1eInWSL.Enabled = False
+            RunRav1eInWSL.Checked = False
         End Try
     End Sub
 
