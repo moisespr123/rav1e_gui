@@ -1,8 +1,10 @@
-﻿Imports System.Threading
+﻿Imports System.Text.RegularExpressions
+Imports System.Threading
 
 Public Class Form1
     Private Exiting As Boolean = False
     Private GUILoaded As Boolean = False
+    Private CurrentDirectory = IO.Path.GetDirectoryName(Process.GetCurrentProcess.MainModule.FileName)
     Private Sub InputBrowseBtn_Click(sender As Object, e As EventArgs) Handles InputBrowseBtn.Click
         Dim InputBrowser As New OpenFileDialog With {
             .Title = "Browse for a video file",
@@ -186,6 +188,7 @@ Public Class Form1
                                  pieceSeconds.Enabled = Not UseTilingCheckbox.Checked
                                  AdvancedEncoderOptionsButton.Enabled = True
                                  ShowPSNRMetrics.Enabled = True
+                                 RunRav1eInWSL.Enabled = True
                                  CPUThreads.Enabled = True
                                  SaveLogBtn.Enabled = True
                                  PauseResumeButton.Enabled = False
@@ -202,6 +205,11 @@ Public Class Form1
     Private Function Run_rav1e(Input_File As String, Output_File As String, Optional SecondPass As Boolean = False)
         UpdateLog("Encoding Video part " + IO.Path.GetFileName(Input_File))
         Using rav1eProcess As New Process()
+            If RunRav1eInWSL.Checked Then
+                Dim replaced As String = ""
+                Input_File = Regex.Replace(Input_File, "((.):\\)", Function(replace_letter) $"/mnt/{replace_letter.Groups(2).Value.ToLower()}/").Replace("\", "/")
+                Output_File = Regex.Replace(Output_File, "((.):\\)", Function(replace_letter) $"/mnt/{replace_letter.Groups(2).Value.ToLower()}/").Replace("\", "/")
+            End If
             rav1eProcess.StartInfo.FileName = "rav1e.exe"
             Dim VideoBitrateString As String = String.Empty
             If My.Settings.useBitrate Then
@@ -226,6 +234,10 @@ Public Class Form1
             End If
             If My.Settings.ShowPSNRMetrics Then
                 rav1eProcess.StartInfo.Arguments += " --psnr"
+            End If
+            If RunRav1eInWSL.Checked Then
+                rav1eProcess.StartInfo.FileName = ("wsl.exe")
+                rav1eProcess.StartInfo.Arguments = "-e " + (Regex.Replace(CurrentDirectory, "((.):\\)", Function(replace_letter) $"/mnt/{replace_letter.Groups(2).Value.ToLower()}/") + "/rav1e").Replace("\", "/") + " " + rav1eProcess.StartInfo.Arguments
             End If
             rav1eProcess.StartInfo.CreateNoWindow = True
             rav1eProcess.StartInfo.RedirectStandardOutput = True
@@ -348,7 +360,7 @@ Public Class Form1
                 If Not vars(var) = "ignore_locations" Then InputTxt.Text = vars(var)
             Next
         End If
-        IO.Directory.SetCurrentDirectory(IO.Path.GetDirectoryName(Process.GetCurrentProcess.MainModule.FileName))
+        IO.Directory.SetCurrentDirectory(CurrentDirectory)
 
         CPUThreads.Maximum = Environment.ProcessorCount
         If My.Settings.CPUThreads > 0 Then CPUThreads.Value = My.Settings.CPUThreads Else CPUThreads.Value = CPUThreads.Maximum
@@ -367,6 +379,7 @@ Public Class Form1
         tempLocationPath.Text = My.Settings.tempFolder
         RemoveTempFiles.Checked = My.Settings.removeTempFiles
         ShowPSNRMetrics.Checked = My.Settings.ShowPSNRMetrics
+        RunRav1eInWSL.Checked = My.Settings.RunRav1eInWSL
         GetRav1eVersion()
         GetFfmpegVersion()
         GUILoaded = True
@@ -623,5 +636,12 @@ Public Class Form1
 
     Private Sub InputTxt_TextChanged(sender As Object, e As EventArgs) Handles InputTxt.TextChanged
         OutputTxt.Text = IO.Path.ChangeExtension(InputTxt.Text, ".webm")
+    End Sub
+
+    Private Sub RunRav1eInWSL_CheckedChanged(sender As Object, e As EventArgs) Handles RunRav1eInWSL.CheckedChanged
+        If GUILoaded Then
+            My.Settings.RunRav1eInWSL = RunRav1eInWSL.Checked
+            My.Settings.Save()
+        End If
     End Sub
 End Class

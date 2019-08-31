@@ -341,6 +341,18 @@ Namespace My
                 Me("CPUThreads") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property RunRav1eInWSL() As Boolean
+            Get
+                Return CType(Me("RunRav1eInWSL"),Boolean)
+            End Get
+            Set
+                Me("RunRav1eInWSL") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
