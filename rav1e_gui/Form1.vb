@@ -80,6 +80,7 @@ Public Class Form1
         BrowseTempLocation.Enabled = False
         AdvancedEncoderOptionsButton.Enabled = False
         ShowPSNRMetrics.Enabled = False
+        RunRav1eInWSL.Enabled = False
         CPUThreads.Enabled = False
         SaveLogBtn.Enabled = False
         PauseResumeButton.Enabled = True
