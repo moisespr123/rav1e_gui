@@ -530,14 +530,16 @@ Public Class Form1
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Exiting = True
+        Dim processName As String = "rav1e"
+        If RunRav1eInWSL.Checked Then processName = "wsl"
         While True
             Try
-                For Each rav1e_proc In Process.GetProcessesByName("rav1e")
+                For Each rav1e_proc In Process.GetProcessesByName(processName)
                     rav1e_proc.Kill()
                 Next
             Catch
             End Try
-            Dim Processes As Array = Process.GetProcessesByName("rav1e")
+            Dim Processes As Array = Process.GetProcessesByName(processName)
             If Processes.Length = 0 Then
                 Exit While
             End If
@@ -584,10 +586,12 @@ Public Class Form1
     End Sub
 
     Private Sub PauseResumeButton_Click(sender As Object, e As EventArgs) Handles PauseResumeButton.Click
+        Dim processName As String = "rav1e"
+        If RunRav1eInWSL.Checked Then processName = "wsl"
         If PauseResumeButton.Text = "Pause" Then
             UpdateLog("Pausing encode")
             Try
-                For Each rav1e_proc In Process.GetProcessesByName("rav1e")
+                For Each rav1e_proc In Process.GetProcessesByName(processName)
                     SuspendResumeProcess.SuspendProcess(rav1e_proc.Id)
                 Next
             Catch
@@ -597,7 +601,7 @@ Public Class Form1
         Else
             UpdateLog("Resuming encode")
             Try
-                For Each rav1e_proc In Process.GetProcessesByName("rav1e")
+                For Each rav1e_proc In Process.GetProcessesByName(processName)
                     SuspendResumeProcess.ResumeProcess(rav1e_proc.Id)
                 Next
             Catch
