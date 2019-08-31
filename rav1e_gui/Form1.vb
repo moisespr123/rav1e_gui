@@ -263,13 +263,13 @@ Public Class Form1
 
             If My.Settings.twoPass And Not SecondPass Then
                 UpdateLog("Video part " + IO.Path.GetFileName(Input_File) + " First pass encoding complete.")
-                Run_rav1e(Input_File, Output_File, True)
+                Run_rav1e(Original_Input_File, Original_Output_File, True)
             Else
                 UpdateLog("Video part " + IO.Path.GetFileName(Input_File) + " encoding complete.")
                 If Not Exiting Then
                     IO.File.Delete(Original_Input_File)
                     If IO.File.Exists(Original_Output_File + ".first-pass-arg-output") Then IO.File.Delete(Original_Output_File + ".first-pass-arg-output")
-                    If IO.File.Exists(Original_Output_File + ".first-pass-file-output.ivf") Then IO.File.Delete(Original_Output_File + ".first-pass-file-output.ivf")
+                    If IO.File.Exists(Original_Output_File + ".first-pass.ivf") Then IO.File.Delete(Original_Output_File + ".first-pass.ivf")
                 End If
                 ProgressBar1.BeginInvoke(Sub() ProgressBar1.PerformStep())
             End If
