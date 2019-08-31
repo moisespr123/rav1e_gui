@@ -63,10 +63,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="TilingRows" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">6</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="TilingColumns" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">6</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="UseTiling" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

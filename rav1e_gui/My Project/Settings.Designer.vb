@@ -296,7 +296,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("6")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("2")>  _
         Public Property TilingRows() As Integer
             Get
                 Return CType(Me("TilingRows"),Integer)
@@ -308,7 +308,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("6")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("2")>  _
         Public Property TilingColumns() As Integer
             Get
                 Return CType(Me("TilingColumns"),Integer)
