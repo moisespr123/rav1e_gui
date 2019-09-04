@@ -1,8 +1,10 @@
-﻿Imports System.Threading
+﻿Imports System.Text.RegularExpressions
+Imports System.Threading
 
 Public Class Form1
     Private Exiting As Boolean = False
     Private GUILoaded As Boolean = False
+    Private CurrentDirectory = IO.Path.GetDirectoryName(Process.GetCurrentProcess.MainModule.FileName)
     Private Const PipeBuffer As Integer = 1024 * 1024 * 1024
     Private ExtensionsAndFilesList As String() = {".txt", ".opus", "video-part", "InputVideo", ".ivf", "lock"}
     Private Sub InputBrowseBtn_Click(sender As Object, e As EventArgs) Handles InputBrowseBtn.Click
@@ -78,6 +80,7 @@ Public Class Form1
         BrowseTempLocation.Enabled = False
         AdvancedEncoderOptionsButton.Enabled = False
         ShowPSNRMetrics.Enabled = False
+        RunRav1eInWSL.Enabled = False
         CPUThreads.Enabled = False
         SaveLogBtn.Enabled = False
         PauseResumeButton.Enabled = True
@@ -188,6 +191,7 @@ Public Class Form1
                                  pieceSeconds.Enabled = Not UseTilingCheckbox.Checked
                                  AdvancedEncoderOptionsButton.Enabled = True
                                  ShowPSNRMetrics.Enabled = True
+                                 RunRav1eInWSL.Enabled = True
                                  CPUThreads.Enabled = True
                                  SaveLogBtn.Enabled = True
                                  PauseResumeButton.Enabled = False
@@ -204,7 +208,13 @@ Public Class Form1
     Private Function Run_rav1e(Input_File As String, Output_File As String, Optional SecondPass As Boolean = False)
         Dim InputPipe As New IO.Pipes.NamedPipeServerStream(IO.Path.GetFileNameWithoutExtension(Input_File) + ".y4m", IO.Pipes.PipeDirection.Out, -1, IO.Pipes.PipeTransmissionMode.Byte, IO.Pipes.PipeOptions.Asynchronous, PipeBuffer, 0)
         UpdateLog("Encoding Video part " + IO.Path.GetFileName(Input_File))
+        Dim Original_Input_File As String = Input_File
+        Dim Original_Output_File As String = Output_File
         Using rav1eProcess As New Process()
+            If RunRav1eInWSL.Checked Then
+                Input_File = Regex.Replace(Input_File, "((.):\\)", Function(replace_letter) $"/mnt/{replace_letter.Groups(2).Value.ToLower()}/").Replace("\", "/")
+                Output_File = Regex.Replace(Output_File, "((.):\\)", Function(replace_letter) $"/mnt/{replace_letter.Groups(2).Value.ToLower()}/").Replace("\", "/")
+            End If
             rav1eProcess.StartInfo.FileName = "rav1e.exe"
             Dim VideoBitrateString As String = String.Empty
             If My.Settings.useBitrate Then
@@ -230,6 +240,10 @@ Public Class Form1
             If My.Settings.ShowPSNRMetrics Then
                 rav1eProcess.StartInfo.Arguments += " --psnr"
             End If
+            If RunRav1eInWSL.Checked Then
+                rav1eProcess.StartInfo.FileName = ("wsl.exe")
+                rav1eProcess.StartInfo.Arguments = "-e " + (Regex.Replace(CurrentDirectory, "((.):\\)", Function(replace_letter) $"/mnt/{replace_letter.Groups(2).Value.ToLower()}/") + "/rav1e").Replace("\", "/") + " " + rav1eProcess.StartInfo.Arguments
+            End If
             rav1eProcess.StartInfo.CreateNoWindow = True
             rav1eProcess.StartInfo.RedirectStandardOutput = True
             rav1eProcess.StartInfo.RedirectStandardError = True
@@ -252,12 +266,12 @@ Public Class Form1
             rav1eProcess.WaitForExit()
             If My.Settings.twoPass And Not SecondPass Then
                 UpdateLog("Video part " + IO.Path.GetFileName(Input_File) + " First pass encoding complete.")
-                Run_rav1e(Input_File, Output_File, True)
+                Run_rav1e(Original_Input_File, Original_Output_File, True)
             Else
                 UpdateLog("Video part " + IO.Path.GetFileName(Input_File) + " encoding complete.")
                 If Not Exiting Then
-                    If IO.File.Exists(Output_File + ".first-pass-arg-output") Then IO.File.Delete(Output_File + ".first-pass-arg-output")
-                    If IO.File.Exists(Output_File + ".first-pass-file-output.ivf") Then IO.File.Delete(Output_File + ".first-pass-file-output.ivf")
+                    If IO.File.Exists(Original_Output_File + ".first-pass-arg-output") Then IO.File.Delete(Original_Output_File + ".first-pass-arg-output")
+                    If IO.File.Exists(Original_Output_File + ".first-pass.ivf") Then IO.File.Delete(Original_Output_File + ".first-pass.ivf")
                 End If
                 ProgressBar1.BeginInvoke(Sub() ProgressBar1.PerformStep())
             End If
@@ -384,7 +398,7 @@ Public Class Form1
                 If Not vars(var) = "ignore_locations" Then InputTxt.Text = vars(var)
             Next
         End If
-        IO.Directory.SetCurrentDirectory(IO.Path.GetDirectoryName(Process.GetCurrentProcess.MainModule.FileName))
+        IO.Directory.SetCurrentDirectory(CurrentDirectory)
 
         CPUThreads.Maximum = Environment.ProcessorCount
         If My.Settings.CPUThreads > 0 Then CPUThreads.Value = My.Settings.CPUThreads Else CPUThreads.Value = CPUThreads.Maximum
@@ -403,8 +417,10 @@ Public Class Form1
         tempLocationPath.Text = My.Settings.tempFolder
         RemoveTempFiles.Checked = My.Settings.removeTempFiles
         ShowPSNRMetrics.Checked = My.Settings.ShowPSNRMetrics
+        RunRav1eInWSL.Checked = My.Settings.RunRav1eInWSL
         GetRav1eVersion()
         GetFfmpegVersion()
+        DetectWSL()
         GUILoaded = True
         If Not String.IsNullOrWhiteSpace(tempLocationPath.Text) Then CheckForLockFile()
     End Sub
@@ -456,6 +472,23 @@ Public Class Form1
             MessageBox.Show("ffmpeg.exe was not found. Exiting...")
             Process.Start("https://moisescardona.me/downloading-ffmpeg-rav1e-gui/")
             Me.Close()
+        End Try
+    End Sub
+
+    Private Sub DetectWSL()
+        Try
+            Dim WSLProcessInfo As New ProcessStartInfo
+            Dim WSLProcess As Process
+            WSLProcessInfo.FileName = "wsl.exe"
+            WSLProcessInfo.Arguments = "--list"
+            WSLProcessInfo.CreateNoWindow = True
+            WSLProcessInfo.RedirectStandardError = False
+            WSLProcessInfo.UseShellExecute = False
+            WSLProcess = Process.Start(WSLProcessInfo)
+            WSLProcess.WaitForExit()
+        Catch ex As Exception
+            RunRav1eInWSL.Enabled = False
+            RunRav1eInWSL.Checked = False
         End Try
     End Sub
 
@@ -533,22 +566,21 @@ Public Class Form1
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Exiting = True
+        Dim processName As String = "rav1e"
+        If RunRav1eInWSL.Checked Then processName = "wsl"
         While True
             Try
                 For Each ffmpeg_proc In Process.GetProcessesByName("ffmpeg")
                     ffmpeg_proc.Kill()
                 Next
                 For Each rav1e_proc In Process.GetProcessesByName("rav1e")
-                    rav1e_proc.Kill()
-                Next
+                    For Each rav1e_proc In Process.GetProcessesByName(processName)
+                        rav1e_proc.Kill()
+                    Next
             Catch
             End Try
-            Dim rav1e_processes As Array = Process.GetProcessesByName("rav1e")
-            If rav1e_processes.Length = 0 Then
-                Exit While
-            End If
-            Dim ffmpeg_processes As Array = Process.GetProcessesByName("ffmpeg")
-            If rav1e_processes.Length = 0 Then
+            Dim Processes As Array = Process.GetProcessesByName(processName)
+            If Processes.Length = 0 Then
                 Exit While
             End If
         End While
@@ -577,7 +609,7 @@ Public Class Form1
             .Filter = "Log File|*.log",
             .Title = "Browse to save the log file"}
         Dim dialogResult As DialogResult = saveDialog.ShowDialog()
-        If DialogResult.OK Then
+        If dialogResult.OK Then
             IO.File.WriteAllText(saveDialog.FileName, ProgressLog.Text)
         End If
     End Sub
@@ -594,10 +626,12 @@ Public Class Form1
     End Sub
 
     Private Sub PauseResumeButton_Click(sender As Object, e As EventArgs) Handles PauseResumeButton.Click
+        Dim processName As String = "rav1e"
+        If RunRav1eInWSL.Checked Then processName = "wsl"
         If PauseResumeButton.Text = "Pause" Then
             UpdateLog("Pausing encode")
             Try
-                For Each rav1e_proc In Process.GetProcessesByName("rav1e")
+                For Each rav1e_proc In Process.GetProcessesByName(processName)
                     SuspendResumeProcess.SuspendProcess(rav1e_proc.Id)
                 Next
             Catch
@@ -607,7 +641,7 @@ Public Class Form1
         Else
             UpdateLog("Resuming encode")
             Try
-                For Each rav1e_proc In Process.GetProcessesByName("rav1e")
+                For Each rav1e_proc In Process.GetProcessesByName(processName)
                     SuspendResumeProcess.ResumeProcess(rav1e_proc.Id)
                 Next
             Catch
@@ -666,5 +700,12 @@ Public Class Form1
 
     Private Sub InputTxt_TextChanged(sender As Object, e As EventArgs) Handles InputTxt.TextChanged
         OutputTxt.Text = IO.Path.ChangeExtension(InputTxt.Text, ".webm")
+    End Sub
+
+    Private Sub RunRav1eInWSL_CheckedChanged(sender As Object, e As EventArgs) Handles RunRav1eInWSL.CheckedChanged
+        If GUILoaded Then
+            My.Settings.RunRav1eInWSL = RunRav1eInWSL.Checked
+            My.Settings.Save()
+        End If
     End Sub
 End Class

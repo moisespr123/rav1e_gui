@@ -296,7 +296,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("6")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("2")>  _
         Public Property TilingRows() As Integer
             Get
                 Return CType(Me("TilingRows"),Integer)
@@ -308,7 +308,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("6")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("2")>  _
         Public Property TilingColumns() As Integer
             Get
                 Return CType(Me("TilingColumns"),Integer)
@@ -339,6 +339,18 @@ Namespace My
             End Get
             Set
                 Me("CPUThreads") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property RunRav1eInWSL() As Boolean
+            Get
+                Return CType(Me("RunRav1eInWSL"),Boolean)
+            End Get
+            Set
+                Me("RunRav1eInWSL") = value
             End Set
         End Property
     End Class

@@ -69,6 +69,7 @@ Partial Class Form1
         Me.PauseResumeButton = New System.Windows.Forms.Button()
         Me.ClearLogBtn = New System.Windows.Forms.Button()
         Me.SaveLogBtn = New System.Windows.Forms.Button()
+        Me.RunRav1eInWSL = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout
         CType(Me.videoBitrate, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CPUThreads, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -196,6 +197,7 @@ Partial Class Form1
         Me.GroupBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.RunRav1eInWSL)
         Me.GroupBox1.Controls.Add(Me.videoBitrate)
         Me.GroupBox1.Controls.Add(Me.UseTilingCheckbox)
         Me.GroupBox1.Controls.Add(Me.twoPass)
@@ -249,7 +251,7 @@ Partial Class Form1
         'twoPass
         '
         Me.twoPass.AutoSize = True
-        Me.twoPass.Location = New System.Drawing.Point(174, 107)
+        Me.twoPass.Location = New System.Drawing.Point(250, 60)
         Me.twoPass.Name = "twoPass"
         Me.twoPass.Size = New System.Drawing.Size(58, 17)
         Me.twoPass.TabIndex = 35
@@ -361,11 +363,11 @@ Partial Class Form1
         'MaxKeyFrameInterval
         '
         Me.MaxKeyFrameInterval.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MaxKeyFrameInterval.Location = New System.Drawing.Point(334, 67)
+        Me.MaxKeyFrameInterval.Location = New System.Drawing.Point(363, 67)
         Me.MaxKeyFrameInterval.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
         Me.MaxKeyFrameInterval.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.MaxKeyFrameInterval.Name = "MaxKeyFrameInterval"
-        Me.MaxKeyFrameInterval.Size = New System.Drawing.Size(87, 20)
+        Me.MaxKeyFrameInterval.Size = New System.Drawing.Size(58, 20)
         Me.MaxKeyFrameInterval.TabIndex = 11
         Me.MaxKeyFrameInterval.Value = New Decimal(New Integer() {240, 0, 0, 0})
         '
@@ -373,7 +375,7 @@ Partial Class Form1
         '
         Me.Label12.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(305, 74)
+        Me.Label12.Location = New System.Drawing.Point(331, 74)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(29, 13)
         Me.Label12.TabIndex = 29
@@ -382,11 +384,11 @@ Partial Class Form1
         'MinKeyFrameInterval
         '
         Me.MinKeyFrameInterval.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MinKeyFrameInterval.Location = New System.Drawing.Point(334, 37)
+        Me.MinKeyFrameInterval.Location = New System.Drawing.Point(363, 37)
         Me.MinKeyFrameInterval.Maximum = New Decimal(New Integer() {100000, 0, 0, 0})
         Me.MinKeyFrameInterval.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.MinKeyFrameInterval.Name = "MinKeyFrameInterval"
-        Me.MinKeyFrameInterval.Size = New System.Drawing.Size(87, 20)
+        Me.MinKeyFrameInterval.Size = New System.Drawing.Size(58, 20)
         Me.MinKeyFrameInterval.TabIndex = 10
         Me.MinKeyFrameInterval.Value = New Decimal(New Integer() {12, 0, 0, 0})
         '
@@ -394,7 +396,7 @@ Partial Class Form1
         '
         Me.Label10.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(305, 44)
+        Me.Label10.Location = New System.Drawing.Point(331, 44)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(26, 13)
         Me.Label10.TabIndex = 27
@@ -608,6 +610,16 @@ Partial Class Form1
         Me.SaveLogBtn.Text = "Save Log"
         Me.SaveLogBtn.UseVisualStyleBackColor = True
         '
+        'RunRav1eInWSL
+        '
+        Me.RunRav1eInWSL.AutoSize = True
+        Me.RunRav1eInWSL.Location = New System.Drawing.Point(167, 119)
+        Me.RunRav1eInWSL.Name = "RunRav1eInWSL"
+        Me.RunRav1eInWSL.Size = New System.Drawing.Size(114, 17)
+        Me.RunRav1eInWSL.TabIndex = 18
+        Me.RunRav1eInWSL.Text = "Run rav1e in WSL"
+        Me.RunRav1eInWSL.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AllowDrop = True
@@ -684,4 +696,5 @@ Partial Class Form1
     Friend WithEvents ffmpegVersionLabel As Label
     Friend WithEvents UseTilingCheckbox As CheckBox
     Friend WithEvents videoBitrate As NumericUpDown
+    Friend WithEvents RunRav1eInWSL As CheckBox
 End Class
