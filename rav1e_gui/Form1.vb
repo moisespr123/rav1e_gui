@@ -566,24 +566,21 @@ Public Class Form1
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Exiting = True
-        Dim processName As String = "rav1e"
-        If RunRav1eInWSL.Checked Then processName = "wsl"
-        While True
-            Try
-                For Each ffmpeg_proc In Process.GetProcessesByName("ffmpeg")
-                    ffmpeg_proc.Kill()
-                Next
-                For Each rav1e_proc In Process.GetProcessesByName("rav1e")
-                    For Each rav1e_proc In Process.GetProcessesByName(processName)
-                        rav1e_proc.Kill()
+        Dim processes As String() = New String() {"rav1e", "ffmpeg"}
+        If RunRav1eInWSL.Checked Then processes.Append("wsl")
+        For Each processName In processes
+            While True
+                Try
+                    For Each process_proc In Process.GetProcessesByName("ffmpeg")
+                        process_proc.Kill()
                     Next
-            Catch
-            End Try
-            Dim Processes As Array = Process.GetProcessesByName(processName)
-            If Processes.Length = 0 Then
-                Exit While
-            End If
-        End While
+                Catch
+                End Try
+                If Process.GetProcessesByName(processName).Length = 0 Then
+                    Exit While
+                End If
+            End While
+        Next
         For Each rav1e_proc In Process.GetProcessesByName("rav1e_gui")
             If rav1e_proc.Id = Process.GetCurrentProcess().Id Then rav1e_proc.Kill()
         Next
@@ -609,7 +606,7 @@ Public Class Form1
             .Filter = "Log File|*.log",
             .Title = "Browse to save the log file"}
         Dim dialogResult As DialogResult = saveDialog.ShowDialog()
-        If dialogResult.OK Then
+        If DialogResult.OK Then
             IO.File.WriteAllText(saveDialog.FileName, ProgressLog.Text)
         End If
     End Sub
@@ -626,29 +623,31 @@ Public Class Form1
     End Sub
 
     Private Sub PauseResumeButton_Click(sender As Object, e As EventArgs) Handles PauseResumeButton.Click
-        Dim processName As String = "rav1e"
-        If RunRav1eInWSL.Checked Then processName = "wsl"
-        If PauseResumeButton.Text = "Pause" Then
-            UpdateLog("Pausing encode")
-            Try
-                For Each rav1e_proc In Process.GetProcessesByName(processName)
-                    SuspendResumeProcess.SuspendProcess(rav1e_proc.Id)
-                Next
-            Catch
-            End Try
-            UpdateLog("Encode paused (Some progress may still be reported)")
-            PauseResumeButton.Text = "Resume"
-        Else
-            UpdateLog("Resuming encode")
-            Try
-                For Each rav1e_proc In Process.GetProcessesByName(processName)
-                    SuspendResumeProcess.ResumeProcess(rav1e_proc.Id)
-                Next
-            Catch
-            End Try
-            UpdateLog("Encode resumed")
-            PauseResumeButton.Text = "Pause"
-        End If
+        Dim processes As String() = New String() {"rav1e", "ffmpeg"}
+        If RunRav1eInWSL.Checked Then processes.Append("wsl")
+        For Each processName In processes
+            If PauseResumeButton.Text = "Pause" Then
+                UpdateLog("Pausing encode")
+                Try
+                    For Each process_proc In Process.GetProcessesByName(processName)
+                        SuspendResumeProcess.SuspendProcess(process_proc.Id)
+                    Next
+                Catch
+                End Try
+                UpdateLog("Encode paused (Some progress may still be reported)")
+                PauseResumeButton.Text = "Resume"
+            Else
+                UpdateLog("Resuming encode")
+                Try
+                    For Each process_proc In Process.GetProcessesByName(processName)
+                        SuspendResumeProcess.ResumeProcess(process_proc.Id)
+                    Next
+                Catch
+                End Try
+                UpdateLog("Encode resumed")
+                PauseResumeButton.Text = "Pause"
+            End If
+        Next
     End Sub
 
     Private Sub UseQuantizer_CheckedChanged(sender As Object, e As EventArgs) Handles useQuantizer.CheckedChanged
