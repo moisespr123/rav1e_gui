@@ -34,6 +34,7 @@ Partial Class Form1
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.RunRav1eInWSL = New System.Windows.Forms.CheckBox()
         Me.videoBitrate = New System.Windows.Forms.NumericUpDown()
         Me.UseTilingCheckbox = New System.Windows.Forms.CheckBox()
         Me.twoPass = New System.Windows.Forms.CheckBox()
@@ -69,8 +70,7 @@ Partial Class Form1
         Me.PauseResumeButton = New System.Windows.Forms.Button()
         Me.ClearLogBtn = New System.Windows.Forms.Button()
         Me.SaveLogBtn = New System.Windows.Forms.Button()
-        Me.RunRav1eInWSL = New System.Windows.Forms.CheckBox()
-        Me.GroupBox1.SuspendLayout
+        Me.GroupBox1.SuspendLayout()
         CType(Me.videoBitrate, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CPUThreads, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.quantizer, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -80,10 +80,10 @@ Partial Class Form1
         CType(Me.audioBitrate, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.speed, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SplitContainer1.Panel1.SuspendLayout
-        Me.SplitContainer1.Panel2.SuspendLayout
-        Me.SplitContainer1.SuspendLayout
-        Me.SuspendLayout
+        Me.SplitContainer1.Panel1.SuspendLayout()
+        Me.SplitContainer1.Panel2.SuspendLayout()
+        Me.SplitContainer1.SuspendLayout()
+        Me.SuspendLayout()
         '
         'Label1
         '
@@ -190,7 +190,7 @@ Partial Class Form1
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(34, 13)
         Me.Label6.TabIndex = 12
-        Me.Label6.Text = "v1.16"
+        Me.Label6.Text = "v1.17"
         '
         'GroupBox1
         '
@@ -227,6 +227,16 @@ Partial Class Form1
         Me.GroupBox1.TabIndex = 15
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Encoder Options"
+        '
+        'RunRav1eInWSL
+        '
+        Me.RunRav1eInWSL.AutoSize = True
+        Me.RunRav1eInWSL.Location = New System.Drawing.Point(167, 119)
+        Me.RunRav1eInWSL.Name = "RunRav1eInWSL"
+        Me.RunRav1eInWSL.Size = New System.Drawing.Size(114, 17)
+        Me.RunRav1eInWSL.TabIndex = 18
+        Me.RunRav1eInWSL.Text = "Run rav1e in WSL"
+        Me.RunRav1eInWSL.UseVisualStyleBackColor = True
         '
         'videoBitrate
         '
@@ -610,16 +620,6 @@ Partial Class Form1
         Me.SaveLogBtn.Text = "Save Log"
         Me.SaveLogBtn.UseVisualStyleBackColor = True
         '
-        'RunRav1eInWSL
-        '
-        Me.RunRav1eInWSL.AutoSize = True
-        Me.RunRav1eInWSL.Location = New System.Drawing.Point(167, 119)
-        Me.RunRav1eInWSL.Name = "RunRav1eInWSL"
-        Me.RunRav1eInWSL.Size = New System.Drawing.Size(114, 17)
-        Me.RunRav1eInWSL.TabIndex = 18
-        Me.RunRav1eInWSL.Text = "Run rav1e in WSL"
-        Me.RunRav1eInWSL.UseVisualStyleBackColor = True
-        '
         'Form1
         '
         Me.AllowDrop = True
@@ -630,7 +630,7 @@ Partial Class Form1
         Me.Name = "Form1"
         Me.Text = "rav1e GUI"
         Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout
+        Me.GroupBox1.PerformLayout()
         CType(Me.videoBitrate, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CPUThreads, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.quantizer, System.ComponentModel.ISupportInitialize).EndInit()
@@ -640,9 +640,9 @@ Partial Class Form1
         CType(Me.audioBitrate, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.speed, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.Panel1.ResumeLayout(False)
-        Me.SplitContainer1.Panel1.PerformLayout
+        Me.SplitContainer1.Panel1.PerformLayout()
         Me.SplitContainer1.Panel2.ResumeLayout(False)
-        Me.SplitContainer1.Panel2.PerformLayout
+        Me.SplitContainer1.Panel2.PerformLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.ResumeLayout(False)
         Me.ResumeLayout(False)

@@ -195,12 +195,18 @@ Public Class Form1
                                  CPUThreads.Enabled = True
                                  SaveLogBtn.Enabled = True
                                  PauseResumeButton.Enabled = False
-                                 twoPass.Enabled = True
                                  useQuantizer.Enabled = True
                                  useBitrate.Enabled = True
                                  UseTilingCheckbox.Enabled = True
-                                 If My.Settings.useQuantizer Then quantizer.Enabled = True
-                                 If My.Settings.useBitrate Then videoBitrate.Enabled = True
+                                 If My.Settings.useQuantizer Then
+                                     quantizer.Enabled = True
+                                     twoPass.Checked = False
+                                     twoPass.Enabled = False
+                                 End If
+                                 If My.Settings.useBitrate Then
+                                     videoBitrate.Enabled = True
+                                     twoPass.Enabled = True
+                                 End If
 
                              End Sub)
         MsgBox("Finished")
@@ -272,6 +278,7 @@ Public Class Form1
                 If Not Exiting Then
                     If IO.File.Exists(Original_Output_File + ".first-pass-arg-output") Then IO.File.Delete(Original_Output_File + ".first-pass-arg-output")
                     If IO.File.Exists(Original_Output_File + ".first-pass.ivf") Then IO.File.Delete(Original_Output_File + ".first-pass.ivf")
+                    If IO.File.Exists(Input_File) Then IO.File.Delete(Input_File)
                 End If
                 ProgressBar1.BeginInvoke(Sub() ProgressBar1.PerformStep())
             End If
@@ -406,7 +413,12 @@ Public Class Form1
         videoBitrate.Value = My.Settings.VideoBitrate
         useQuantizer.Checked = My.Settings.useQuantizer
         useBitrate.Checked = My.Settings.useBitrate
-        twoPass.Checked = My.Settings.twoPass
+        If useBitrate.Checked Then
+            twoPass.Checked = My.Settings.twoPass
+        Else
+            My.Settings.twoPass = False
+            My.Settings.Save()
+        End If
         speed.Value = My.Settings.speed
         audioBitrate.Value = My.Settings.AudioBitrate
         MinKeyFrameInterval.Value = My.Settings.minKeyInt
@@ -657,6 +669,8 @@ Public Class Form1
         End If
         quantizer.Enabled = True
         videoBitrate.Enabled = False
+        twoPass.Checked = False
+        twoPass.Enabled = False
     End Sub
 
     Private Sub VideoBitrate_ValueChanged(sender As Object, e As EventArgs) Handles videoBitrate.ValueChanged
@@ -673,6 +687,7 @@ Public Class Form1
         End If
         quantizer.Enabled = False
         videoBitrate.Enabled = True
+        twoPass.Enabled = True
     End Sub
 
     Private Sub TwoPass_CheckedChanged(sender As Object, e As EventArgs) Handles twoPass.CheckedChanged
